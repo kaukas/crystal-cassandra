@@ -1,0 +1,21 @@
+name: cassandra
+version: 0.1.0
+
+authors:
+  - Linas Juškevičius <linas@prodigito.lt>
+
+crystal: 0.25.1
+
+dependencies:
+  db:
+    github: crystal-lang/crystal-db
+    version: ~> 0.5.0
+
+development_dependencies:
+  crystal_lib:
+    github: crystal-lang/crystal_lib
+
+libraries:
+  libcassandra: "~> 2.9"
+
+license: MIT
