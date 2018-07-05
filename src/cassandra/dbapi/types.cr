@@ -94,16 +94,19 @@ module Cassandra
       end
 
       private def do_bind(val : Bool)
-        cass_value = val ? CassTrue : CassFalse
-        LibCass.cass_statement_bind_bool(@cass_stmt, @i, cass_value)
+        # cass_value = val ? CassTrue : CassFalse
+        # LibCass.cass_statement_bind_bool(@cass_stmt, @i, cass_value)
+        raise NotImplementedError.new("Test first")
       end
 
       private def do_bind(val : Float32)
-        LibCass.cass_statement_bind_float(@cass_stmt, @i, val)
+        # LibCass.cass_statement_bind_float(@cass_stmt, @i, val)
+        raise NotImplementedError.new("Test first")
       end
 
       private def do_bind(val : Float64)
-        LibCass.cass_statement_bind_double(@cass_stmt, @i, val)
+        # LibCass.cass_statement_bind_double(@cass_stmt, @i, val)
+        raise NotImplementedError.new("Test first")
       end
 
       private def do_bind(val : Int32)
@@ -115,7 +118,8 @@ module Cassandra
       end
 
       private def do_bind(val : Bytes)
-        LibCass.cass_statement_bind_bytes(@cass_stmt, @i, val, val.size)
+        # LibCass.cass_statement_bind_bytes(@cass_stmt, @i, val, val.size)
+        raise NotImplementedError.new("Test first")
       end
 
       private def do_bind(val : String)
@@ -123,8 +127,9 @@ module Cassandra
       end
 
       private def do_bind(val : Time)
-        epoch_ms = val.epoch_ms
-        LibCass.cass_statement_bind_int64(@cass_stmt, @i, epoch_ms)
+        # epoch_ms = val.epoch_ms
+        # LibCass.cass_statement_bind_int64(@cass_stmt, @i, epoch_ms)
+        raise NotImplementedError.new("Test first")
       end
     end
   end
