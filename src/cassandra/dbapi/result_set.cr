@@ -59,7 +59,7 @@ module Cassandra
       end
 
       private def decode_value(cass_value : LibCass::CassValue)
-        DBTypeRegistry.from_db(cass_value)
+        BaseType.from_db(cass_value)
       end
     end
   end
