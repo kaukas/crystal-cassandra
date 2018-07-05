@@ -33,6 +33,7 @@ module Cassandra
         @@types_by_code[type_code]
       end
 
+      # TODO: pick the type converters once and reuse.
       def self.from_db(cass_value : LibCass::CassValue)
         if LibCass.cass_value_is_null(cass_value) == CassTrue
           return nil
@@ -126,5 +127,17 @@ module Cassandra
       end
     end
     DBTypeRegistry.register_type(IntType)
+
+    class BigintType < BaseType
+      def self.cass_value_code
+        LibCass::CassValueType::CassValueTypeBigint
+      end
+
+      def from_db(cass_value) : Int64
+        LibCass.cass_value_get_int64(cass_value, out i)
+        i
+      end
+    end
+    DBTypeRegistry.register_type(BigintType)
   end
 end
