@@ -1,3 +1,5 @@
+HERE := $(shell pwd)
+
 CPP_DRIVER_DIR := /tmp/cpp-driver-master
 CPP_DRIVER_NAME := cassandra-cpp-driver
 BUILD_DIR := $(CPP_DRIVER_DIR)/build
@@ -21,7 +23,7 @@ build-cppdriver: $(CPP_DRIVER_DIR)
 	brew link $(CPP_DRIVER_NAME)
 .PHONY: build-cppdriver
 
-HERE := $(shell pwd)
+
 LIBCASS_TMPL := $(HERE)/src/cassandra/libcass.cr.tmpl
 LIBCASS_SRC := $(HERE)/src/cassandra/libcass.cr
 
@@ -32,3 +34,19 @@ gen-binding:
 		sed 's/__DIR__/#{__DIR__}/' \
 		> $(LIBCASS_SRC)
 .PHONY: gen-binding
+
+
+CASS_DOCKER_NAME := crystal-cassandra-dbapi-test
+CASS_DOCKER_VERSION := 3
+
+start-cassandra:
+	docker run \
+		--name $(CASS_DOCKER_NAME) \
+		--publish 9042:9042 \
+		--rm \
+		--detach \
+		cassandra:$(CASS_DOCKER_VERSION)
+
+stop-cassandra:
+	docker stop $(CASS_DOCKER_NAME)
+.PHONY: cassandra
