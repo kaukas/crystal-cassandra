@@ -9,71 +9,91 @@ module Cassandra
     class BindError < DB::Error
     end
 
-    abstract class BaseType
-      @@types_by_code = Hash(LibCass::CassValueType, BaseType).new
+    class UUID
+      def initialize(@cass_uuid : LibCass::CassUuid)
+      end
+      # TODO: display (.to_s)
+    end
 
-      abstract def from_db(cass_value : LibCass::CassValue)
+    abstract class BaseDecoder
+      @@types_by_code = Hash(LibCass::CassValueType, BaseDecoder).new
+
+      def decode(cass_value : LibCass::CassValue)
+        if LibCass.cass_value_is_null(cass_value) == CassTrue
+          return nil
+        else
+          decode_with_type(cass_value)
+        end
+      end
+
+      def handle_error(cass_error : LibCass::CassError)
+        Error.from_error(cass_error)
+      end
+
+      abstract def decode_with_type(cass_value : LibCass::CassValue)
 
       def self.cass_value_codes : Array(LibCass::CassValueType)
         raise NotImplementedError.new
       end
 
       macro inherited
-        BaseType.register_type({{@type}})
+        BaseDecoder.register_type({{@type}})
       end
 
-      def self.register_type(type_class : BaseType.class)
+      def self.register_type(type_class : BaseDecoder.class)
         instance = type_class.new
         type_class.cass_value_codes.each do |cass_value_code|
           @@types_by_code[cass_value_code] = instance
         end
       end
 
-      # TODO: pick the type converters once and reuse.
-      def self.from_db(cass_value : LibCass::CassValue)
-        if LibCass.cass_value_is_null(cass_value) == CassTrue
-          return nil
-        end
-        detect_db_type(cass_value).from_db(cass_value)
-      end
-
-      private def self.detect_db_type(cass_value : LibCass::CassValue)
-        type_code = LibCass.cass_value_type(cass_value)
-        @@types_by_code[type_code]
+      def self.get_decoder(cass_value_type : LibCass::CassValueType)
+        @@types_by_code[cass_value_type]
       end
     end
 
-    class StringType < BaseType
+    class StringDecoder < BaseDecoder
       def self.cass_value_codes
         [LibCass::CassValueType::CassValueTypeAscii,
          LibCass::CassValueType::CassValueTypeVarchar]
       end
 
-      def from_db(cass_value) : String
-        LibCass.cass_value_get_string(cass_value, out s, out len)
+      def decode_with_type(cass_value) : String
+        handle_error(LibCass.cass_value_get_string(cass_value, out s, out len))
         String.new(s, len)
       end
     end
 
-    class IntType < BaseType
+    class IntDecoder < BaseDecoder
       def self.cass_value_codes
         [LibCass::CassValueType::CassValueTypeInt]
       end
 
-      def from_db(cass_value) : Int32
-        LibCass.cass_value_get_int32(cass_value, out i)
+      def decode_with_type(cass_value) : Int32
+        handle_error(LibCass.cass_value_get_int32(cass_value, out i))
         i
       end
     end
 
-    class BigintType < BaseType
+    class BigintDecoder < BaseDecoder
       def self.cass_value_codes
         [LibCass::CassValueType::CassValueTypeBigint]
       end
 
-      def from_db(cass_value) : Int64
-        LibCass.cass_value_get_int64(cass_value, out i)
+      def decode_with_type(cass_value) : Int64
+        handle_error(LibCass.cass_value_get_int64(cass_value, out i))
         i
+      end
+    end
+
+    class TimeuuidDecoder < BaseDecoder
+      def self.cass_value_codes
+        [LibCass::CassValueType::CassValueTypeTimeuuid]
+      end
+
+      def decode_with_type(cass_value) : UUID
+        handle_error(LibCass.cass_value_get_uuid(cass_value, out cass_uuid))
+        UUID.new(cass_uuid)
       end
     end
 

@@ -13,8 +13,8 @@ CassandraSpecs.run do
     CQL
   end
 
-  sample_value "text", "text", "'text'"
-  # sample_value "varchar", "varchar", "'varchar'"
+  sample_value "text value", "text", "'text value'"
+  sample_value "varchar", "varchar", "'varchar'"
   sample_value 42_i32, "int", "42"
   sample_value 42_000_000_000_i64, "bigint", "42000000000"
 

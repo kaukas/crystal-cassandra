@@ -11,8 +11,15 @@ module Cassandra
           LibCass.cass_future_error_message(cass_future, out msg, out len)
           error_message = String.new(msg, len)
           LibCass.cass_future_free(cass_future)
-          puts "Future error: #{error_code} #{error_message}"
           raise err_class.new("#{error_code}: #{error_message}")
+        end
+      end
+
+      # TODO: handle errors properly, with tests.
+      def self.from_error(cass_error : LibCass::CassError,
+                          err_class = DB::Error)
+        if cass_error != LibCass::CassError::CassOk
+          raise err_class.new(cass_error.to_s)
         end
       end
     end
