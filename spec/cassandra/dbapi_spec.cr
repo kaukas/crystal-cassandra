@@ -2,8 +2,25 @@ require "spec"
 require "../../src/cassandra/dbapi"
 require "./custom_dbapi"
 
+
+Cassandra::LibCass.log_set_level(
+  Cassandra::LibCass::CassLogLevel::CassLogDisabled
+)
+
+describe Cassandra::DBApi do
+  it "supports a custom port" do
+    expect_raises(Cassandra::DBApi::ConnectError,
+                  "CassErrorLibNoHostsAvailable") do
+      # Expect incorrect port to fail.
+      DB.open("cassandra://root@127.0.0.1:55")
+    end
+  end
+end
+
 CassandraSpecs.run do
-  connection_string "cassandra://root@127.0.0.1/crystal_cassandra_dbapi_test"
+  # Expect correct port to succeed.
+  connection_string "cassandra://root@127.0.0.1:9042/" \
+                    "crystal_cassandra_dbapi_test"
 
   DB.open "cassandra://root@127.0.0.1" do |db|
     db.exec "drop keyspace if exists crystal_cassandra_dbapi_test"
@@ -100,16 +117,4 @@ CassandraSpecs.run do
     values (now(), #{expr1}, #{expr2})
     CQL
   end
-
-      # db.exec <<-CQL
-      #   create table crystal_cassandra_dbapi_test.dual (
-      #     id timeuuid primary key,
-      #     value varchar,
-      #     cond varchar
-      #   )
-      # CQL
-      # db.exec <<-CQL
-      #   insert into crystal_cassandra_dbapi_test.dual ("id", "value", "cond")
-      #   values (now(), NULL, 'NULL')
-      # CQL
 end

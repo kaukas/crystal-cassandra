@@ -10,15 +10,16 @@ module Cassandra
       @cass_cluster : LibCass::CassCluster
 
       def initialize(context : DB::ConnectionContext)
-        host = context.uri.host || "127.0.0.1"
-        # port = context.uri.port
-        # port_s = port ? ":#{port}" : ""
-        # address = "#{host}#{port_s}"
-        # addresses = [address].join(',')
-        addresses = host
-
         @cass_cluster = LibCass.cluster_new
+
+        host = context.uri.host || "127.0.0.1"
+        # TODO: support multiple addresses.
         LibCass.cluster_set_contact_points(@cass_cluster, host)
+
+        port = context.uri.port
+        if port
+          LibCass.cluster_set_port(@cass_cluster, port)
+        end
       end
 
       def close
