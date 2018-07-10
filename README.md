@@ -1,6 +1,6 @@
-# crystal-driver
+# Crystal DB API support for Cassandra
 
-TODO: Write a description here
+WIP! Don't use it yet!
 
 ## Installation
 
@@ -8,14 +8,14 @@ Add this to your application's `shard.yml`:
 
 ```yaml
 dependencies:
-  crystal-driver:
-    github: your-github-user/crystal-driver
+  cassandra:
+    github: kaukas/crystal-cassandra
 ```
 
 ## Usage
 
 ```crystal
-require "crystal-driver"
+require "cassandra/dbapi"
 ```
 
 TODO: Write usage instructions here
@@ -26,7 +26,7 @@ TODO: Write development instructions here
 
 ## Contributing
 
-1. Fork it (<https://github.com/your-github-user/crystal-driver/fork>)
+1. Fork it (<https://github.com/kaukas/crystal-cassandra/fork>)
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
@@ -34,4 +34,4 @@ TODO: Write development instructions here
 
 ## Contributors
 
-- [your-github-user](https://github.com/your-github-user) Linas Juškevičius - creator, maintainer
+- [kaukas](https://github.com/kaukas) Linas Juškevičius - creator, maintainer
