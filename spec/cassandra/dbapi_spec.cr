@@ -17,6 +17,46 @@ describe Cassandra::DBApi do
   end
 end
 
+# According to https://docs.datastax.com/en/dse/6.0/cql/cql/cql_reference/refDataTypes.html
+TYPES = [
+  # String types
+  {name: "ascii", raw: "ascii value", encoded: "'ascii value'"},
+  {name: "text", raw: "text value", encoded: "'text value'"},
+  {name: "varchar", raw: "varchar value", encoded: "'varchar value'"},
+
+  # Integers
+  {name: "tinyint", raw: 42_i8, encoded: "42"},
+  {name: "smallint", raw: 42_i16, encoded: "42"},
+  {name: "int", raw: 42_i32, encoded: "42"},
+  {name: "bigint", raw: 42_000_000_000_i64, encoded: "42000000000"},
+  # TODO:
+  # {name: "varint", raw: 42_000_000_000_i64, encoded: "42000000000"},
+
+  # Decimals
+  # TODO:
+  # {name: "decimal", raw: ..., encoded: "..."},
+  {name: "float", raw: 42.5_f32, encoded: "42.5"},
+  {name: "double", raw: 42.5_f64, encoded: "42.5"},
+
+  # Date and time
+  {name: "date",
+   raw: Cassandra::DBApi::Date.new(Time.utc(2016, 2, 15)),
+   encoded: Cassandra::DBApi::Date.new(Time.utc(2016, 2, 15)).days.to_s},
+  # TODO: requires dse.
+  # {name: "DateRangeType",
+  #  raw: "2016-02", # Cassandra::DBApi::Date.new(Time.utc(2016, 2, 15)),
+  #  encoded: "'2016-02'"}, #Cassandra::DBApi::Date.new(Time.utc(2016, 2, 15)).days.to_s},
+  # TODO: duration
+  {name: "time",
+   raw: Cassandra::DBApi::Time.new(Time.utc(1970, 1, 1, 4)),
+   encoded: Cassandra::DBApi::Time.new(Time.utc(1970, 1, 1, 4))
+            .total_nanoseconds
+            .to_s},
+  {name: "timestamp",
+   raw: Time.utc(2016, 2, 15, 4, 20, 25),
+   encoded: (Time.utc(2016, 2, 15, 4, 20, 25) - Time.epoch(0)).total_milliseconds.to_i64.to_s},
+]
+
 CassandraSpecs.run do
   # Expect correct port to succeed.
   connection_string "cassandra://root@127.0.0.1:9042/" \
@@ -32,26 +72,31 @@ CassandraSpecs.run do
 
   DB.open "cassandra://root@127.0.0.1/crystal_cassandra_dbapi_test" do |db|
     db.exec "drop table if exists scalars"
+
+    columns = TYPES.map do |type|
+      name = type[:name]
+      name = "'#{name}'" if name.chars.any?(&.uppercase?)
+      "#{type[:name]}_val #{name},"
+    end
     db.exec <<-CQL
       create table scalars (
         id timeuuid primary key,
         null_val text,
         null_cond text,
-        text_val text,
-        int_val int,
-        bigint_val bigint
+        #{columns.join(",\n        ")}
       )
     CQL
-    db.exec "insert into scalars (id, null_val, null_cond) values (now(), NULL, 'NULL')"
-    db.exec "insert into scalars (id, text_val) values (now(), 'text value')"
-    db.exec "insert into scalars (id, int_val) values (now(), 42)"
-    db.exec "insert into scalars (id, bigint_val) values (now(), 42000000000)"
+    db.exec "insert into scalars (id, null_val, null_cond) " \
+            "values (now(), NULL, 'NULL')"
+    TYPES.each do |type|
+      db.exec "insert into scalars (id, #{type[:name]}_val) " \
+              "values (now(), #{type[:encoded]})"
+    end
   end
 
-  sample_value "text value", "text", "'text value'"
-  sample_value "text value", "varchar", "'text value'"
-  sample_value 42_i32, "int", "42"
-  sample_value 42_000_000_000_i64, "bigint", "42000000000"
+  TYPES.each do |type|
+    sample_value type[:raw], type[:name], type[:encoded]
+  end
 
   binding_syntax do |index|
     "?"
@@ -63,14 +108,7 @@ CassandraSpecs.run do
       cond = "null_cond"
       expr = "'#{expr}'" unless expr == "?"
     else
-      val = cond = case expr_type
-                   when "int"
-                     "int_val"
-                   when "bigint"
-                     "bigint_val"
-                   else
-                     "text_val"
-                   end
+      val = cond = "#{expr_type}_val"
     end
 
     "select #{val} from scalars where #{cond} = #{expr} allow filtering"

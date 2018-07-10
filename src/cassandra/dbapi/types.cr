@@ -3,6 +3,7 @@ require "../libcass"
 
 module Cassandra
   module DBApi
+    EPOCH_START = ::Time.epoch(0)
     CassTrue = LibCass::BoolT::True
     CassFalse = LibCass::BoolT::False
 
@@ -13,6 +14,52 @@ module Cassandra
       def initialize(@cass_uuid : LibCass::CassUuid)
       end
       # TODO: display (.to_s)
+    end
+
+    class Date
+      getter date
+
+      def initialize(@date : ::Time)
+      end
+
+      def initialize(days : UInt32)
+        @date = EPOCH_START + ::Time::Span.new(days, 0, 0, 0)
+      end
+
+      def days : UInt32
+        (@date - EPOCH_START).days.to_u32
+      end
+
+      def ==(other : self) : Bool
+        @date == other.date
+      end
+
+      def to_s
+        @date.to_s
+      end
+    end
+
+    class Time
+      getter time
+
+      def initialize(@time : ::Time)
+      end
+
+      def initialize(nanoseconds : Int64)
+        @time = EPOCH_START + ::Time::Span.new(nanoseconds: nanoseconds)
+      end
+
+      def total_nanoseconds : Int64
+        (@time - @time.date).total_nanoseconds.to_i64
+      end
+
+      def ==(other : self) : Bool
+        @time == other.time
+      end
+
+      def to_s
+        @time.to_s
+      end
     end
 
     abstract class BaseDecoder
@@ -64,6 +111,28 @@ module Cassandra
       end
     end
 
+    class TinyIntDecoder < BaseDecoder
+      def self.cass_value_codes
+        [LibCass::CassValueType::CassValueTypeTinyInt]
+      end
+
+      def decode_with_type(cass_value) : Int8
+        handle_error(LibCass.value_get_int8(cass_value, out i))
+        i.to_i8
+      end
+    end
+
+    class SmallIntDecoder < BaseDecoder
+      def self.cass_value_codes
+        [LibCass::CassValueType::CassValueTypeSmallInt]
+      end
+
+      def decode_with_type(cass_value) : Int16
+        handle_error(LibCass.value_get_int16(cass_value, out i))
+        i
+      end
+    end
+
     class IntDecoder < BaseDecoder
       def self.cass_value_codes
         [LibCass::CassValueType::CassValueTypeInt]
@@ -83,6 +152,61 @@ module Cassandra
       def decode_with_type(cass_value) : Int64
         handle_error(LibCass.value_get_int64(cass_value, out i))
         i
+      end
+    end
+
+    class FloatDecoder < BaseDecoder
+      def self.cass_value_codes
+        [LibCass::CassValueType::CassValueTypeFloat]
+      end
+
+      def decode_with_type(cass_value) : Float32
+        handle_error(LibCass.value_get_float(cass_value, out f))
+        f
+      end
+    end
+
+    class DoubleDecoder < BaseDecoder
+      def self.cass_value_codes
+        [LibCass::CassValueType::CassValueTypeDouble]
+      end
+
+      def decode_with_type(cass_value) : Float64
+        handle_error(LibCass.value_get_double(cass_value, out f))
+        f
+      end
+    end
+
+    class DateDecoder < BaseDecoder
+      def self.cass_value_codes
+        [LibCass::CassValueType::CassValueTypeDate]
+      end
+
+      def decode_with_type(cass_value) : Date
+        handle_error(LibCass.value_get_uint32(cass_value, out days))
+        Date.new(days)
+      end
+    end
+
+    class TimeDecoder < BaseDecoder
+      def self.cass_value_codes
+        [LibCass::CassValueType::CassValueTypeTime]
+      end
+
+      def decode_with_type(cass_value) : DBApi::Time
+        handle_error(LibCass.value_get_int64(cass_value, out nanoseconds))
+        Time.new(nanoseconds)
+      end
+    end
+
+    class TimestampDecoder < BaseDecoder
+      def self.cass_value_codes
+        [LibCass::CassValueType::CassValueTypeTimestamp]
+      end
+
+      def decode_with_type(cass_value) : ::Time
+        handle_error(LibCass.value_get_int64(cass_value, out milliseconds))
+        ::Time.epoch_ms(milliseconds)
       end
     end
 
@@ -120,13 +244,19 @@ module Cassandra
       end
 
       private def do_bind(val : Float32)
-        # LibCass.statement_bind_float(@cass_stmt, @i, val)
-        raise NotImplementedError.new("Test first")
+        LibCass.statement_bind_float(@cass_stmt, @i, val)
       end
 
       private def do_bind(val : Float64)
-        # LibCass.statement_bind_double(@cass_stmt, @i, val)
-        raise NotImplementedError.new("Test first")
+        LibCass.statement_bind_double(@cass_stmt, @i, val)
+      end
+
+      private def do_bind(val : Int8)
+        LibCass.statement_bind_int8(@cass_stmt, @i, val)
+      end
+
+      private def do_bind(val : Int16)
+        LibCass.statement_bind_int16(@cass_stmt, @i, val)
       end
 
       private def do_bind(val : Int32)
@@ -146,10 +276,17 @@ module Cassandra
         LibCass.statement_bind_string_n(@cass_stmt, @i, val, val.bytesize)
       end
 
-      private def do_bind(val : Time)
-        # epoch_ms = val.epoch_ms
-        # LibCass.statement_bind_int64(@cass_stmt, @i, epoch_ms)
-        raise NotImplementedError.new("Test first")
+      private def do_bind(val : DBApi::Date)
+        LibCass.statement_bind_uint32(@cass_stmt, @i, val.days)
+      end
+
+      private def do_bind(val : DBApi::Time)
+        LibCass.statement_bind_int64(@cass_stmt, @i, val.total_nanoseconds)
+      end
+
+      private def do_bind(val : ::Time)
+        ms = (val - EPOCH_START).total_milliseconds.to_i64
+        LibCass.statement_bind_int64(@cass_stmt, @i, ms)
       end
     end
   end
