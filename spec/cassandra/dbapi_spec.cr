@@ -2,16 +2,17 @@ require "spec"
 require "../../src/cassandra/dbapi"
 require "./custom_dbapi"
 
-
 Cassandra::LibCass.log_set_level(
   Cassandra::LibCass::CassLogLevel::CassLogDisabled
 )
 
 describe Cassandra::DBApi do
   it "supports a custom port" do
+    # Expect correct port to succeed.
+    DB.open("cassandra://root@127.0.0.1:9042")
+    # Expect incorrect port to fail.
     expect_raises(Cassandra::DBApi::ConnectError,
                   "CassErrorLibNoHostsAvailable") do
-      # Expect incorrect port to fail.
       DB.open("cassandra://root@127.0.0.1:55")
     end
   end
@@ -46,7 +47,9 @@ TYPES = [
   # {name: "DateRangeType",
   #  raw: "2016-02", # Cassandra::DBApi::Date.new(Time.utc(2016, 2, 15)),
   #  encoded: "'2016-02'"}, #Cassandra::DBApi::Date.new(Time.utc(2016, 2, 15)).days.to_s},
-  # TODO: duration
+  {name: "duration",
+   raw: Cassandra::DBApi::Duration.new(0, 0, Time::Span.new(12, 30, 0)),
+   encoded: "12h30m"},
   {name: "time",
    raw: Cassandra::DBApi::Time.new(Time.utc(1970, 1, 1, 4)),
    encoded: Cassandra::DBApi::Time.new(Time.utc(1970, 1, 1, 4))
@@ -59,8 +62,7 @@ TYPES = [
 
 CassandraSpecs.run do
   # Expect correct port to succeed.
-  connection_string "cassandra://root@127.0.0.1:9042/" \
-                    "crystal_cassandra_dbapi_test"
+  connection_string "cassandra://root@127.0.0.1/crystal_cassandra_dbapi_test"
 
   DB.open "cassandra://root@127.0.0.1" do |db|
     db.exec "drop keyspace if exists crystal_cassandra_dbapi_test"

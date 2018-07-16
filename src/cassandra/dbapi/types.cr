@@ -62,6 +62,43 @@ module Cassandra
       end
     end
 
+    class Duration
+      getter months
+      getter days
+      getter nanoseconds
+
+      def initialize(@months : Int32 = 0,
+                     @days : Int32 = 0,
+                     @nanoseconds : Int64 = 0)
+      end
+
+      def initialize(@months : Int32 = 0,
+                     @days : Int32 = 0,
+                     time_span : ::Time::Span = Time::Span.zero)
+        @nanoseconds = time_span.total_nanoseconds.to_i64
+      end
+
+      def ==(other : self) : Bool
+        @months == other.months &&
+          @days == other.days &&
+          @nanoseconds == other.nanoseconds
+      end
+
+      def time_span : ::Time::Span
+        ::Time::Span.new(nanoseconds: @nanoseconds)
+      end
+
+      def to_s
+        span = ::Time::Span.new(nanoseconds: @nanoseconds)
+        sprintf("P0000-%02d-%02dT%02d:%02d:%02d",
+                @months,
+                @days,
+                span.hours,
+                span.minutes,
+                span.seconds)
+      end
+    end
+
     abstract class BaseDecoder
       @@types_by_code = Hash(LibCass::CassValueType, BaseDecoder).new
 
@@ -177,6 +214,20 @@ module Cassandra
       end
     end
 
+    class DurationDecoder < BaseDecoder
+      def self.cass_value_codes
+        [LibCass::CassValueType::CassValueTypeDuration]
+      end
+
+      def decode_with_type(cass_value) : DBApi::Duration
+        handle_error(LibCass.value_get_duration(cass_value,
+                                                out months,
+                                                out days,
+                                                out nanoseconds))
+        DBApi::Duration.new(months, days, nanoseconds)
+      end
+    end
+
     class DateDecoder < BaseDecoder
       def self.cass_value_codes
         [LibCass::CassValueType::CassValueTypeDate]
@@ -274,6 +325,14 @@ module Cassandra
 
       private def do_bind(val : String)
         LibCass.statement_bind_string_n(@cass_stmt, @i, val, val.bytesize)
+      end
+
+      private def do_bind(val : DBApi::Duration)
+        LibCass.statement_bind_duration(@cass_stmt,
+                                        @i,
+                                        val.months,
+                                        val.days,
+                                        val.nanoseconds)
       end
 
       private def do_bind(val : DBApi::Date)

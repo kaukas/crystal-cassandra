@@ -8,7 +8,8 @@ require "./dbapi/connection"
 
 module Cassandra
   module DBApi
-    alias Any = DB::Any | Int8 | Int16 | DBApi::Date | DBApi::Time
+    alias Any = DB::Any | Int8 | Int16 | DBApi::Date | DBApi::Time |
+                DBApi::Duration
 
     class Driver < DB::Driver
       def build_connection(context : DB::ConnectionContext)
