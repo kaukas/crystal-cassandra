@@ -3,6 +3,7 @@ require "./libcass"
 require "./dbapi/types"
 require "./dbapi/error_handler"
 require "./dbapi/result_set"
+require "./dbapi/session"
 require "./dbapi/statement"
 require "./dbapi/connection"
 

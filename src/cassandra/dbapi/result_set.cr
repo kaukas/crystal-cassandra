@@ -14,7 +14,7 @@ module Cassandra
       @cass_column_iterator : LibCass::CassIterator | Nil
       @decoders : Array(BaseDecoder)
 
-      def initialize(statement : Statement,
+      def initialize(statement : RawStatement,
                      @cass_result_future : LibCass::CassFuture)
         super(statement)
         @cass_result = LibCass.future_get_result(@cass_result_future)
