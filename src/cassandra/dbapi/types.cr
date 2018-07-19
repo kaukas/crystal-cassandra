@@ -10,13 +10,13 @@ module Cassandra
     class BindError < DB::Error
     end
 
-    class UUID
+    struct TimeUUID
       def initialize(@cass_uuid : LibCass::CassUuid)
       end
       # TODO: display (.to_s)
     end
 
-    class Date
+    struct Date
       getter date
 
       def initialize(@date : ::Time)
@@ -39,7 +39,7 @@ module Cassandra
       end
     end
 
-    class Time
+    struct Time
       getter time
 
       def initialize(@time : ::Time)
@@ -62,7 +62,7 @@ module Cassandra
       end
     end
 
-    class Duration
+    struct Duration
       getter months
       getter days
       getter nanoseconds
@@ -270,9 +270,9 @@ module Cassandra
         [LibCass::CassValueType::CassValueTypeTimeuuid]
       end
 
-      def decode_with_type(cass_value) : UUID
+      def decode_with_type(cass_value) : TimeUUID
         handle_error(LibCass.value_get_uuid(cass_value, out cass_uuid))
-        UUID.new(cass_uuid)
+        TimeUUID.new(cass_uuid)
       end
     end
 
