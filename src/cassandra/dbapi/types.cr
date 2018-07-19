@@ -116,12 +116,16 @@ module Cassandra
 
       abstract def decode_with_type(cass_value : LibCass::CassValue)
 
-      def self.cass_value_codes : Array(LibCass::CassValueType)
+      protected def self.cass_value_codes : Array(LibCass::CassValueType)
         raise NotImplementedError.new
       end
 
+      protected def self.auto_register? : Bool
+        true
+      end
+
       macro inherited
-        BaseDecoder.register_type({{@type}})
+        BaseDecoder.register_type({{@type}}) if {{@type}}.auto_register?
       end
 
       def self.register_type(type_class : BaseDecoder.class)
