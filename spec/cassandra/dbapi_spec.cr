@@ -57,6 +57,11 @@ TYPES = [
   {name: "timestamp",
    raw: Time.utc(2016, 2, 15, 4, 20, 25),
    encoded: (Time.utc(2016, 2, 15, 4, 20, 25) - Time.epoch(0)).total_milliseconds.to_i64.to_s},
+
+  # UUIDs
+  {name: "uuid",
+   raw: Cassandra::DBApi::Uuid.new("550e8400-e29b-41d4-a716-446655440000"),
+   encoded: "550e8400-e29b-41d4-a716-446655440000"},
 ]
 
 CassandraSpecs.run do

@@ -10,10 +10,37 @@ module Cassandra
     class BindError < DB::Error
     end
 
-    struct TimeUUID
+    struct TimeUuid
       def initialize(@cass_uuid : LibCass::CassUuid)
       end
       # TODO: display (.to_s)
+    end
+
+    class UuidError < DB::Error
+    end
+
+    struct Uuid
+      @cass_uuid : LibCass::CassUuid
+
+      def initialize(s : String)
+        Error.from_error(LibCass.uuid_from_string_n(s, s.size, out @cass_uuid),
+                         UuidError)
+      end
+
+      def initialize(@cass_uuid)
+      end
+
+      def to_unsafe
+        @cass_uuid
+      end
+
+      def to_s
+        # Strings are immutable. Create an array of C chars instead.
+        output = Array(LibC::Char).new(LibCass::UUID_STRING_LENGTH, 0).to_unsafe
+        LibCass.uuid_string(@cass_uuid, output)
+        # Omit the final \0 char.
+        String.new(output, LibCass::UUID_STRING_LENGTH - 1)
+      end
     end
 
     struct Date
@@ -265,14 +292,25 @@ module Cassandra
       end
     end
 
+    class UuidDecoder < BaseDecoder
+      def self.cass_value_codes
+        [LibCass::CassValueType::ValueTypeUuid]
+      end
+
+      def decode_with_type(cass_value) : Uuid
+        handle_error(LibCass.value_get_uuid(cass_value, out cass_uuid))
+        Uuid.new(cass_uuid)
+      end
+    end
+
     class TimeuuidDecoder < BaseDecoder
       def self.cass_value_codes
         [LibCass::CassValueType::ValueTypeTimeuuid]
       end
 
-      def decode_with_type(cass_value) : TimeUUID
+      def decode_with_type(cass_value) : TimeUuid
         handle_error(LibCass.value_get_uuid(cass_value, out cass_uuid))
-        TimeUUID.new(cass_uuid)
+        TimeUuid.new(cass_uuid)
       end
     end
 
@@ -351,6 +389,10 @@ module Cassandra
       private def do_bind(val : ::Time)
         ms = (val - EPOCH_START).total_milliseconds.to_i64
         LibCass.statement_bind_int64(@cass_stmt, @i, ms)
+      end
+
+      private def do_bind(val : DBApi::Uuid)
+        LibCass.statement_bind_uuid(@cass_stmt, @i, val)
       end
     end
   end

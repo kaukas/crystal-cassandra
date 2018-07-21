@@ -3,7 +3,7 @@ require "../../../src/cassandra/dbapi"
 
 alias Duration = Cassandra::DBApi::Duration
 
-describe Cassandra::DBApi::Duration do
+describe Duration do
   it "can be created from months, days, and nanoseconds" do
     Duration.new(0, 1, 10_i64 * 60_i64 * 1_000_000_000_i64).to_s.
       should eq("P0000-00-01T00:10:00")
