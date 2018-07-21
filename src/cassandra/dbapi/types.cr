@@ -142,8 +142,8 @@ module Cassandra
 
     class StringDecoder < BaseDecoder
       def self.cass_value_codes
-        [LibCass::CassValueType::CassValueTypeAscii,
-         LibCass::CassValueType::CassValueTypeVarchar]
+        [LibCass::CassValueType::ValueTypeAscii,
+         LibCass::CassValueType::ValueTypeVarchar]
       end
 
       def decode_with_type(cass_value) : String
@@ -154,7 +154,7 @@ module Cassandra
 
     class TinyIntDecoder < BaseDecoder
       def self.cass_value_codes
-        [LibCass::CassValueType::CassValueTypeTinyInt]
+        [LibCass::CassValueType::ValueTypeTinyInt]
       end
 
       def decode_with_type(cass_value) : Int8
@@ -165,7 +165,7 @@ module Cassandra
 
     class SmallIntDecoder < BaseDecoder
       def self.cass_value_codes
-        [LibCass::CassValueType::CassValueTypeSmallInt]
+        [LibCass::CassValueType::ValueTypeSmallInt]
       end
 
       def decode_with_type(cass_value) : Int16
@@ -176,7 +176,7 @@ module Cassandra
 
     class IntDecoder < BaseDecoder
       def self.cass_value_codes
-        [LibCass::CassValueType::CassValueTypeInt]
+        [LibCass::CassValueType::ValueTypeInt]
       end
 
       def decode_with_type(cass_value) : Int32
@@ -187,7 +187,7 @@ module Cassandra
 
     class BigintDecoder < BaseDecoder
       def self.cass_value_codes
-        [LibCass::CassValueType::CassValueTypeBigint]
+        [LibCass::CassValueType::ValueTypeBigint]
       end
 
       def decode_with_type(cass_value) : Int64
@@ -198,7 +198,7 @@ module Cassandra
 
     class FloatDecoder < BaseDecoder
       def self.cass_value_codes
-        [LibCass::CassValueType::CassValueTypeFloat]
+        [LibCass::CassValueType::ValueTypeFloat]
       end
 
       def decode_with_type(cass_value) : Float32
@@ -209,7 +209,7 @@ module Cassandra
 
     class DoubleDecoder < BaseDecoder
       def self.cass_value_codes
-        [LibCass::CassValueType::CassValueTypeDouble]
+        [LibCass::CassValueType::ValueTypeDouble]
       end
 
       def decode_with_type(cass_value) : Float64
@@ -220,7 +220,7 @@ module Cassandra
 
     class DurationDecoder < BaseDecoder
       def self.cass_value_codes
-        [LibCass::CassValueType::CassValueTypeDuration]
+        [LibCass::CassValueType::ValueTypeDuration]
       end
 
       def decode_with_type(cass_value) : DBApi::Duration
@@ -234,7 +234,7 @@ module Cassandra
 
     class DateDecoder < BaseDecoder
       def self.cass_value_codes
-        [LibCass::CassValueType::CassValueTypeDate]
+        [LibCass::CassValueType::ValueTypeDate]
       end
 
       def decode_with_type(cass_value) : Date
@@ -245,7 +245,7 @@ module Cassandra
 
     class TimeDecoder < BaseDecoder
       def self.cass_value_codes
-        [LibCass::CassValueType::CassValueTypeTime]
+        [LibCass::CassValueType::ValueTypeTime]
       end
 
       def decode_with_type(cass_value) : DBApi::Time
@@ -256,7 +256,7 @@ module Cassandra
 
     class TimestampDecoder < BaseDecoder
       def self.cass_value_codes
-        [LibCass::CassValueType::CassValueTypeTimestamp]
+        [LibCass::CassValueType::ValueTypeTimestamp]
       end
 
       def decode_with_type(cass_value) : ::Time
@@ -267,7 +267,7 @@ module Cassandra
 
     class TimeuuidDecoder < BaseDecoder
       def self.cass_value_codes
-        [LibCass::CassValueType::CassValueTypeTimeuuid]
+        [LibCass::CassValueType::ValueTypeTimeuuid]
       end
 
       def decode_with_type(cass_value) : TimeUUID
@@ -282,8 +282,9 @@ module Cassandra
       end
 
       def bind(value)
+        # TODO: use error hander
         cass_error = do_bind(value)
-        if cass_error != LibCass::CassError::CassOk
+        if cass_error != LibCass::CassError::Ok
           raise BindError.new(cass_error.to_s)
         end
       end

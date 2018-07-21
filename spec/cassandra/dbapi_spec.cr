@@ -3,7 +3,7 @@ require "../../src/cassandra/dbapi"
 require "./custom_dbapi"
 
 Cassandra::LibCass.log_set_level(
-  Cassandra::LibCass::CassLogLevel::CassLogDisabled
+  Cassandra::LibCass::CassLogLevel::LogDisabled
 )
 
 describe Cassandra::DBApi do
@@ -11,8 +11,7 @@ describe Cassandra::DBApi do
     # Expect correct port to succeed.
     DB.open("cassandra://root@127.0.0.1:9042")
     # Expect incorrect port to fail.
-    expect_raises(Cassandra::DBApi::ConnectError,
-                  "CassErrorLibNoHostsAvailable") do
+    expect_raises(Cassandra::DBApi::ConnectError, "ErrorLibNoHostsAvailable") do
       DB.open("cassandra://root@127.0.0.1:55")
     end
   end

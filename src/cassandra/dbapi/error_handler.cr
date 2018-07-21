@@ -7,7 +7,7 @@ module Cassandra
         return if cass_future.is_a?(Nil)
         error_code = LibCass.future_error_code(cass_future)
         # TODO: handle errors properly, with tests.
-        unless error_code == LibCass::CassError::CassOk
+        unless error_code == LibCass::CassError::Ok
           LibCass.future_error_message(cass_future, out msg, out len)
           error_message = String.new(msg, len)
           LibCass.future_free(cass_future)
@@ -18,7 +18,7 @@ module Cassandra
       # TODO: handle errors properly, with tests.
       def self.from_error(cass_error : LibCass::CassError,
                           err_class = DB::Error)
-        if cass_error != LibCass::CassError::CassOk
+        if cass_error != LibCass::CassError::Ok
           raise err_class.new(cass_error.to_s)
         end
       end

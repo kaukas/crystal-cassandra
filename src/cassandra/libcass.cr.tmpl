@@ -1,5 +1,5 @@
 module Cassandra
-  @[Include("cassandra.h", prefix: %w(cass_))]
+  @[Include("cassandra.h", prefix: %w(cass_ CASS_))]
   @[Link("cassandra")]
   lib LibCass
   end

@@ -20,6 +20,7 @@ build-cppdriver: $(CPP_DRIVER_DIR)
 	cd $(BUILD_DIR) && \
 		cmake $(CMAKE_PARAM) .. && \
 		make all install
+	brew unlink $(CPP_DRIVER_NAME)
 	brew link $(CPP_DRIVER_NAME)
 .PHONY: build-cppdriver
 
@@ -28,10 +29,9 @@ LIBCASS_TMPL := $(HERE)/src/cassandra/libcass.cr.tmpl
 LIBCASS_SRC := $(HERE)/src/cassandra/libcass.cr
 
 gen-binding:
-	cd lib/crystal_lib && \
-		$(CRYSTAL24) src/main.cr -- $(LIBCASS_TMPL) | \
-		grep -v -E 'type ([A-Za-z]+) = \1' | \
-		sed 's/__DIR__/#{__DIR__}/' \
+	LLVM_CONFIG=/usr/local/opt/llvm/bin/llvm-config \
+		crystal lib/crystal_lib/src/main.cr -- $(LIBCASS_TMPL) | \
+		grep -v -E 'type ([A-Za-z]+) = \1' \
 		> $(LIBCASS_SRC)
 .PHONY: gen-binding
 
