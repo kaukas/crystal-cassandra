@@ -2,9 +2,7 @@ require "spec"
 require "../../src/cassandra/dbapi"
 require "./custom_dbapi"
 
-Cassandra::LibCass.log_set_level(
-  Cassandra::LibCass::CassLogLevel::LogDisabled
-)
+Cassandra::LibCass.log_set_level(Cassandra::LibCass::CassLogLevel::LogDisabled)
 
 describe Cassandra::DBApi do
   it "supports a custom port" do
@@ -62,6 +60,9 @@ TYPES = [
   {name: "uuid",
    raw: Cassandra::DBApi::Uuid.new("550e8400-e29b-41d4-a716-446655440000"),
    encoded: "550e8400-e29b-41d4-a716-446655440000"},
+  {name: "timeuuid",
+   raw: Cassandra::DBApi::TimeUuid.new("00b69180-d0e1-11e2-8b8b-0800200c9a66"),
+   encoded: "00b69180-d0e1-11e2-8b8b-0800200c9a66"},
 ]
 
 CassandraSpecs.run do

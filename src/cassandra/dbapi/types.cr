@@ -10,24 +10,23 @@ module Cassandra
     class BindError < DB::Error
     end
 
-    struct TimeUuid
-      def initialize(@cass_uuid : LibCass::CassUuid)
-      end
-      # TODO: display (.to_s)
-    end
-
     class UuidError < DB::Error
     end
 
-    struct Uuid
+    module CommonUuid
       @cass_uuid : LibCass::CassUuid
 
       def initialize(s : String)
-        Error.from_error(LibCass.uuid_from_string_n(s, s.size, out @cass_uuid),
-                         UuidError)
+        @cass_uuid = from_string(s)
       end
 
       def initialize(@cass_uuid)
+      end
+
+      private def from_string(s : String)
+        Error.from_error(LibCass.uuid_from_string_n(s, s.size, out cass_uuid),
+                         UuidError)
+        cass_uuid
       end
 
       def to_unsafe
@@ -40,6 +39,19 @@ module Cassandra
         LibCass.uuid_string(@cass_uuid, output)
         # Omit the final \0 char.
         String.new(output, LibCass::UUID_STRING_LENGTH - 1)
+      end
+    end
+
+    struct Uuid
+      include CommonUuid
+    end
+
+    struct TimeUuid
+      include CommonUuid
+
+      def to_time : ::Time
+        milliseconds = LibCass.uuid_timestamp(@cass_uuid)
+        EPOCH_START + ::Time::Span.new(nanoseconds: milliseconds * 1_000_000)
       end
     end
 
@@ -303,7 +315,7 @@ module Cassandra
       end
     end
 
-    class TimeuuidDecoder < BaseDecoder
+    class TimeUuidDecoder < BaseDecoder
       def self.cass_value_codes
         [LibCass::CassValueType::ValueTypeTimeuuid]
       end
@@ -391,7 +403,7 @@ module Cassandra
         LibCass.statement_bind_int64(@cass_stmt, @i, ms)
       end
 
-      private def do_bind(val : DBApi::Uuid)
+      private def do_bind(val : DBApi::Uuid | DBApi::TimeUuid)
         LibCass.statement_bind_uuid(@cass_stmt, @i, val)
       end
     end
