@@ -326,6 +326,17 @@ module Cassandra
       end
     end
 
+    class BooleanDecoder < BaseDecoder
+      def self.cass_value_codes
+        [LibCass::CassValueType::ValueTypeBoolean ]
+      end
+
+      def decode_with_type(cass_value) : Bool
+        handle_error(LibCass.value_get_bool(cass_value, out val))
+        val == CassTrue
+      end
+    end
+
 
     class ValueBinder
       def initialize(@cass_stmt : LibCass::CassStatement, @i : Int32)
@@ -344,9 +355,8 @@ module Cassandra
       end
 
       private def do_bind(val : Bool)
-        # cass_value = val ? CassTrue : CassFalse
-        # LibCass.statement_bind_bool(@cass_stmt, @i, cass_value)
-        raise NotImplementedError.new("Test first")
+        cass_value = val ? CassTrue : CassFalse
+        LibCass.statement_bind_bool(@cass_stmt, @i, cass_value)
       end
 
       private def do_bind(val : Float32)

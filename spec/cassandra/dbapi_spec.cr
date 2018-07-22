@@ -63,6 +63,10 @@ TYPES = [
   {name: "timeuuid",
    raw: Cassandra::DBApi::TimeUuid.new("00b69180-d0e1-11e2-8b8b-0800200c9a66"),
    encoded: "00b69180-d0e1-11e2-8b8b-0800200c9a66"},
+
+  # Specialized
+  # TODO: blob
+  {name: "boolean", raw: true, encoded: "true"},
 ]
 
 CassandraSpecs.run do
