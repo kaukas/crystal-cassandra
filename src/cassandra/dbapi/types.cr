@@ -328,12 +328,36 @@ module Cassandra
 
     class BooleanDecoder < BaseDecoder
       def self.cass_value_codes
-        [LibCass::CassValueType::ValueTypeBoolean ]
+        [LibCass::CassValueType::ValueTypeBoolean]
       end
 
       def decode_with_type(cass_value) : Bool
         handle_error(LibCass.value_get_bool(cass_value, out val))
         val == CassTrue
+      end
+    end
+
+    class ListDecoder < BaseDecoder
+      def self.cass_value_codes
+        [LibCass::CassValueType::ValueTypeList]
+      end
+
+      def decode_with_type(cass_list) : Array(Primitive)
+        subtype = LibCass.value_primary_sub_type(cass_list)
+        decoder = BaseDecoder.get_decoder(subtype)
+        item_count = LibCass.value_item_count(cass_list)
+        collection = Array(Primitive).new(item_count)
+        cass_iterator = LibCass.iterator_from_collection(cass_list)
+        begin
+          while LibCass.iterator_next(cass_iterator) == CassTrue
+            cass_value = LibCass.iterator_get_value(cass_iterator)
+            value = decoder.decode(cass_value).as(Primitive)
+            collection << value
+          end
+          collection
+        ensure
+          LibCass.iterator_free(cass_iterator)
+        end
       end
     end
 
@@ -415,6 +439,39 @@ module Cassandra
 
       private def do_bind(val : DBApi::Uuid | DBApi::TimeUuid)
         LibCass.statement_bind_uuid(@cass_stmt, @i, val)
+      end
+
+      private def do_bind(vals : Array(Primitive))
+        cass_collection = LibCass.collection_new(
+          LibCass::CassCollectionType::CollectionTypeList,
+          vals.size
+        )
+        begin
+          vals.each { |val| append(cass_collection, val) }
+          LibCass.statement_bind_collection(@cass_stmt, @i, cass_collection)
+        ensure
+          LibCass.collection_free(cass_collection)
+        end
+      end
+
+      private def append(cass_coll : LibCass::CassCollection, val : Int8)
+        LibCass.collection_append_int8(cass_coll, val)
+      end
+
+      private def append(cass_coll : LibCass::CassCollection, val : Int16)
+        LibCass.collection_append_int16(cass_coll, val)
+      end
+
+      private def append(cass_coll : LibCass::CassCollection, val : Int32)
+        LibCass.collection_append_int32(cass_coll, val)
+      end
+
+      private def append(cass_coll : LibCass::CassCollection, val : Int64)
+        LibCass.collection_append_int64(cass_coll, val)
+      end
+
+      private def append(cass_coll : LibCass::CassCollection, val : String)
+        LibCass.collection_append_string_n(cass_coll, val, val.size)
       end
     end
   end

@@ -4,6 +4,12 @@ require "./custom_dbapi"
 
 Cassandra::LibCass.log_set_level(Cassandra::LibCass::CassLogLevel::LogDisabled)
 
+private def assert_single_read(rs, value_type, value)
+  rs.move_next.should be_true
+  rs.read(value_type).should eq(value)
+  rs.move_next.should be_false
+end
+
 describe Cassandra::DBApi do
   it "supports a custom port" do
     # Expect correct port to succeed.
@@ -67,6 +73,24 @@ TYPES = [
   # Specialized
   # TODO: blob
   {name: "boolean", raw: true, encoded: "true"},
+  # TODO: counter, DseExecutorStateType, inet
+
+  # TODO: Geo-spatial
+]
+
+COMPOUND_TYPES = [
+  # Collection
+  # TODO: frozen, map, set, tuple, user defined types
+  {col_name: "list_ascii", type_name: "list<ascii>", raw: ["c", "b", "a"], encoded: "['c', 'b', 'a']"},
+  {col_name: "list_text", type_name: "list<text>", raw: ["c", "b", "a"], encoded: "['c', 'b', 'a']"},
+  {col_name: "list_varchar", type_name: "list<varchar>", raw: ["c", "b", "a"], encoded: "['c', 'b', 'a']"},
+
+  {col_name: "list_tinyint", type_name: "list<tinyint>", raw: [3_i8, 2_i8, 1_i8], encoded: "[3, 2, 1]"},
+  {col_name: "list_smallint", type_name: "list<smallint>", raw: [3_i16, 2_i16, 1_i16], encoded: "[3, 2, 1]"},
+  {col_name: "list_int", type_name: "list<int>", raw: [3, 2, 1], encoded: "[3, 2, 1]"},
+  {col_name: "list_bigint", type_name: "list<bigint>", raw: [3_i64, 2_i64, 1_i64], encoded: "[3, 2, 1]"},
+
+  # TODO: more subtypes
 ]
 
 CassandraSpecs.run do
@@ -84,17 +108,17 @@ CassandraSpecs.run do
   DB.open "cassandra://root@127.0.0.1/crystal_cassandra_dbapi_test" do |db|
     db.exec "drop table if exists scalars"
 
-    columns = TYPES.map do |type|
+    simple_columns = TYPES.map do |type|
       name = type[:name]
       name = "'#{name}'" if name.chars.any?(&.uppercase?)
-      "#{type[:name]}_val #{name},"
+      "#{type[:name]}_val #{name}"
     end
     db.exec <<-CQL
       create table scalars (
         id timeuuid primary key,
         null_val text,
         null_cond text,
-        #{columns.join(",\n        ")}
+        #{simple_columns.join(",\n     ")}
       )
     CQL
     db.exec "insert into scalars (id, null_val, null_cond) " \
@@ -103,6 +127,18 @@ CassandraSpecs.run do
       db.exec "insert into scalars (id, #{type[:name]}_val) " \
               "values (now(), #{type[:encoded]})"
     end
+
+    compound_columns = COMPOUND_TYPES.map do |type|
+      "#{type[:col_name]} #{type[:type_name]}"
+    end
+    db.exec <<-CQL
+      create table compound_scalars (
+        id timeuuid primary key,
+        null_val text,
+        null_cond text,
+        #{compound_columns.join(",\n     ")}
+      )
+    CQL
   end
 
   TYPES.each do |type|
@@ -165,5 +201,70 @@ CassandraSpecs.run do
     insert into #{table_name} (id, #{col1.name}, #{col2.name})
     values (now(), #{expr1}, #{expr2})
     CQL
+  end
+
+  COMPOUND_TYPES.each do |type|
+    col_name, type_name = type[:col_name], type[:type_name]
+    raw, encoded = type[:raw], type[:encoded]
+
+    it "insert/get value #{encoded} from table", prepared: :both do |db|
+      db.exec("truncate compound_scalars")
+      db.exec("insert into compound_scalars (id, #{col_name}) values (now(), #{encoded})")
+      db.query_one("select #{col_name} from compound_scalars allow filtering", as: Array(Cassandra::DBApi::Primitive)).should eq(raw)
+    end
+
+    it "insert/get value #{encoded} from table as nillable", prepared: :both do |db|
+      db.exec("truncate compound_scalars")
+      db.exec("insert into compound_scalars (id, #{col_name}) values (now(), #{encoded})")
+      db.query_one("select #{col_name} from compound_scalars allow filtering", as: ::Union(Array(Cassandra::DBApi::Primitive) | Nil)).should eq(raw)
+    end
+
+    it "insert/get value nil from table as nillable #{type_name}", prepared: :both do |db|
+      db.exec("truncate compound_scalars")
+      db.exec("insert into compound_scalars (id, #{col_name}) values (now(), NULL)")
+      db.query_one("select #{col_name} from compound_scalars allow filtering", as: ::Union(Array(Cassandra::DBApi::Primitive) | Nil)).should eq(nil)
+    end
+
+    it "insert/get value #{encoded} from table with binding", prepared: :both do |db|
+      db.exec("truncate compound_scalars")
+      db.exec("insert into compound_scalars (id, #{col_name}) values (now(), ?)", [raw])
+      db.query_one("select #{col_name} from compound_scalars allow filtering", as: Array(Cassandra::DBApi::Primitive)).should eq(raw)
+    end
+
+    it "insert/get value #{encoded} from table as nillable with binding", prepared: :both do |db|
+      db.exec("truncate compound_scalars")
+      db.exec("insert into compound_scalars (id, #{col_name}) values (now(), ?)", [raw])
+      db.query_one("select #{col_name} from compound_scalars allow filtering", as: ::Union(Array(Cassandra::DBApi::Primitive) | Nil)).should eq(raw)
+    end
+
+    it "insert/get value nil from table as nillable #{type_name} with binding", prepared: :both do |db|
+      db.exec("truncate compound_scalars")
+      db.exec("insert into compound_scalars (id, #{col_name}) values (now(), ?)", nil)
+      db.query_one("select #{col_name} from compound_scalars allow filtering", as: ::Union(Array(Cassandra::DBApi::Primitive) | Nil)).should eq(nil)
+    end
+
+    it "can use read(Array(Primitive)) with DB::ResultSet", prepared: :both do |db|
+      db.exec("truncate compound_scalars")
+      db.exec("insert into compound_scalars (id, #{col_name}) values (now(), #{encoded})")
+      db.query("select #{col_name} from compound_scalars allow filtering") do |rs|
+        assert_single_read rs.as(DB::ResultSet), Array(Cassandra::DBApi::Primitive), raw
+      end
+    end
+
+    it "can use read(Array(Primitive)?) with DB::ResultSet", prepared: :both do |db|
+      db.exec("truncate compound_scalars")
+      db.exec("insert into compound_scalars (id, #{col_name}) values (now(), #{encoded})")
+      db.query("select #{col_name} from compound_scalars allow filtering") do |rs|
+        assert_single_read rs.as(DB::ResultSet), ::Union(Array(Cassandra::DBApi::Primitive) | Nil), raw
+      end
+    end
+
+    it "can use read(Array(Primitive)?) with DB::ResultSet for nil", prepared: :both do |db|
+      db.exec("truncate compound_scalars")
+      db.exec("insert into compound_scalars (id, #{col_name}) values (now(), NULL)")
+      db.query("select #{col_name} from compound_scalars allow filtering") do |rs|
+        assert_single_read rs.as(DB::ResultSet), ::Union(Array(Cassandra::DBApi::Primitive) | Nil), nil
+      end
+    end
   end
 end
