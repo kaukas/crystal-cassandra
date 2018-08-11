@@ -11,7 +11,8 @@ module Cassandra
   module DBApi
     alias Primitive = DB::Any | Int8 | Int16 | DBApi::Date | DBApi::Time |
       DBApi::Duration | DBApi::Uuid | DBApi::TimeUuid
-    alias Collection = Array(Primitive)
+    alias Collection = Array(Primitive) | Set(Primitive) |
+      Hash(Primitive, Primitive)
     alias Any = Primitive | Collection
 
     class Driver < DB::Driver
