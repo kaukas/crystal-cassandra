@@ -299,4 +299,16 @@ CassandraSpecs.run do
                        "map<int, int>",
                        {1 => 10, 2 => 20},
                        "{1: 10, 2: 20}"
+
+  it "does not support the affected row count", prepared: :default do |db|
+    db.exec("truncate compound_scalars")
+    exec_result = db.exec("insert into compound_scalars (id) values (now())")
+    exec_result.rows_affected.should eq(0)
+  end
+
+  it "does not support the affected row count", prepared: :default do |db|
+    db.exec("truncate compound_scalars")
+    exec_result = db.exec("insert into compound_scalars (id) values (now())")
+    exec_result.last_insert_id.should eq(0)
+  end
 end

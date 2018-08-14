@@ -42,10 +42,9 @@ module Cassandra
         rebind_params(args)
         cass_result_future = LibCass.session_execute(@session, @cass_statement)
         Error.from_future(cass_result_future, StatementError)
-        # Result.new(cass_result_future)
         LibCass.future_free(cass_result_future)
 
-        # TODO: affected rows, last_insert_id
+        # Cassandra does not support affected rows nor last_insert_id.
         DB::ExecResult.new(0, 0)
       end
 
