@@ -19,13 +19,9 @@ module Cassandra
         Error.from_error(cass_error)
       end
 
-      macro default_collection_methods
-        def decode_iterator(iter : Iterator)
-          iter.map(&->decode_with_type(LibCass::CassValue))
-        end
+      def decode_iterator(iter : Iterator)
+        iter.map { |item| Any.new(decode_with_type(item)).as(Any) }
       end
-
-      abstract def decode_iterator(iter : Iterator)
 
       protected def self.cass_value_codes : Array(LibCass::CassValueType)
         raise NotImplementedError.new("You need to derive `cass_value_codes`")
@@ -57,12 +53,10 @@ module Cassandra
          LibCass::CassValueType::ValueTypeVarchar]
       end
 
-      def decode_with_type(cass_value) : String
+      def decode_with_type(cass_value)
         handle_error(LibCass.value_get_string(cass_value, out s, out len))
         String.new(s, len)
       end
-
-      default_collection_methods
     end
 
     class TinyIntDecoder < BaseDecoder
@@ -74,8 +68,6 @@ module Cassandra
         handle_error(LibCass.value_get_int8(cass_value, out i))
         i.to_i8
       end
-
-      default_collection_methods
     end
 
     class SmallIntDecoder < BaseDecoder
@@ -87,8 +79,6 @@ module Cassandra
         handle_error(LibCass.value_get_int16(cass_value, out i))
         i
       end
-
-      default_collection_methods
     end
 
     class IntDecoder < BaseDecoder
@@ -96,12 +86,10 @@ module Cassandra
         [LibCass::CassValueType::ValueTypeInt]
       end
 
-      def decode_with_type(cass_value) : Int32
+      def decode_with_type(cass_value)
         handle_error(LibCass.value_get_int32(cass_value, out i))
         i
       end
-
-      default_collection_methods
     end
 
     class BigintDecoder < BaseDecoder
@@ -113,8 +101,6 @@ module Cassandra
         handle_error(LibCass.value_get_int64(cass_value, out i))
         i
       end
-
-      default_collection_methods
     end
 
     class FloatDecoder < BaseDecoder
@@ -126,8 +112,6 @@ module Cassandra
         handle_error(LibCass.value_get_float(cass_value, out f))
         f
       end
-
-      default_collection_methods
     end
 
     class DoubleDecoder < BaseDecoder
@@ -139,8 +123,6 @@ module Cassandra
         handle_error(LibCass.value_get_double(cass_value, out f))
         f
       end
-
-      default_collection_methods
     end
 
     class DurationDecoder < BaseDecoder
@@ -155,8 +137,6 @@ module Cassandra
                                                 out nanoseconds))
         DBApi::Duration.new(months, days, nanoseconds)
       end
-
-      default_collection_methods
     end
 
     class DateDecoder < BaseDecoder
@@ -164,12 +144,10 @@ module Cassandra
         [LibCass::CassValueType::ValueTypeDate]
       end
 
-      def decode_with_type(cass_value) : Date
+      def decode_with_type(cass_value) : DBApi::Date
         handle_error(LibCass.value_get_uint32(cass_value, out days))
         Date.new(days)
       end
-
-      default_collection_methods
     end
 
     class TimeDecoder < BaseDecoder
@@ -181,8 +159,6 @@ module Cassandra
         handle_error(LibCass.value_get_int64(cass_value, out nanoseconds))
         Time.new(nanoseconds)
       end
-
-      default_collection_methods
     end
 
     class TimestampDecoder < BaseDecoder
@@ -194,8 +170,6 @@ module Cassandra
         handle_error(LibCass.value_get_int64(cass_value, out milliseconds))
         ::Time.epoch_ms(milliseconds)
       end
-
-      default_collection_methods
     end
 
     class UuidDecoder < BaseDecoder
@@ -207,8 +181,6 @@ module Cassandra
         handle_error(LibCass.value_get_uuid(cass_value, out cass_uuid))
         Uuid.new(cass_uuid)
       end
-
-      default_collection_methods
     end
 
     class TimeUuidDecoder < BaseDecoder
@@ -216,12 +188,10 @@ module Cassandra
         [LibCass::CassValueType::ValueTypeTimeuuid]
       end
 
-      def decode_with_type(cass_value) : TimeUuid
+      def decode_with_type(cass_value)
         handle_error(LibCass.value_get_uuid(cass_value, out cass_uuid))
         TimeUuid.new(cass_uuid)
       end
-
-      default_collection_methods
     end
 
     class BooleanDecoder < BaseDecoder
@@ -233,8 +203,6 @@ module Cassandra
         handle_error(LibCass.value_get_bool(cass_value, out val))
         val == CassTrue
       end
-
-      default_collection_methods
     end
 
     class ListDecoder < BaseDecoder
@@ -247,10 +215,6 @@ module Cassandra
         decoder = BaseDecoder.get_decoder(subtype)
         decoder.decode_iterator(CassCollectionIterator.new(cass_list)).to_a
       end
-
-      def decode_iterator(iter)
-        raise NotImplementedError.new("Nested collections not supported")
-      end
     end
 
     class SetDecoder < BaseDecoder
@@ -262,10 +226,6 @@ module Cassandra
         subtype = LibCass.value_primary_sub_type(cass_set)
         decoder = BaseDecoder.get_decoder(subtype)
         decoder.decode_iterator(CassCollectionIterator.new(cass_set)).to_set
-      end
-
-      def decode_iterator(iter)
-        raise NotImplementedError.new("Nested collections not supported")
       end
     end
 
@@ -284,34 +244,12 @@ module Cassandra
         vals = val_decoder.decode_iterator(CassMapValueIterator.new(cass_map))
 
         count_of_items = LibCass.value_item_count(cass_map)
-        DBApi.to_hash(count_of_items, keys, vals)
-      end
-
-      def decode_iterator(cass_value)
-        raise NotImplementedError.new("Nested collections not supported")
+        hsh = Hash(Any, Any).new(nil, count_of_items)
+        keys.zip(vals).each do |(key, val)|
+          hsh[key] = val
+        end
+        hsh
       end
     end
-
-    macro make_hashers(*type_names)
-      {% for key_type_name in type_names %}
-        {% for val_type_name in type_names %}
-          def self.to_hash(count_of_items : UInt64,
-                           keys : Iterator({{key_type_name}}),
-                           vals : Iterator({{val_type_name}})
-                           ) : Hash({{key_type_name}}, {{val_type_name}})
-            # hsh = {} of {{key_type_name}} => {{val_type_name}}
-            hsh = Hash({{key_type_name}}, {{val_type_name}}).new(nil,
-                                                                 count_of_items)
-            keys.zip(vals).each do |(key, val)|
-              hsh[key] = val
-            end
-            hsh
-          end
-        {% end %}
-      {% end %}
-    end
-
-    make_hashers(Bool, Date, DBApi::Time, DBApi::Duration, ::Time, Float32,
-                 Float64, Int8, Int16, Int32, Int64, String, Uuid, TimeUuid)
   end
 end

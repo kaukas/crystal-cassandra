@@ -7,7 +7,7 @@ private def assert_single_read(rs, value_type, value)
   rs.move_next.should be_false
 end
 
-class CassandraSpecs < DB::DriverSpecs(Cassandra::DBApi::Any)
+class CassandraSpecs < DB::DriverSpecs(Cassandra::DBApi::Primitive)
   def include_shared_specs
     it "gets column count", prepared: :both do |db|
       db.exec sql_create_table_person

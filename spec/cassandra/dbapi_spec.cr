@@ -2,6 +2,8 @@ require "spec"
 require "../../src/cassandra/dbapi"
 require "./custom_dbapi"
 
+alias Any = Cassandra::DBApi::Any
+
 macro test_compound_scalar(col_name, type_name, raw, encoded)
   it "insert/get value #{ {{encoded}} } from table", prepared: :both do |db|
     db.exec("truncate compound_scalars")
@@ -273,31 +275,45 @@ CassandraSpecs.run do
   # List
   test_compound_scalar "list_ascii",
                        "list<ascii>",
-                       ["c", "b", "a"],
+                       nil,
+                       "[]"
+  test_compound_scalar "list_ascii",
+                       "list<ascii>",
+                       [Any.new("c"), Any.new("b"), Any.new("a")],
                        "['c', 'b', 'a']"
   test_compound_scalar "list_int",
                        "list<int>",
-                       [3, 2, 1],
+                       [Any.new(3), Any.new(2), Any.new(1)],
                        "[3, 2, 1]"
 
   # Set
   test_compound_scalar "set_ascii",
                        "set<ascii>",
-                       Set.new(["c", "b", "a"]),
+                       nil,
+                       "{}"
+  test_compound_scalar "set_ascii",
+                       "set<ascii>",
+                       Set.new([Any.new("c"), Any.new("b"), Any.new("a")]),
                        "{'c', 'b', 'a'}"
   test_compound_scalar "set_int",
                        "set<int>",
-                       Set.new([3, 2, 1]),
+                       Set.new([Any.new(3), Any.new(2), Any.new(1)]),
                        "{3, 2, 1}"
 
   # Map
   test_compound_scalar "map_ascii_ascii",
                        "map<ascii, ascii>",
-                       {"one" => "1", "two" => "2"},
+                       nil,
+                       "{}"
+  test_compound_scalar "map_ascii_ascii",
+                       "map<ascii, ascii>",
+                       {Any.new("one") => Any.new("1"),
+                        Any.new("two") => Any.new("2")} of Any => Any,
                        "{'one': '1', 'two': '2'}"
   test_compound_scalar "map_int_int",
                        "map<int, int>",
-                       {1 => 10, 2 => 20},
+                       {Any.new(1) => Any.new(10),
+                        Any.new(2) => Any.new(20)} of Any => Any,
                        "{1: 10, 2: 20}"
 
   it "does not support the affected row count", prepared: :default do |db|

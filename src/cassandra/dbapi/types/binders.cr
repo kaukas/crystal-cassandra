@@ -9,11 +9,11 @@ module Cassandra
       def initialize(@cass_stmt : LibCass::CassStatement, @i : Int32)
       end
 
-      def bind(value)
-        # TODO: use error hander
-        cass_error = do_bind(value)
-        if cass_error != LibCass::CassError::Ok
-          raise BindError.new(cass_error.to_s)
+      def bind(any)
+        if any.is_a?(Any)
+          Error.from_error(do_bind(any.value), BindError)
+        else
+          Error.from_error(do_bind(any), BindError)
         end
       end
 
@@ -84,7 +84,7 @@ module Cassandra
         LibCass.statement_bind_uuid(@cass_stmt, @i, val)
       end
 
-      private def do_bind(vals : Array(Primitive))
+      private def do_bind(vals : Array)
         cass_collection = LibCass.collection_new(
           LibCass::CassCollectionType::CollectionTypeList,
           vals.size
@@ -97,7 +97,7 @@ module Cassandra
         end
       end
 
-      private def do_bind(vals : Set(Primitive))
+      private def do_bind(vals : Set)
         cass_collection = LibCass.collection_new(
           LibCass::CassCollectionType::CollectionTypeSet,
           vals.size
@@ -110,17 +110,26 @@ module Cassandra
         end
       end
 
-      private def do_bind(vals : Hash(Primitive, Primitive))
+      private def do_bind(vals : Hash(Any, Any))
         cass_map = LibCass.collection_new(
           LibCass::CassCollectionType::CollectionTypeMap,
           vals.size
         )
         begin
-          vals.each { |entry| entry.each { |v| append(cass_map, v) } }
+          vals.each { |entry| entry.each { |v| append(cass_map, v.value) } }
           LibCass.statement_bind_collection(@cass_stmt, @i, cass_map)
         ensure
           LibCass.collection_free(cass_map)
         end
+      end
+
+      private def append(cass_coll : LibCass::CassCollection, val : Nil)
+        raise BindError.new("Cassandra does not support NULLs in collections")
+      end
+
+      private def append(cass_coll : LibCass::CassCollection, val : Bool)
+        cass_value = val ? CassTrue : CassFalse
+        LibCass.collection_append_bool(cass_coll, cass_value)
       end
 
       private def append(cass_coll : LibCass::CassCollection, val : Int8)
@@ -147,8 +156,80 @@ module Cassandra
         LibCass.collection_append_double(cass_coll, val)
       end
 
+      private def append(cass_coll : LibCass::CassCollection, val : Bytes)
+        # LibCass.statement_bind_bytes(@cass_stmt, @i, val, val.size)
+        raise NotImplementedError.new("Test first")
+      end
+
       private def append(cass_coll : LibCass::CassCollection, val : String)
         LibCass.collection_append_string_n(cass_coll, val, val.size)
+      end
+
+      private def append(cass_coll : LibCass::CassCollection, val : DBApi::Date)
+        LibCass.collection_append_uint32(cass_coll, val.days)
+      end
+
+      private def append(cass_coll : LibCass::CassCollection, val : ::Time)
+        ms = (val - EPOCH_START).total_milliseconds.to_i64
+        LibCass.collection_append_int64(cass_coll, ms)
+      end
+
+      private def append(cass_coll : LibCass::CassCollection, val : DBApi::Time)
+        LibCass.collection_append_int64(cass_coll, val.total_nanoseconds)
+      end
+
+      private def append(cass_coll : LibCass::CassCollection, val : DBApi::Duration)
+        LibCass.collection_append_duration(cass_coll,
+                                           val.months,
+                                           val.days,
+                                           val.nanoseconds)
+      end
+
+      private def append(cass_coll : LibCass::CassCollection, val : DBApi::Uuid | DBApi::TimeUuid)
+        LibCass.collection_append_uuid(cass_coll, val)
+      end
+
+      private def append(cass_coll : LibCass::CassCollection, vals : Array)
+        cass_list = LibCass.collection_new(
+          LibCass::CassCollectionType::CollectionTypeList,
+          vals.size
+        )
+        begin
+          vals.each { |item| append(cass_list, item) }
+          LibCass.collection_append_collection(cass_coll, cass_list)
+        ensure
+          LibCass.collection_free(cass_list)
+        end
+      end
+
+      private def append(cass_coll : LibCass::CassCollection, vals : Set)
+        cass_set = LibCass.collection_new(
+          LibCass::CassCollectionType::CollectionTypeSet,
+          vals.size
+        )
+        begin
+          vals.each { |item| append(cass_set, item) }
+          LibCass.collection_append_collection(cass_coll, cass_set)
+        ensure
+          LibCass.collection_free(cass_set)
+        end
+      end
+
+      private def append(cass_coll : LibCass::CassCollection, vals : Hash(Any, Any))
+        cass_map = LibCass.collection_new(
+          LibCass::CassCollectionType::CollectionTypeMap,
+          vals.size
+        )
+        begin
+          vals.each { |entry| entry.each { |v| append(cass_map, v.value) } }
+          LibCass.collection_append_collection(cass_coll, cass_map)
+        ensure
+          LibCass.collection_free(cass_map)
+        end
+      end
+
+      private def append(cass_coll : LibCass::CassCollection, any : Any)
+        append(cass_coll, any.value)
       end
     end
   end
