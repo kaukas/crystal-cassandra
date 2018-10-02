@@ -7,60 +7,121 @@ alias Any = Cassandra::DBApi::Any
 macro test_compound_scalar(col_name, type_name, raw, encoded)
   it "insert/get value #{ {{encoded}} } from table", prepared: :both do |db|
     db.exec("truncate compound_scalars")
-    db.exec("insert into compound_scalars (id, #{ {{col_name}} }) values (now(), #{ {{encoded}} })")
-    db.query_one("select #{ {{col_name}} } from compound_scalars allow filtering", as: typeof({{raw}})).should eq({{raw}})
+    db.exec(
+      "insert into compound_scalars (id, #{ {{col_name}} }) " \
+        "values (now(), #{ {{encoded}} })"
+    )
+    db.query_one(
+      "select #{ {{col_name}} } from compound_scalars allow filtering",
+      as: typeof({{raw}})
+    ).should eq({{raw}})
   end
 
-  it "insert/get value #{ {{encoded}} } from table as nillable", prepared: :both do |db|
+  it "insert/get value #{ {{encoded}} } from table as nillable",
+     prepared: :both do |db|
     db.exec("truncate compound_scalars")
-    db.exec("insert into compound_scalars (id, #{ {{col_name}} }) values (now(), #{ {{encoded}} })")
-    db.query_one("select #{ {{col_name}} } from compound_scalars allow filtering", as: typeof({{raw}}) | Nil).should eq({{raw}})
+    db.exec(
+      "insert into compound_scalars (id, #{ {{col_name}} }) " \
+        "values (now(), #{ {{encoded}} })"
+    )
+    db.query_one(
+      "select #{ {{col_name}} } from compound_scalars allow filtering",
+      as: typeof({{raw}}) | Nil
+    ).should eq({{raw}})
   end
 
-  it "insert/get value nil from table as nillable #{ {{type_name}} }", prepared: :both do |db|
+  it "insert/get value nil from table as nillable #{ {{type_name}} }",
+     prepared: :both do |db|
     db.exec("truncate compound_scalars")
-    db.exec("insert into compound_scalars (id, #{ {{col_name}} }) values (now(), NULL)")
-    db.query_one("select #{ {{col_name}} } from compound_scalars allow filtering", as: typeof({{raw}}) | Nil).should eq(nil)
+    db.exec(
+      "insert into compound_scalars (id, #{ {{col_name}} }) " \
+        "values (now(), NULL)"
+    )
+    db.query_one(
+      "select #{ {{col_name}} } from compound_scalars allow filtering",
+      as: typeof({{raw}}) | Nil
+    ).should eq(nil)
   end
 
-  it "insert/get value #{ {{encoded}} } from table with binding", prepared: :both do |db|
+  it "insert/get value #{ {{encoded}} } from table with binding",
+     prepared: :both do |db|
     db.exec("truncate compound_scalars")
-    db.exec("insert into compound_scalars (id, #{ {{col_name}} }) values (now(), ?)", [{{raw}}])
-    db.query_one("select #{ {{col_name}} } from compound_scalars allow filtering", as: typeof({{raw}})).should eq({{raw}})
+    db.exec(
+      "insert into compound_scalars (id, #{ {{col_name}} }) " \
+        "values (now(), ?)",
+      [{{raw}}]
+    )
+    db.query_one(
+      "select #{ {{col_name}} } from compound_scalars allow filtering",
+      as: typeof({{raw}})
+    ).should eq({{raw}})
   end
 
-  it "insert/get value #{ {{encoded}} } from table as nillable with binding", prepared: :both do |db|
+  it "insert/get value #{ {{encoded}} } from table as nillable with binding",
+     prepared: :both do |db|
     db.exec("truncate compound_scalars")
-    db.exec("insert into compound_scalars (id, #{ {{col_name}} }) values (now(), ?)", [{{raw}}])
-    db.query_one("select #{ {{col_name}} } from compound_scalars allow filtering", as: typeof({{raw}}) | Nil).should eq({{raw}})
+    db.exec(
+      "insert into compound_scalars (id, #{ {{col_name}} }) values (now(), ?)",
+      [{{raw}}]
+    )
+    db.query_one(
+      "select #{ {{col_name}} } from compound_scalars allow filtering",
+      as: typeof({{raw}}) | Nil
+    ).should eq({{raw}})
   end
 
-  it "insert/get value nil from table as nillable #{ {{type_name}} } with binding", prepared: :both do |db|
+  it "insert/get value nil from table as nillable #{ {{type_name}} } " \
+       "with binding",
+     prepared: :both do |db|
     db.exec("truncate compound_scalars")
-    db.exec("insert into compound_scalars (id, #{ {{col_name}} }) values (now(), ?)", nil)
-    db.query_one("select #{ {{col_name}} } from compound_scalars allow filtering", as: typeof({{raw}}) | Nil).should eq(nil)
+    db.exec(
+      "insert into compound_scalars (id, #{ {{col_name}} }) values (now(), ?)",
+      nil
+    )
+    db.query_one(
+      "select #{ {{col_name}} } from compound_scalars allow filtering",
+      as: typeof({{raw}}) | Nil
+    ).should eq(nil)
   end
 
-  it "can use read(#{typeof({{raw}})}) with DB::ResultSet", prepared: :both do |db|
+  it "can use read(#{typeof({{raw}})}) with DB::ResultSet",
+     prepared: :both do |db|
     db.exec("truncate compound_scalars")
-    db.exec("insert into compound_scalars (id, #{ {{col_name}} }) values (now(), #{ {{encoded}} })")
-    db.query("select #{ {{col_name}} } from compound_scalars allow filtering") do |rs|
+    db.exec(
+      "insert into compound_scalars (id, #{ {{col_name}} }) " \
+        "values (now(), #{ {{encoded}} })"
+    )
+    db.query(
+      "select #{ {{col_name}} } from compound_scalars allow filtering"
+    ) do |rs|
       assert_single_read rs.as(DB::ResultSet), typeof({{raw}}), {{raw}}
     end
   end
 
-  it "can use read(#{typeof({{raw}})}?) with DB::ResultSet", prepared: :both do |db|
+  it "can use read(#{typeof({{raw}})}?) with DB::ResultSet",
+     prepared: :both do |db|
     db.exec("truncate compound_scalars")
-    db.exec("insert into compound_scalars (id, #{ {{col_name}} }) values (now(), #{ {{encoded}} })")
-    db.query("select #{ {{col_name}} } from compound_scalars allow filtering") do |rs|
+    db.exec(
+      "insert into compound_scalars (id, #{ {{col_name}} }) " \
+        "values (now(), #{ {{encoded}} })"
+    )
+    db.query(
+      "select #{ {{col_name}} } from compound_scalars allow filtering"
+    ) do |rs|
       assert_single_read rs.as(DB::ResultSet), typeof({{raw}}) | Nil, {{raw}}
     end
   end
 
-  it "can use read(#{typeof({{raw}})}?) with DB::ResultSet for nil", prepared: :both do |db|
+  it "can use read(#{typeof({{raw}})}?) with DB::ResultSet for nil",
+     prepared: :both do |db|
     db.exec("truncate compound_scalars")
-    db.exec("insert into compound_scalars (id, #{ {{col_name}} }) values (now(), NULL)")
-    db.query("select #{ {{col_name}} } from compound_scalars allow filtering") do |rs|
+    db.exec(
+      "insert into compound_scalars (id, #{ {{col_name}} }) " \
+        "values (now(), NULL)"
+    )
+    db.query(
+      "select #{ {{col_name}} } from compound_scalars allow filtering"
+    ) do |rs|
       assert_single_read rs.as(DB::ResultSet), typeof({{raw}}) | Nil, nil
     end
   end
@@ -124,7 +185,10 @@ PRIMITIVE_TYPES = [
             .to_s},
   {name: "timestamp",
    raw: Time.utc(2016, 2, 15, 4, 20, 25),
-   encoded: (Time.utc(2016, 2, 15, 4, 20, 25) - Time.epoch(0)).total_milliseconds.to_i64.to_s},
+   encoded: (Time.utc(2016, 2, 15, 4, 20, 25) - Time.epoch(0)).
+            total_milliseconds.
+            to_i64.
+            to_s},
 
   # UUIDs
   {name: "uuid",
@@ -214,7 +278,7 @@ CassandraSpecs.run do
     sample_value type[:raw], type[:name], type[:encoded]
   end
 
-  binding_syntax do |index|
+  binding_syntax do |_index|
     "?"
   end
 

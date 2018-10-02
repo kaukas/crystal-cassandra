@@ -178,14 +178,16 @@ module Cassandra
         LibCass.collection_append_int64(cass_coll, val.total_nanoseconds)
       end
 
-      private def append(cass_coll : LibCass::CassCollection, val : DBApi::Duration)
+      private def append(cass_coll : LibCass::CassCollection,
+                         val : DBApi::Duration)
         LibCass.collection_append_duration(cass_coll,
                                            val.months,
                                            val.days,
                                            val.nanoseconds)
       end
 
-      private def append(cass_coll : LibCass::CassCollection, val : DBApi::Uuid | DBApi::TimeUuid)
+      private def append(cass_coll : LibCass::CassCollection,
+                         val : DBApi::Uuid | DBApi::TimeUuid)
         LibCass.collection_append_uuid(cass_coll, val)
       end
 
@@ -215,7 +217,8 @@ module Cassandra
         end
       end
 
-      private def append(cass_coll : LibCass::CassCollection, vals : Hash(Any, Any))
+      private def append(cass_coll : LibCass::CassCollection,
+                         vals : Hash(Any, Any))
         cass_map = LibCass.collection_new(
           LibCass::CassCollectionType::CollectionTypeMap,
           vals.size
