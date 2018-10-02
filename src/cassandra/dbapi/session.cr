@@ -4,11 +4,10 @@ module Cassandra
   module DBApi
     class Session
       @cass_session : LibCass::CassSession
-      @connect_future : LibCass::CassFuture
 
       def initialize(cluster : Cluster, context : DB::ConnectionContext)
         @cass_session = create_session
-        @connect_future = connect(cluster, context.uri.path)
+        connect(cluster, context.uri.path)
       end
 
       def to_unsafe
@@ -25,16 +24,15 @@ module Cassandra
                    else
                      nil
                    end
-        connect_future = if keyspace
-                           LibCass.session_connect_keyspace(@cass_session,
-                                                            cluster,
-                                                            keyspace)
-                         else
-                           LibCass.session_connect(@cass_session, cluster)
-                         end
-        Error.from_future(connect_future, ConnectError)
-        # FIXME: why return? Perhaps just free?
-        connect_future
+        cass_connect_future = if keyspace
+                                LibCass.session_connect_keyspace(@cass_session,
+                                                                 cluster,
+                                                                 keyspace)
+                              else
+                                LibCass.session_connect(@cass_session, cluster)
+                              end
+        Error.from_future(cass_connect_future, ConnectError)
+        LibCass.future_free(cass_connect_future)
       end
 
       def close
