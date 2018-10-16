@@ -1,10 +1,24 @@
-# Crystal DB API support for Cassandra
+# Crystal DB API for Cassandra
 
-WIP! Don't use it yet!
+A Crystal wrapper around the [DataStax C/C++ Driver][]. It conforms to the
+[crystal-db][] API.
+
+
+## Status
+
+This is a personal project to create something meaningful while learning
+Crystal. There are no guarantees about future development, maintenance, or
+support. That said, if you need to use Crystal to query Cassandra you could do
+worse than use this library as a starting point. YMMV.
+
 
 ## Installation
 
-Add this to your application's `shard.yml`:
+Please make sure you have [installed the DataStax C/C++
+Driver](https://datastax.github.io/cpp-driver/topics/building/). You can use
+"development" packages if they are available or build from source.
+
+Then add this to your application's `shard.yml`:
 
 ```yaml
 dependencies:
@@ -12,17 +26,133 @@ dependencies:
     github: kaukas/crystal-cassandra
 ```
 
+
 ## Usage
+
+From the [basic example][]:
 
 ```crystal
 require "cassandra/dbapi"
+
+DB.open("cassandra://127.0.0.1/test") do |db|
+  db.exec(<<-CQL)
+    create table posts (
+      id timeuuid primary key,
+      title text,
+      body text,
+      created_at timestamp
+    )
+  CQL
+  db.exec("insert into posts (id, title, body, created_at) values (now(), ?, ?, ?)",
+          "Hello World",
+          "Hello, World. I have a story to tell.",
+          Time.now)
+  db.query("select title, body, created_at from posts") do |rs|
+    rs.each do
+      title = rs.read(String)
+      body = rs.read(String)
+      created_at = rs.read(Time)
+      puts title
+      puts "(#{created_at})"
+      puts body
+    end
+  end
+end
 ```
 
-TODO: Write usage instructions here
+Please refer to [crystal-db][] for further usage instructions.
+
+
+## Casting
+
+Cassandra supports nested collection types (lists, sets, maps, etc.). Since
+[recursive aliases are deprecated][] these can be represented with recursive
+structs. `crystal-cassandra` has `Cassandra::DBApi::Any` which performs a
+similar function to [`JSON::Any`][]. You can pass collection parameters to
+queries wrapped with `Any` (taken from the [collections example][]):
+
+```crystal
+alias Any = Cassandra::DBApi::Any
+
+# Assuming `authors` is `list<text>`
+db.exec("insert into posts (id, authors) values (now(), ?)",
+        Any.new([Any.new("John Doe"), Any.new("Ben Roe")]))
+
+db.query("select authors from posts") do |rs|
+  rs.each do
+    authors = rs.read(Array(Any))
+    puts "Authors: #{authors.map { |author| author.as_s }.join(", ")}"
+  end
+end
+```
+
+You could do the same for the primitive values as well:
+
+```crystal
+db.exec("insert into posts (id, title) values (now(), ?)",
+        Any.new("Hello World"))
+
+db.query("select title from posts") do |rs|
+  rs.each do
+    title = rs.read(Any)
+    puts title.as_s
+  end
+end
+```
+
+but shortcuts are defined for them so `Any` can be skipped (see the [basic
+example][]).
+
+
+## Types
+
+`crystal-cassandra` supports [all the
+`DB::Any`](https://crystal-lang.github.io/crystal-db/api/0.5.0/DB/Any.html)
+primitive types plus `Int8` and `Int16`. Additional value types:
+
+| Cassandra Type | Crystal Type |
+|---|---|
+| `date` | `Cassandra::DBApi::Date` |
+| `time` | `Cassandra::DBApi::Time` |
+| `duration` | `Cassandra::DBApi::Duration` |
+| `uuid` | `Cassandra::DBApi::Uuid` |
+| `timeuuid` | `Cassandra::DBApi::TimeUuid` |
+
+Some collection types are also supported:
+
+| Cassandra Type | Crystal Type |
+|---|---|
+| `list` | `Array` |
+| `set` | `Set` |
+| `map` | `Hash` |
+
 
 ## Development
 
-TODO: Write development instructions here
+Install the C/C++ Driver. The `Makefile` commands work on MacOS:
+
+```bash
+$ make build-cppdriver
+```
+
+Start a Docker container with an instance of Cassandra:
+
+```bash
+$ make start-cassandra
+```
+
+Run the tests:
+
+```bash
+$ crystal spec
+```
+
+Stop Cassandra when finished:
+
+```bash
+$ make stop-cassandra
+```
+
 
 ## Contributing
 
@@ -32,6 +162,14 @@ TODO: Write development instructions here
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create a new Pull Request
 
+
 ## Contributors
 
 - [kaukas](https://github.com/kaukas) Linas Juškevičius - creator, maintainer
+
+[basic example]: https://github.com/kaukas/crystal-cassandra/blob/master/examples/basic.cr
+[collections example]: https://github.com/kaukas/crystal-cassandra/blob/master/examples/collections.cr
+[DataStax C/C++ Driver]: https://docs.datastax.com/en/developer/cpp-driver/2.9/
+[crystal-db]: https://github.com/crystal-lang/crystal-db
+[`JSON::Any`]: https://crystal-lang.org/api/0.26.1/JSON/Any.html
+[recursive aliases are deprecated]: https://github.com/crystal-lang/crystal/issues/5155

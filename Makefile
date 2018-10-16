@@ -46,7 +46,8 @@ start-cassandra:
 		--rm \
 		--detach \
 		cassandra:$(CASS_DOCKER_VERSION)
+.PHONY: start-cassandra
 
 stop-cassandra:
 	docker stop $(CASS_DOCKER_NAME)
-.PHONY: cassandra
+.PHONY: stop-cassandra

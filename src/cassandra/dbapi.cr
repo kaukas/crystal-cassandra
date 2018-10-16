@@ -12,10 +12,7 @@ module Cassandra
     alias Primitive = DB::Any | Int8 | Int16 | DBApi::Date | DBApi::Duration |
       DBApi::Time | DBApi::Uuid | DBApi::TimeUuid
     struct Any
-      @value : Nil | String | Bool | Int8 | Int16 | Int32 | Int64 |
-        Float32 | Float64 | ::Time | Bytes | DBApi::Date | DBApi::Time |
-        DBApi::Duration | DBApi::Uuid | DBApi::TimeUuid |
-        Array(Any) | Set(Any) | Hash(Any, Any)
+      @value : Primitive | Array(Any) | Set(Any) | Hash(Any, Any)
 
       property value
 
