@@ -1,6 +1,7 @@
 require "db"
 require "../libcass"
 require "./types"
+require "./decoders"
 
 module Cassandra
   module DBApi
@@ -12,7 +13,7 @@ module Cassandra
       ITERATION_ERROR = IteratorError.new("No more values in this row")
 
       @cass_column_iterator : LibCass::CassIterator | Nil
-      @decoders : Array(BaseDecoder)
+      @decoders : Array(Decoders::BaseDecoder)
 
       def initialize(statement : RawStatement,
                      @cass_result_future : LibCass::CassFuture)
@@ -21,7 +22,7 @@ module Cassandra
         @cass_row_iterator = LibCass.iterator_from_result(@cass_result)
         @decoders = Array.new(column_count) do |i|
           cass_value_type = LibCass.result_column_type(@cass_result, i)
-          BaseDecoder.get_decoder(cass_value_type)
+          Decoders::BaseDecoder.get_decoder(cass_value_type)
         end
         @col_index = 0
       end
@@ -67,7 +68,7 @@ module Cassandra
         LibCass.iterator_get_column(it)
       end
 
-      private def get_next_decoder : BaseDecoder
+      private def get_next_decoder : Decoders::BaseDecoder
         @decoders[@col_index].tap do
           @col_index += 1
         end

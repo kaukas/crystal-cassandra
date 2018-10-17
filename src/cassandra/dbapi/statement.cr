@@ -1,6 +1,7 @@
 require "db"
 require "../libcass"
 require "./connection"
+require "./binder"
 
 module Cassandra
   module DBApi

@@ -1,18 +1,14 @@
 require "db"
 require "../libcass"
-require "./types/decoders"
-require "./types/binders"
 
 module Cassandra
   module DBApi
     EPOCH_START = ::Time.epoch(0)
-    CassTrue = LibCass::BoolT::True
-    CassFalse = LibCass::BoolT::False
-
-    class UuidError < DB::Error
-    end
 
     module CommonUuid
+      class UuidError < DB::Error
+      end
+
       @cass_uuid : LibCass::CassUuid
 
       def initialize(s : String)
@@ -149,7 +145,7 @@ module Cassandra
       end
 
       def next
-        if LibCass.iterator_next(@cass_iterator) == CassTrue
+        if LibCass.iterator_next(@cass_iterator) == LibCass::BoolT::True
           LibCass.iterator_get_value(@cass_iterator)
         else
           stop
@@ -169,7 +165,7 @@ module Cassandra
       end
 
       def next
-        if LibCass.iterator_next(@cass_iterator) == CassTrue
+        if LibCass.iterator_next(@cass_iterator) == LibCass::BoolT::True
           parse_val(@cass_iterator)
         else
           stop

@@ -2,10 +2,10 @@ require "db"
 
 module Cassandra
   module DBApi
-    class BindError < DB::Error
-    end
-
     class ValueBinder
+      class BindError < DB::Error
+      end
+
       def initialize(@cass_stmt : LibCass::CassStatement, @i : Int32)
       end
 
@@ -22,7 +22,7 @@ module Cassandra
       end
 
       private def do_bind(val : Bool)
-        cass_value = val ? CassTrue : CassFalse
+        cass_value = val ? LibCass::BoolT::True : LibCass::BoolT::False
         LibCass.statement_bind_bool(@cass_stmt, @i, cass_value)
       end
 
@@ -128,7 +128,7 @@ module Cassandra
       end
 
       private def append(cass_coll : LibCass::CassCollection, val : Bool)
-        cass_value = val ? CassTrue : CassFalse
+        cass_value = val ? LibCass::BoolT::True : LibCass::BoolT::False
         LibCass.collection_append_bool(cass_coll, cass_value)
       end
 

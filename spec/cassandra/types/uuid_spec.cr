@@ -11,19 +11,19 @@ describe Uuid do
     end
 
     it "raises an error if the string is shorter than 36 characters" do
-      expect_raises(Cassandra::DBApi::UuidError) do
+      expect_raises(Cassandra::DBApi::CommonUuid::UuidError) do
         Uuid.new("550e8400-e29b-41d4-a716-44665544000")
       end
     end
 
     it "raises an error if the string is longer than 36 characters" do
-      expect_raises(Cassandra::DBApi::UuidError) do
+      expect_raises(Cassandra::DBApi::CommonUuid::UuidError) do
         Uuid.new("550e8400-e29b-41d4-a716-4466554400000")
       end
     end
 
     it "raises an error if the string is not a hexadecimal number" do
-      expect_raises(Cassandra::DBApi::UuidError) do
+      expect_raises(Cassandra::DBApi::CommonUuid::UuidError) do
         Uuid.new("550e8400-e29b-41d4-a716-44665544000x")
       end
     end
