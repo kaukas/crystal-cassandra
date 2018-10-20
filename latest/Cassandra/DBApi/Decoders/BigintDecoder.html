@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Crystal Docs 0.26.0">
+
+
+<link href="../../../css/style.css" rel="stylesheet" type="text/css">
+
+<script type="text/javascript" src="../../../js/doc.js"></script>
+<script type="text/javascript">
+  CrystalDoc.base_path = "../../../";
+</script>
+
+  <meta id="repository-name" content="github.com/kaukas/crystal-cassandra">
+  <title>Cassandra::DBApi::Decoders::BigintDecoder - github.com/kaukas/crystal-cassandra</title>
+</head>
+<body>
+
+<div class="sidebar">
+  <div class="sidebar-header">
+    <div class="search-box">
+      <input type="search" class="search-input" placeholder="Search..." spellcheck="false">
+    </div>
+
+    <div class="repository-links">
+      <a href="../../../index.html">README</a>
+    </div>
+  </div>
+
+  <div class="search-results" class="hidden">
+    <ul class="search-list"></ul>
+  </div>
+
+  <div class="types-list">
+    <ul>
+  
+  <li class="parent open current" data-id="github.com/kaukas/crystal-cassandra/Cassandra" data-name="cassandra">
+      <a href="../../../Cassandra.html">Cassandra</a>
+      
+        <ul>
+  
+  <li class="parent open current" data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi" data-name="cassandra::dbapi">
+      <a href="../../../Cassandra/DBApi.html">DBApi</a>
+      
+        <ul>
+  
+  <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/Any" data-name="cassandra::dbapi::any">
+      <a href="../../../Cassandra/DBApi/Any.html">Any</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/Cluster" data-name="cassandra::dbapi::cluster">
+      <a href="../../../Cassandra/DBApi/Cluster.html">Cluster</a>
+      
+    </li>
+  
+  <li class="parent " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/CommonUuid" data-name="cassandra::dbapi::commonuuid">
+      <a href="../../../Cassandra/DBApi/CommonUuid.html">CommonUuid</a>
+      
+        <ul>
+  
+  <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/CommonUuid/UuidError" data-name="cassandra::dbapi::commonuuid::uuiderror">
+      <a href="../../../Cassandra/DBApi/CommonUuid/UuidError.html">UuidError</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/ConnectError" data-name="cassandra::dbapi::connecterror">
+      <a href="../../../Cassandra/DBApi/ConnectError.html">ConnectError</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/Connection" data-name="cassandra::dbapi::connection">
+      <a href="../../../Cassandra/DBApi/Connection.html">Connection</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/Date" data-name="cassandra::dbapi::date">
+      <a href="../../../Cassandra/DBApi/Date.html">Date</a>
+      
+    </li>
+  
+  <li class="parent open current" data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/Decoders" data-name="cassandra::dbapi::decoders">
+      <a href="../../../Cassandra/DBApi/Decoders.html">Decoders</a>
+      
+        <ul>
+  
+  <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/Decoders/BaseDecoder" data-name="cassandra::dbapi::decoders::basedecoder">
+      <a href="../../../Cassandra/DBApi/Decoders/BaseDecoder.html">BaseDecoder</a>
+      
+    </li>
+  
+  <li class=" current" data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/Decoders/BigintDecoder" data-name="cassandra::dbapi::decoders::bigintdecoder">
+      <a href="../../../Cassandra/DBApi/Decoders/BigintDecoder.html">BigintDecoder</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/Decoders/BooleanDecoder" data-name="cassandra::dbapi::decoders::booleandecoder">
+      <a href="../../../Cassandra/DBApi/Decoders/BooleanDecoder.html">BooleanDecoder</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/Decoders/DateDecoder" data-name="cassandra::dbapi::decoders::datedecoder">
+      <a href="../../../Cassandra/DBApi/Decoders/DateDecoder.html">DateDecoder</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/Decoders/DoubleDecoder" data-name="cassandra::dbapi::decoders::doubledecoder">
+      <a href="../../../Cassandra/DBApi/Decoders/DoubleDecoder.html">DoubleDecoder</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/Decoders/DurationDecoder" data-name="cassandra::dbapi::decoders::durationdecoder">
+      <a href="../../../Cassandra/DBApi/Decoders/DurationDecoder.html">DurationDecoder</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/Decoders/FloatDecoder" data-name="cassandra::dbapi::decoders::floatdecoder">
+      <a href="../../../Cassandra/DBApi/Decoders/FloatDecoder.html">FloatDecoder</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/Decoders/IntDecoder" data-name="cassandra::dbapi::decoders::intdecoder">
+      <a href="../../../Cassandra/DBApi/Decoders/IntDecoder.html">IntDecoder</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/Decoders/ListDecoder" data-name="cassandra::dbapi::decoders::listdecoder">
+      <a href="../../../Cassandra/DBApi/Decoders/ListDecoder.html">ListDecoder</a>
+      
+    </li>
+  
+  <li class="parent " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/Decoders/MapDecoder" data-name="cassandra::dbapi::decoders::mapdecoder">
+      <a href="../../../Cassandra/DBApi/Decoders/MapDecoder.html">MapDecoder</a>
+      
+        <ul>
+  
+  <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/Decoders/MapDecoder/CassMapIterator" data-name="cassandra::dbapi::decoders::mapdecoder::cassmapiterator">
+      <a href="../../../Cassandra/DBApi/Decoders/MapDecoder/CassMapIterator.html">CassMapIterator</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/Decoders/MapDecoder/CassMapKeyIterator" data-name="cassandra::dbapi::decoders::mapdecoder::cassmapkeyiterator">
+      <a href="../../../Cassandra/DBApi/Decoders/MapDecoder/CassMapKeyIterator.html">CassMapKeyIterator</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/Decoders/MapDecoder/CassMapValueIterator" data-name="cassandra::dbapi::decoders::mapdecoder::cassmapvalueiterator">
+      <a href="../../../Cassandra/DBApi/Decoders/MapDecoder/CassMapValueIterator.html">CassMapValueIterator</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/Decoders/SetDecoder" data-name="cassandra::dbapi::decoders::setdecoder">
+      <a href="../../../Cassandra/DBApi/Decoders/SetDecoder.html">SetDecoder</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/Decoders/SmallIntDecoder" data-name="cassandra::dbapi::decoders::smallintdecoder">
+      <a href="../../../Cassandra/DBApi/Decoders/SmallIntDecoder.html">SmallIntDecoder</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/Decoders/StringDecoder" data-name="cassandra::dbapi::decoders::stringdecoder">
+      <a href="../../../Cassandra/DBApi/Decoders/StringDecoder.html">StringDecoder</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/Decoders/TimeDecoder" data-name="cassandra::dbapi::decoders::timedecoder">
+      <a href="../../../Cassandra/DBApi/Decoders/TimeDecoder.html">TimeDecoder</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/Decoders/TimestampDecoder" data-name="cassandra::dbapi::decoders::timestampdecoder">
+      <a href="../../../Cassandra/DBApi/Decoders/TimestampDecoder.html">TimestampDecoder</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/Decoders/TimeUuidDecoder" data-name="cassandra::dbapi::decoders::timeuuiddecoder">
+      <a href="../../../Cassandra/DBApi/Decoders/TimeUuidDecoder.html">TimeUuidDecoder</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/Decoders/TinyIntDecoder" data-name="cassandra::dbapi::decoders::tinyintdecoder">
+      <a href="../../../Cassandra/DBApi/Decoders/TinyIntDecoder.html">TinyIntDecoder</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/Decoders/UuidDecoder" data-name="cassandra::dbapi::decoders::uuiddecoder">
+      <a href="../../../Cassandra/DBApi/Decoders/UuidDecoder.html">UuidDecoder</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/Driver" data-name="cassandra::dbapi::driver">
+      <a href="../../../Cassandra/DBApi/Driver.html">Driver</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/Duration" data-name="cassandra::dbapi::duration">
+      <a href="../../../Cassandra/DBApi/Duration.html">Duration</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/Error" data-name="cassandra::dbapi::error">
+      <a href="../../../Cassandra/DBApi/Error.html">Error</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/IteratorError" data-name="cassandra::dbapi::iteratorerror">
+      <a href="../../../Cassandra/DBApi/IteratorError.html">IteratorError</a>
+      
+    </li>
+  
+  <li class="parent " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/PreparedStatement" data-name="cassandra::dbapi::preparedstatement">
+      <a href="../../../Cassandra/DBApi/PreparedStatement.html">PreparedStatement</a>
+      
+        <ul>
+  
+  <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/PreparedStatement/StatementPrepareError" data-name="cassandra::dbapi::preparedstatement::statementprepareerror">
+      <a href="../../../Cassandra/DBApi/PreparedStatement/StatementPrepareError.html">StatementPrepareError</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/Primitive" data-name="cassandra::dbapi::primitive">
+      <a href="../../../Cassandra/DBApi/Primitive.html">Primitive</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/RawStatement" data-name="cassandra::dbapi::rawstatement">
+      <a href="../../../Cassandra/DBApi/RawStatement.html">RawStatement</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/ResultSet" data-name="cassandra::dbapi::resultset">
+      <a href="../../../Cassandra/DBApi/ResultSet.html">ResultSet</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/Session" data-name="cassandra::dbapi::session">
+      <a href="../../../Cassandra/DBApi/Session.html">Session</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/StatementError" data-name="cassandra::dbapi::statementerror">
+      <a href="../../../Cassandra/DBApi/StatementError.html">StatementError</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/Time" data-name="cassandra::dbapi::time">
+      <a href="../../../Cassandra/DBApi/Time.html">Time</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/TimeUuid" data-name="cassandra::dbapi::timeuuid">
+      <a href="../../../Cassandra/DBApi/TimeUuid.html">TimeUuid</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/Uuid" data-name="cassandra::dbapi::uuid">
+      <a href="../../../Cassandra/DBApi/Uuid.html">Uuid</a>
+      
+    </li>
+  
+  <li class="parent " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/ValueBinder" data-name="cassandra::dbapi::valuebinder">
+      <a href="../../../Cassandra/DBApi/ValueBinder.html">ValueBinder</a>
+      
+        <ul>
+  
+  <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/ValueBinder/BindError" data-name="cassandra::dbapi::valuebinder::binderror">
+      <a href="../../../Cassandra/DBApi/ValueBinder/BindError.html">BindError</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+</ul>
+
+  </div>
+</div>
+
+
+<div class="main-content">
+<h1 class="type-name">
+
+  <span class="kind">class</span> Cassandra::DBApi::Decoders::BigintDecoder
+
+</h1>
+
+
+  <ul class="superclass-hierarchy"><li class="superclass"><a href="../../../Cassandra/DBApi/Decoders/BigintDecoder.html">Cassandra::DBApi::Decoders::BigintDecoder</a></li><li class="superclass"><a href="../../../Cassandra/DBApi/Decoders/BaseDecoder.html">Cassandra::DBApi::Decoders::BaseDecoder</a></li><li class="superclass">Reference</li><li class="superclass">Object</li></ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2>Defined in:</h2>
+  
+    
+      <a href="https://github.com/kaukas/crystal-cassandra/blob/0e1d9acb1633f650c7a494c2bb5bc52a54b27b87/src/cassandra/dbapi/decoders.cr#L96" target="_blank">
+        cassandra/dbapi/decoders.cr
+      </a>
+    
+    <br/>
+  
+
+
+
+
+
+
+
+  <h2>Class Method Summary</h2>
+  <ul class="list-summary">
+    
+      <li class="entry-summary">
+        <a href="#cass_value_codes-class-method" class="signature"><strong>.cass_value_codes</strong></a>
+        
+      </li>
+    
+  </ul>
+
+
+
+  <h2>Instance Method Summary</h2>
+  <ul class="list-summary">
+    
+      <li class="entry-summary">
+        <a href="#decode_with_type%28cass_value%29%3AInt64-instance-method" class="signature"><strong>#decode_with_type</strong>(cass_value) : Int64</a>
+        
+      </li>
+    
+  </ul>
+
+
+
+
+
+<div class="methods-inherited">
+  
+    
+
+  <h3>Instance methods inherited from class <code><a href="../../../Cassandra/DBApi/Decoders/BaseDecoder.html">Cassandra::DBApi::Decoders::BaseDecoder</a></code></h3>
+  
+  
+    <a href="../../../Cassandra/DBApi/Decoders/BaseDecoder.html#decode%28cass_value%3ALibCass%3A%3ACassValue%29-instance-method" class="tooltip">
+      <span>decode(cass_value : LibCass::CassValue)</span>
+    decode</a>, 
+    
+  
+    <a href="../../../Cassandra/DBApi/Decoders/BaseDecoder.html#decode_iterator%28iter%3AIterator%29-instance-method" class="tooltip">
+      <span>decode_iterator(iter : Iterator)</span>
+    decode_iterator</a>, 
+    
+  
+    <a href="../../../Cassandra/DBApi/Decoders/BaseDecoder.html#decode_with_type%28cass_value%3ALibCass%3A%3ACassValue%29-instance-method" class="tooltip">
+      <span>decode_with_type(cass_value : LibCass::CassValue)</span>
+    decode_with_type</a>, 
+    
+  
+    <a href="../../../Cassandra/DBApi/Decoders/BaseDecoder.html#handle_error%28cass_error%3ALibCass%3A%3ACassError%29-instance-method" class="tooltip">
+      <span>handle_error(cass_error : LibCass::CassError)</span>
+    handle_error</a>
+    
+  
+
+
+    
+
+
+    
+
+  <h3>Class methods inherited from class <code><a href="../../../Cassandra/DBApi/Decoders/BaseDecoder.html">Cassandra::DBApi::Decoders::BaseDecoder</a></code></h3>
+  
+  
+    <a href="../../../Cassandra/DBApi/Decoders/BaseDecoder.html#get_decoder%28cass_value_type%3ALibCass%3A%3ACassValueType%29-class-method" class="tooltip">
+      <span>get_decoder(cass_value_type : LibCass::CassValueType)</span>
+    get_decoder</a>, 
+    
+  
+    <a href="../../../Cassandra/DBApi/Decoders/BaseDecoder.html#register_type%28type_class%3ABaseDecoder.class%29-class-method" class="tooltip">
+      <span>register_type(type_class : BaseDecoder.class)</span>
+    register_type</a>
+    
+  
+
+
+  
+    
+
+
+    
+
+
+    
+
+
+  
+    
+
+
+    
+
+
+    
+
+
+  
+</div>
+
+
+
+
+  <h2>Class Method Detail</h2>
+  
+    <div class="entry-detail" id="cass_value_codes-class-method">
+      <div class="signature">
+        
+        def self.<strong>cass_value_codes</strong>
+
+        <a class="method-permalink" href="#cass_value_codes-class-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kaukas/crystal-cassandra/blob/0e1d9acb1633f650c7a494c2bb5bc52a54b27b87/src/cassandra/dbapi/decoders.cr#L97" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+
+
+
+  <h2>Instance Method Detail</h2>
+  
+    <div class="entry-detail" id="decode_with_type(cass_value):Int64-instance-method">
+      <div class="signature">
+        
+        def <strong>decode_with_type</strong>(cass_value) : Int64
+
+        <a class="method-permalink" href="#decode_with_type%28cass_value%29%3AInt64-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kaukas/crystal-cassandra/blob/0e1d9acb1633f650c7a494c2bb5bc52a54b27b87/src/cassandra/dbapi/decoders.cr#L101" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+
+
+
+
+</div>
+
+</body>
+</html>
