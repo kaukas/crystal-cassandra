@@ -84,14 +84,39 @@ module Cassandra
         @raw == other
       end
 
-      # TODO: test us, write more of us.
-      def as_s
-        @raw.as(String)
+      # Checks that the underlying value is `Nil`, and returns `nil`.
+      # Raises otherwise.
+      def as_nil
+        @raw.as(Nil)
       end
 
-      def as_i
-        @raw.as(Int32)
+      private macro def_for_type(as_method, type)
+        # Checks that the underlying value is `{{ type }}`, and returns its value.
+        # Raises otherwise.
+        def {{ as_method }} : {{ type }}
+          @raw.as({{ type }})
+        end
+
+        # Checks that the underlying value is `{{ type }}`, and returns its value.
+        # Returns `nil` otherwise.
+        def {{ as_method }}? : {{ type }}?
+          {{ as_method }} if @raw.is_a?({{ type }})
+        end
       end
+
+      def_for_type(as_bool, Bool)
+      def_for_type(as_i8, Int8)
+      def_for_type(as_i16, Int16)
+      def_for_type(as_i32, Int32)
+      def_for_type(as_i64, Int64)
+      def_for_type(as_f32, Float32)
+      def_for_type(as_f64, Float64)
+      def_for_type(as_s, String)
+      def_for_type(as_bytes, Bytes)
+      def_for_type(as_timestamp, ::Time)
+      def_for_type(as_date, DBApi::Date)
+      def_for_type(as_time, DBApi::Time)
+      def_for_type(as_duration, DBApi::Duration)
     end
   end
 end

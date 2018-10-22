@@ -58,6 +58,7 @@ module Cassandra
       end
     end
 
+    # Represents the Cassandra *date* type.
     struct Date
       getter date
 
@@ -81,6 +82,7 @@ module Cassandra
       end
     end
 
+    # Represents the Cassandra *time* type.
     struct Time
       getter time
 
@@ -104,6 +106,7 @@ module Cassandra
       end
     end
 
+    # Represents the Cassandra *duration* type.
     struct Duration
       getter months
       getter days

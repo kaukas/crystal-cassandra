@@ -1,8 +1,7 @@
 require "spec"
 require "../../src/cassandra/dbapi"
+require "./aliases"
 require "./custom_dbapi"
-
-alias Any = Cassandra::DBApi::Any
 
 macro test_compound_scalar(col_name, type_name, raw, encoded)
   it "insert/get value #{ {{encoded}} } from table", prepared: :both do |db|
