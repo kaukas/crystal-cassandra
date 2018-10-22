@@ -71,11 +71,6 @@
       
     </li>
   
-  <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/ConnectError" data-name="cassandra::dbapi::connecterror">
-      <a href="Cassandra/DBApi/ConnectError.html">ConnectError</a>
-      
-    </li>
-  
   <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/Connection" data-name="cassandra::dbapi::connection">
       <a href="Cassandra/DBApi/Connection.html">Connection</a>
       
@@ -136,28 +131,8 @@
       
     </li>
   
-  <li class="parent " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/Decoders/MapDecoder" data-name="cassandra::dbapi::decoders::mapdecoder">
+  <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/Decoders/MapDecoder" data-name="cassandra::dbapi::decoders::mapdecoder">
       <a href="Cassandra/DBApi/Decoders/MapDecoder.html">MapDecoder</a>
-      
-        <ul>
-  
-  <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/Decoders/MapDecoder/CassMapIterator" data-name="cassandra::dbapi::decoders::mapdecoder::cassmapiterator">
-      <a href="Cassandra/DBApi/Decoders/MapDecoder/CassMapIterator.html">CassMapIterator</a>
-      
-    </li>
-  
-  <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/Decoders/MapDecoder/CassMapKeyIterator" data-name="cassandra::dbapi::decoders::mapdecoder::cassmapkeyiterator">
-      <a href="Cassandra/DBApi/Decoders/MapDecoder/CassMapKeyIterator.html">CassMapKeyIterator</a>
-      
-    </li>
-  
-  <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/Decoders/MapDecoder/CassMapValueIterator" data-name="cassandra::dbapi::decoders::mapdecoder::cassmapvalueiterator">
-      <a href="Cassandra/DBApi/Decoders/MapDecoder/CassMapValueIterator.html">CassMapValueIterator</a>
-      
-    </li>
-  
-</ul>
-
       
     </li>
   
@@ -221,11 +196,6 @@
       
     </li>
   
-  <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/IteratorError" data-name="cassandra::dbapi::iteratorerror">
-      <a href="Cassandra/DBApi/IteratorError.html">IteratorError</a>
-      
-    </li>
-  
   <li class="parent " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/PreparedStatement" data-name="cassandra::dbapi::preparedstatement">
       <a href="Cassandra/DBApi/PreparedStatement.html">PreparedStatement</a>
       
@@ -251,13 +221,33 @@
       
     </li>
   
-  <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/ResultSet" data-name="cassandra::dbapi::resultset">
+  <li class="parent " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/ResultSet" data-name="cassandra::dbapi::resultset">
       <a href="Cassandra/DBApi/ResultSet.html">ResultSet</a>
+      
+        <ul>
+  
+  <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/ResultSet/IteratorError" data-name="cassandra::dbapi::resultset::iteratorerror">
+      <a href="Cassandra/DBApi/ResultSet/IteratorError.html">IteratorError</a>
       
     </li>
   
-  <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/Session" data-name="cassandra::dbapi::session">
+</ul>
+
+      
+    </li>
+  
+  <li class="parent " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/Session" data-name="cassandra::dbapi::session">
       <a href="Cassandra/DBApi/Session.html">Session</a>
+      
+        <ul>
+  
+  <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/Session/ConnectError" data-name="cassandra::dbapi::session::connecterror">
+      <a href="Cassandra/DBApi/Session/ConnectError.html">ConnectError</a>
+      
+    </li>
+  
+</ul>
+
       
     </li>
   
@@ -273,6 +263,11 @@
   
   <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/TimeUuid" data-name="cassandra::dbapi::timeuuid">
       <a href="Cassandra/DBApi/TimeUuid.html">TimeUuid</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/Type" data-name="cassandra::dbapi::type">
+      <a href="Cassandra/DBApi/Type.html">Type</a>
       
     </li>
   
@@ -323,8 +318,8 @@ the <a href="https://github.com/crystal-lang/crystal-db" target="_blank">crystal
 
 <p>This is a personal project to create something meaningful while learning
 Crystal. There are no guarantees about future development, maintenance, or
-support. That said, if you need to use Crystal to query Cassandra you could do
-worse than use this library as a starting point. YMMV.</p>
+support. That said, if you need to use Crystal to query Cassandra this library
+could be a good starting point. YMMV.</p>
 
 <h2>Installation</h2>
 
@@ -337,6 +332,11 @@ Driver</a>. You can use
 <pre><code class="language-yaml">dependencies:
   cassandra:
     github: kaukas/crystal-cassandra</code></pre>
+
+<h2>Documentation</h2>
+
+<p>The <a href="https://kaukas.github.io/crystal-cassandra/latest/" target="_blank">latest Crystal Cassandra API documentation can be found
+here</a>.</p>
 
 <h2>Usage</h2>
 
@@ -373,15 +373,28 @@ example</a>:</p>
 <p>Please refer to <a href="https://github.com/crystal-lang/crystal-db" target="_blank">crystal-db</a> for
 further usage instructions.</p>
 
-<h2>Casting</h2>
+<h2>Types</h2>
+
+<p><code>crystal-cassandra</code> supports <a href="https://crystal-lang.github.io/crystal-db/api/0.5.0/DB/Any.html" target="_blank">all the
+<code>DB::Any</code></a>
+primitive types plus <code>Int8</code> and <code>Int16</code> and some additional value types:</p>
+
+<ul><li><code>date</code> maps to <code><a href="Cassandra/DBApi/Date.html">Cassandra::DBApi::Date</a></code></li><li><code>time</code> maps to <code><a href="Cassandra/DBApi/Time.html">Cassandra::DBApi::Time</a></code></li><li><code>duration</code> maps to <code><a href="Cassandra/DBApi/Duration.html">Cassandra::DBApi::Duration</a></code></li><li><code>uuid</code> maps to <code><a href="Cassandra/DBApi/Uuid.html">Cassandra::DBApi::Uuid</a></code></li><li><code>timeuuid</code> maps to <code><a href="Cassandra/DBApi/TimeUuid.html">Cassandra::DBApi::TimeUuid</a></code></li></ul>
+
+<p>Some of the collection types are also supported:</p>
+
+<ul><li><code>list</code> maps to <code>Array</code></li><li><code>set</code> maps to <code>Set</code></li><li><code>map</code> maps to <code>Hash</code></li></ul>
+
+<h3>Casting</h3>
 
 <p>Cassandra supports nested collection types (lists, sets, maps, etc.). Since
-<a href="https://github.com/crystal-lang/crystal/issues/5155" target="_blank">recursive aliases are
-deprecated</a> these can be
+Crystal <a href="https://github.com/crystal-lang/crystal/issues/5155" target="_blank">deprecated recursive
+aliases</a> they can be
 represented with recursive structs. <code>crystal-cassandra</code> has
 <code><a href="Cassandra/DBApi/Any.html">Cassandra::DBApi::Any</a></code> which performs a similar function to
-<a href="https://crystal-lang.org/api/0.26.1/JSON/Any.html" target="_blank"><code>JSON::Any</code></a>. You can pass
-collection parameters to queries wrapped with <code>Any</code> (taken from the <a href="https://github.com/kaukas/crystal-cassandra/blob/master/examples/collections.cr" target="_blank">collections
+<a href="https://crystal-lang.org/api/latest/JSON/Any.html" target="_blank"><code>JSON::Any</code></a>. You can pass
+collection parameters to queries wrapped with <code><a href="Cassandra/DBApi/Any.html">Cassandra::DBApi::Any</a></code> (taken
+from the <a href="https://github.com/kaukas/crystal-cassandra/blob/master/examples/collections.cr" target="_blank">collections
 example</a>):</p>
 
 <pre><code class="language-crystal"><span class="k">alias</span> <span class="t">Any</span> <span class="o">=</span> <span class="t">Cassandra</span><span class="t">::</span><span class="t">DBApi</span><span class="t">::</span><span class="t">Any</span>
@@ -411,22 +424,6 @@ db.query(<span class="s">&quot;select title from posts&quot;</span>) <span class
 
 <p>but shortcuts are defined for them so <code>Any</code> can be skipped (see the <a href="https://github.com/kaukas/crystal-cassandra/blob/master/examples/basic.cr" target="_blank">basic
 example</a>).</p>
-
-<h2>Types</h2>
-
-<p><code>crystal-cassandra</code> supports <a href="https://crystal-lang.github.io/crystal-db/api/0.5.0/DB/Any.html" target="_blank">all the
-<code>DB::Any</code></a>
-primitive types plus <code>Int8</code> and <code>Int16</code> and some additional value types:</p>
-
-<ul><li><code>date</code> maps to <code><a href="Cassandra/DBApi/Date.html">Cassandra::DBApi::Date</a></code></li><li><code>time</code> maps to <code><a href="Cassandra/DBApi/Time.html">Cassandra::DBApi::Time</a></code></li><li><code>duration</code> maps to <code><a href="Cassandra/DBApi/Duration.html">Cassandra::DBApi::Duration</a></code></li><li><code>uuid</code> maps to <code><a href="Cassandra/DBApi/Uuid.html">Cassandra::DBApi::Uuid</a></code></li><li><code>timeuuid</code> maps to <code><a href="Cassandra/DBApi/TimeUuid.html">Cassandra::DBApi::TimeUuid</a></code></li></ul>
-
-<p>You do not need to wrap them with <code><a href="Cassandra/DBApi/Any.html">Cassandra::DBApi::Any</a></code> (although you can).</p>
-
-<p>Some of the collection types are also supported:</p>
-
-<ul><li><code>list</code> maps to <code>Array</code></li><li><code>set</code> maps to <code>Set</code></li><li><code>map</code> maps to <code>Hash</code></li></ul>
-
-<p>Their items need to be wrapped with <code><a href="Cassandra/DBApi/Any.html">Cassandra::DBApi::Any</a></code>.</p>
 
 <h2>Development</h2>
 

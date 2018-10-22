@@ -71,11 +71,6 @@
       
     </li>
   
-  <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/ConnectError" data-name="cassandra::dbapi::connecterror">
-      <a href="../../Cassandra/DBApi/ConnectError.html">ConnectError</a>
-      
-    </li>
-  
   <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/Connection" data-name="cassandra::dbapi::connection">
       <a href="../../Cassandra/DBApi/Connection.html">Connection</a>
       
@@ -136,28 +131,8 @@
       
     </li>
   
-  <li class="parent " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/Decoders/MapDecoder" data-name="cassandra::dbapi::decoders::mapdecoder">
+  <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/Decoders/MapDecoder" data-name="cassandra::dbapi::decoders::mapdecoder">
       <a href="../../Cassandra/DBApi/Decoders/MapDecoder.html">MapDecoder</a>
-      
-        <ul>
-  
-  <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/Decoders/MapDecoder/CassMapIterator" data-name="cassandra::dbapi::decoders::mapdecoder::cassmapiterator">
-      <a href="../../Cassandra/DBApi/Decoders/MapDecoder/CassMapIterator.html">CassMapIterator</a>
-      
-    </li>
-  
-  <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/Decoders/MapDecoder/CassMapKeyIterator" data-name="cassandra::dbapi::decoders::mapdecoder::cassmapkeyiterator">
-      <a href="../../Cassandra/DBApi/Decoders/MapDecoder/CassMapKeyIterator.html">CassMapKeyIterator</a>
-      
-    </li>
-  
-  <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/Decoders/MapDecoder/CassMapValueIterator" data-name="cassandra::dbapi::decoders::mapdecoder::cassmapvalueiterator">
-      <a href="../../Cassandra/DBApi/Decoders/MapDecoder/CassMapValueIterator.html">CassMapValueIterator</a>
-      
-    </li>
-  
-</ul>
-
       
     </li>
   
@@ -221,11 +196,6 @@
       
     </li>
   
-  <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/IteratorError" data-name="cassandra::dbapi::iteratorerror">
-      <a href="../../Cassandra/DBApi/IteratorError.html">IteratorError</a>
-      
-    </li>
-  
   <li class="parent " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/PreparedStatement" data-name="cassandra::dbapi::preparedstatement">
       <a href="../../Cassandra/DBApi/PreparedStatement.html">PreparedStatement</a>
       
@@ -251,13 +221,33 @@
       
     </li>
   
-  <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/ResultSet" data-name="cassandra::dbapi::resultset">
+  <li class="parent " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/ResultSet" data-name="cassandra::dbapi::resultset">
       <a href="../../Cassandra/DBApi/ResultSet.html">ResultSet</a>
+      
+        <ul>
+  
+  <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/ResultSet/IteratorError" data-name="cassandra::dbapi::resultset::iteratorerror">
+      <a href="../../Cassandra/DBApi/ResultSet/IteratorError.html">IteratorError</a>
       
     </li>
   
-  <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/Session" data-name="cassandra::dbapi::session">
+</ul>
+
+      
+    </li>
+  
+  <li class="parent " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/Session" data-name="cassandra::dbapi::session">
       <a href="../../Cassandra/DBApi/Session.html">Session</a>
+      
+        <ul>
+  
+  <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/Session/ConnectError" data-name="cassandra::dbapi::session::connecterror">
+      <a href="../../Cassandra/DBApi/Session/ConnectError.html">ConnectError</a>
+      
+    </li>
+  
+</ul>
+
       
     </li>
   
@@ -273,6 +263,11 @@
   
   <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/TimeUuid" data-name="cassandra::dbapi::timeuuid">
       <a href="../../Cassandra/DBApi/TimeUuid.html">TimeUuid</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/Type" data-name="cassandra::dbapi::type">
+      <a href="../../Cassandra/DBApi/Type.html">Type</a>
       
     </li>
   
@@ -325,6 +320,11 @@
 
 
 
+  <h2>Overview</h2>
+
+  <p>Represents a Cassandra cluster. Stores connection parameters, like host
+and port.</p>
+
 
 
 
@@ -341,7 +341,7 @@
   <h2>Defined in:</h2>
   
     
-      <a href="https://github.com/kaukas/crystal-cassandra/blob/0e1d9acb1633f650c7a494c2bb5bc52a54b27b87/src/cassandra/dbapi/connection.cr#L10" target="_blank">
+      <a href="https://github.com/kaukas/crystal-cassandra/blob/0e1d9acb1633f650c7a494c2bb5bc52a54b27b87/src/cassandra/dbapi/connection.cr#L8" target="_blank">
         cassandra/dbapi/connection.cr
       </a>
     
@@ -358,6 +358,8 @@
       <li class="entry-summary">
         <a href="#new%28context%3ADB%3A%3AConnectionContext%29-class-method" class="signature"><strong>.new</strong>(context : DB::ConnectionContext)</a>
         
+          <div class="summary"><p>Initialises a cluster object with the supplied host and port from the <em>context</em>.</p></div>
+        
       </li>
     
   </ul>
@@ -370,12 +372,9 @@
   <ul class="list-summary">
     
       <li class="entry-summary">
-        <a href="#close-instance-method" class="signature"><strong>#close</strong></a>
+        <a href="#do_close-instance-method" class="signature"><strong>#do_close</strong></a>
         
-      </li>
-    
-      <li class="entry-summary">
-        <a href="#to_unsafe%3ACassandra%3A%3ALibCass%3A%3ACassCluster-instance-method" class="signature"><strong>#to_unsafe</strong> : Cassandra::LibCass::CassCluster</a>
+          <div class="summary"><p>Close the connection.</p></div>
         
       </li>
     
@@ -420,6 +419,9 @@
         <a class="method-permalink" href="#new%28context%3ADB%3A%3AConnectionContext%29-class-method">#</a>
       </div>
       
+        <div class="doc"><p>Initialises a cluster object with the supplied host and port from the
+<em>context</em>.</p></div>
+      
       <br/>
       <div>
         
@@ -435,34 +437,22 @@
 
   <h2>Instance Method Detail</h2>
   
-    <div class="entry-detail" id="close-instance-method">
+    <div class="entry-detail" id="do_close-instance-method">
       <div class="signature">
         
-        def <strong>close</strong>
+        def <strong>do_close</strong>
 
-        <a class="method-permalink" href="#close-instance-method">#</a>
+        <a class="method-permalink" href="#do_close-instance-method">#</a>
       </div>
+      
+        <div class="doc"><p>Close the connection.</p>
+
+<p>Disposes the cluster. Needs to be called to prevent memory leaks.</p></div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kaukas/crystal-cassandra/blob/0e1d9acb1633f650c7a494c2bb5bc52a54b27b87/src/cassandra/dbapi/connection.cr#L26" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
-    <div class="entry-detail" id="to_unsafe:Cassandra::LibCass::CassCluster-instance-method">
-      <div class="signature">
-        
-        def <strong>to_unsafe</strong> : Cassandra::LibCass::CassCluster
-
-        <a class="method-permalink" href="#to_unsafe%3ACassandra%3A%3ALibCass%3A%3ACassCluster-instance-method">#</a>
-      </div>
-      
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/kaukas/crystal-cassandra/blob/0e1d9acb1633f650c7a494c2bb5bc52a54b27b87/src/cassandra/dbapi/connection.cr#L30" target="_blank">View source</a>]
+          [<a href="https://github.com/kaukas/crystal-cassandra/blob/0e1d9acb1633f650c7a494c2bb5bc52a54b27b87/src/cassandra/dbapi/connection.cr#L27" target="_blank">View source</a>]
         
       </div>
     </div>

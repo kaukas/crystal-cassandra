@@ -14,7 +14,7 @@
 </script>
 
   <meta id="repository-name" content="github.com/kaukas/crystal-cassandra">
-  <title>Cassandra::DBApi::Decoders::TimestampDecoder - github.com/kaukas/crystal-cassandra</title>
+  <title>Cassandra::DBApi::Session::ConnectError - github.com/kaukas/crystal-cassandra</title>
 </head>
 <body>
 
@@ -81,7 +81,7 @@
       
     </li>
   
-  <li class="parent open current" data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/Decoders" data-name="cassandra::dbapi::decoders">
+  <li class="parent " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/Decoders" data-name="cassandra::dbapi::decoders">
       <a href="../../../Cassandra/DBApi/Decoders.html">Decoders</a>
       
         <ul>
@@ -156,7 +156,7 @@
       
     </li>
   
-  <li class=" current" data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/Decoders/TimestampDecoder" data-name="cassandra::dbapi::decoders::timestampdecoder">
+  <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/Decoders/TimestampDecoder" data-name="cassandra::dbapi::decoders::timestampdecoder">
       <a href="../../../Cassandra/DBApi/Decoders/TimestampDecoder.html">TimestampDecoder</a>
       
     </li>
@@ -236,12 +236,12 @@
       
     </li>
   
-  <li class="parent " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/Session" data-name="cassandra::dbapi::session">
+  <li class="parent open current" data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/Session" data-name="cassandra::dbapi::session">
       <a href="../../../Cassandra/DBApi/Session.html">Session</a>
       
         <ul>
   
-  <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/Session/ConnectError" data-name="cassandra::dbapi::session::connecterror">
+  <li class=" current" data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/Session/ConnectError" data-name="cassandra::dbapi::session::connecterror">
       <a href="../../../Cassandra/DBApi/Session/ConnectError.html">ConnectError</a>
       
     </li>
@@ -310,15 +310,19 @@
 <div class="main-content">
 <h1 class="type-name">
 
-  <span class="kind">class</span> Cassandra::DBApi::Decoders::TimestampDecoder
+  <span class="kind">class</span> Cassandra::DBApi::Session::ConnectError
 
 </h1>
 
 
-  <ul class="superclass-hierarchy"><li class="superclass"><a href="../../../Cassandra/DBApi/Decoders/TimestampDecoder.html">Cassandra::DBApi::Decoders::TimestampDecoder</a></li><li class="superclass"><a href="../../../Cassandra/DBApi/Decoders/BaseDecoder.html">Cassandra::DBApi::Decoders::BaseDecoder</a></li><li class="superclass">Reference</li><li class="superclass">Object</li></ul>
+  <ul class="superclass-hierarchy"><li class="superclass"><a href="../../../Cassandra/DBApi/Session/ConnectError.html">Cassandra::DBApi::Session::ConnectError</a></li><li class="superclass">DB::Error</li><li class="superclass">Exception</li><li class="superclass">Reference</li><li class="superclass">Object</li></ul>
 
 
 
+
+  <h2>Overview</h2>
+
+  <p>Wraps connection errors returned by the cpp-driver.</p>
 
 
 
@@ -336,8 +340,8 @@
   <h2>Defined in:</h2>
   
     
-      <a href="https://github.com/kaukas/crystal-cassandra/blob/0e1d9acb1633f650c7a494c2bb5bc52a54b27b87/src/cassandra/dbapi/decoders.cr#L165" target="_blank">
-        cassandra/dbapi/decoders.cr
+      <a href="https://github.com/kaukas/crystal-cassandra/blob/0e1d9acb1633f650c7a494c2bb5bc52a54b27b87/src/cassandra/dbapi/session.cr#L10" target="_blank">
+        cassandra/dbapi/session.cr
       </a>
     
     <br/>
@@ -349,27 +353,7 @@
 
 
 
-  <h2>Class Method Summary</h2>
-  <ul class="list-summary">
-    
-      <li class="entry-summary">
-        <a href="#cass_value_codes-class-method" class="signature"><strong>.cass_value_codes</strong></a>
-        
-      </li>
-    
-  </ul>
 
-
-
-  <h2>Instance Method Summary</h2>
-  <ul class="list-summary">
-    
-      <li class="entry-summary">
-        <a href="#decode_with_type%28cass_value%29%3A%3A%3ATime-instance-method" class="signature"><strong>#decode_with_type</strong>(cass_value) : ::Time</a>
-        
-      </li>
-    
-  </ul>
 
 
 
@@ -379,49 +363,21 @@
   
     
 
-  <h3>Instance methods inherited from class <code><a href="../../../Cassandra/DBApi/Decoders/BaseDecoder.html">Cassandra::DBApi::Decoders::BaseDecoder</a></code></h3>
-  
-  
-    <a href="../../../Cassandra/DBApi/Decoders/BaseDecoder.html#decode%28cass_value%3ALibCass%3A%3ACassValue%29-instance-method" class="tooltip">
-      <span>decode(cass_value : LibCass::CassValue)</span>
-    decode</a>, 
-    
-  
-    <a href="../../../Cassandra/DBApi/Decoders/BaseDecoder.html#decode_iterator%28iter%3AIterator%29-instance-method" class="tooltip">
-      <span>decode_iterator(iter : Iterator)</span>
-    decode_iterator</a>, 
-    
-  
-    <a href="../../../Cassandra/DBApi/Decoders/BaseDecoder.html#decode_with_type%28cass_value%3ALibCass%3A%3ACassValue%29-instance-method" class="tooltip">
-      <span>decode_with_type(cass_value : LibCass::CassValue)</span>
-    decode_with_type</a>, 
-    
-  
-    <a href="../../../Cassandra/DBApi/Decoders/BaseDecoder.html#handle_error%28cass_error%3ALibCass%3A%3ACassError%29-instance-method" class="tooltip">
-      <span>handle_error(cass_error : LibCass::CassError)</span>
-    handle_error</a>
-    
-  
-
 
     
 
 
     
 
-  <h3>Class methods inherited from class <code><a href="../../../Cassandra/DBApi/Decoders/BaseDecoder.html">Cassandra::DBApi::Decoders::BaseDecoder</a></code></h3>
+
   
-  
-    <a href="../../../Cassandra/DBApi/Decoders/BaseDecoder.html#get_decoder%28cass_value_type%3ALibCass%3A%3ACassValueType%29-class-method" class="tooltip">
-      <span>get_decoder(cass_value_type : LibCass::CassValueType)</span>
-    get_decoder</a>, 
     
-  
-    <a href="../../../Cassandra/DBApi/Decoders/BaseDecoder.html#register_type%28type_class%3ABaseDecoder.class%29-class-method" class="tooltip">
-      <span>register_type(type_class : BaseDecoder.class)</span>
-    register_type</a>
+
+
     
-  
+
+
+    
 
 
   
@@ -450,45 +406,7 @@
 
 
 
-  <h2>Class Method Detail</h2>
-  
-    <div class="entry-detail" id="cass_value_codes-class-method">
-      <div class="signature">
-        
-        def self.<strong>cass_value_codes</strong>
 
-        <a class="method-permalink" href="#cass_value_codes-class-method">#</a>
-      </div>
-      
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/kaukas/crystal-cassandra/blob/0e1d9acb1633f650c7a494c2bb5bc52a54b27b87/src/cassandra/dbapi/decoders.cr#L166" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
-
-
-
-  <h2>Instance Method Detail</h2>
-  
-    <div class="entry-detail" id="decode_with_type(cass_value):::Time-instance-method">
-      <div class="signature">
-        
-        def <strong>decode_with_type</strong>(cass_value) : ::Time
-
-        <a class="method-permalink" href="#decode_with_type%28cass_value%29%3A%3A%3ATime-instance-method">#</a>
-      </div>
-      
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/kaukas/crystal-cassandra/blob/0e1d9acb1633f650c7a494c2bb5bc52a54b27b87/src/cassandra/dbapi/decoders.cr#L170" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
 
 
 

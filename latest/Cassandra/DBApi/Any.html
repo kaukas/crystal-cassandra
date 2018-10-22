@@ -71,11 +71,6 @@
       
     </li>
   
-  <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/ConnectError" data-name="cassandra::dbapi::connecterror">
-      <a href="../../Cassandra/DBApi/ConnectError.html">ConnectError</a>
-      
-    </li>
-  
   <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/Connection" data-name="cassandra::dbapi::connection">
       <a href="../../Cassandra/DBApi/Connection.html">Connection</a>
       
@@ -136,28 +131,8 @@
       
     </li>
   
-  <li class="parent " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/Decoders/MapDecoder" data-name="cassandra::dbapi::decoders::mapdecoder">
+  <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/Decoders/MapDecoder" data-name="cassandra::dbapi::decoders::mapdecoder">
       <a href="../../Cassandra/DBApi/Decoders/MapDecoder.html">MapDecoder</a>
-      
-        <ul>
-  
-  <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/Decoders/MapDecoder/CassMapIterator" data-name="cassandra::dbapi::decoders::mapdecoder::cassmapiterator">
-      <a href="../../Cassandra/DBApi/Decoders/MapDecoder/CassMapIterator.html">CassMapIterator</a>
-      
-    </li>
-  
-  <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/Decoders/MapDecoder/CassMapKeyIterator" data-name="cassandra::dbapi::decoders::mapdecoder::cassmapkeyiterator">
-      <a href="../../Cassandra/DBApi/Decoders/MapDecoder/CassMapKeyIterator.html">CassMapKeyIterator</a>
-      
-    </li>
-  
-  <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/Decoders/MapDecoder/CassMapValueIterator" data-name="cassandra::dbapi::decoders::mapdecoder::cassmapvalueiterator">
-      <a href="../../Cassandra/DBApi/Decoders/MapDecoder/CassMapValueIterator.html">CassMapValueIterator</a>
-      
-    </li>
-  
-</ul>
-
       
     </li>
   
@@ -221,11 +196,6 @@
       
     </li>
   
-  <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/IteratorError" data-name="cassandra::dbapi::iteratorerror">
-      <a href="../../Cassandra/DBApi/IteratorError.html">IteratorError</a>
-      
-    </li>
-  
   <li class="parent " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/PreparedStatement" data-name="cassandra::dbapi::preparedstatement">
       <a href="../../Cassandra/DBApi/PreparedStatement.html">PreparedStatement</a>
       
@@ -251,13 +221,33 @@
       
     </li>
   
-  <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/ResultSet" data-name="cassandra::dbapi::resultset">
+  <li class="parent " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/ResultSet" data-name="cassandra::dbapi::resultset">
       <a href="../../Cassandra/DBApi/ResultSet.html">ResultSet</a>
+      
+        <ul>
+  
+  <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/ResultSet/IteratorError" data-name="cassandra::dbapi::resultset::iteratorerror">
+      <a href="../../Cassandra/DBApi/ResultSet/IteratorError.html">IteratorError</a>
       
     </li>
   
-  <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/Session" data-name="cassandra::dbapi::session">
+</ul>
+
+      
+    </li>
+  
+  <li class="parent " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/Session" data-name="cassandra::dbapi::session">
       <a href="../../Cassandra/DBApi/Session.html">Session</a>
+      
+        <ul>
+  
+  <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/Session/ConnectError" data-name="cassandra::dbapi::session::connecterror">
+      <a href="../../Cassandra/DBApi/Session/ConnectError.html">ConnectError</a>
+      
+    </li>
+  
+</ul>
+
       
     </li>
   
@@ -273,6 +263,11 @@
   
   <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/TimeUuid" data-name="cassandra::dbapi::timeuuid">
       <a href="../../Cassandra/DBApi/TimeUuid.html">TimeUuid</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/Type" data-name="cassandra::dbapi::type">
+      <a href="../../Cassandra/DBApi/Type.html">Type</a>
       
     </li>
   
@@ -325,6 +320,18 @@
 
 
 
+  <h2>Overview</h2>
+
+  <p>Wraps any possible Cassandra value. It can be supplied as a parameter for
+a query or be returned as a result. It dynamically handles values with
+actual types decided at runtime.</p>
+
+<p><code><a href="../../Cassandra/DBApi/Any.html">Cassandra::DBApi::Any</a></code> serves a similar purpose as
+<a href="https://crystal-lang.org/api/latest/JSON/Any.html" target="_blank"><code>JSON::Any</code></a>.</p>
+
+<p>In order to obtain the actual value use the <code>as_*</code> methods which perform
+type checks against the raw underlying value.</p>
+
 
 
 
@@ -341,7 +348,7 @@
   <h2>Defined in:</h2>
   
     
-      <a href="https://github.com/kaukas/crystal-cassandra/blob/0e1d9acb1633f650c7a494c2bb5bc52a54b27b87/src/cassandra/dbapi.cr#L14" target="_blank">
+      <a href="https://github.com/kaukas/crystal-cassandra/blob/0e1d9acb1633f650c7a494c2bb5bc52a54b27b87/src/cassandra/dbapi.cr#L69" target="_blank">
         cassandra/dbapi.cr
       </a>
     
@@ -356,7 +363,9 @@
   <ul class="list-summary">
     
       <li class="entry-summary">
-        <a href="#new%28value%29-class-method" class="signature"><strong>.new</strong>(value)</a>
+        <a href="#new%28raw%3AType%29-class-method" class="signature"><strong>.new</strong>(raw : Type)</a>
+        
+          <div class="summary"><p>Creates a <code><a href="../../Cassandra/DBApi/Any.html">Cassandra::DBApi::Any</a></code> that wraps the given value.</p></div>
         
       </li>
     
@@ -372,10 +381,14 @@
       <li class="entry-summary">
         <a href="#%3D%3D%28other%3AAny%29-instance-method" class="signature"><strong>#==</strong>(other : Any)</a>
         
+          <div class="summary"><p>Compares this <code><a href="../../Cassandra/DBApi/Any.html">Any</a></code> to the given <code><a href="../../Cassandra/DBApi/Any.html">Any</a></code> by comparing their values.</p></div>
+        
       </li>
     
       <li class="entry-summary">
         <a href="#%3D%3D%28other%29-instance-method" class="signature"><strong>#==</strong>(other)</a>
+        
+          <div class="summary"><p>Compares the raw value to the given value.</p></div>
         
       </li>
     
@@ -387,17 +400,14 @@
       <li class="entry-summary">
         <a href="#as_s-instance-method" class="signature"><strong>#as_s</strong></a>
         
-          <div class="summary"><p><span class="flag orange">TODO</span>  test us.</p></div>
+          <div class="summary"><p><span class="flag orange">TODO</span>  test us, write more of us.</p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#value%3AArray%28Cassandra%3A%3ADBApi%3A%3AAny%29%7CBool%7CCassandra%3A%3ADBApi%3A%3ADate%7CCassandra%3A%3ADBApi%3A%3ADuration%7CCassandra%3A%3ADBApi%3A%3ATime%7CCassandra%3A%3ADBApi%3A%3ATimeUuid%7CCassandra%3A%3ADBApi%3A%3AUuid%7CFloat32%7CFloat64%7CHash%28Cassandra%3A%3ADBApi%3A%3AAny%2CCassandra%3A%3ADBApi%3A%3AAny%29%7CInt16%7CInt32%7CInt64%7CInt8%7CSet%28Cassandra%3A%3ADBApi%3A%3AAny%29%7CSlice%28UInt8%29%7CString%7CTime%7CNil-instance-method" class="signature"><strong>#value</strong> : Array(Cassandra::DBApi::Any) | Bool | Cassandra::DBApi::Date | Cassandra::DBApi::Duration | Cassandra::DBApi::Time | Cassandra::DBApi::TimeUuid | Cassandra::DBApi::Uuid | Float32 | Float64 | Hash(Cassandra::DBApi::Any, Cassandra::DBApi::Any) | Int16 | Int32 | Int64 | Int8 | Set(Cassandra::DBApi::Any) | Slice(UInt8) | String | Time | Nil</a>
+        <a href="#raw%3AType-instance-method" class="signature"><strong>#raw</strong> : Type</a>
         
-      </li>
-    
-      <li class="entry-summary">
-        <a href="#value%3D%28value%29-instance-method" class="signature"><strong>#value=</strong>(value)</a>
+          <div class="summary"><p>Returns the raw underlying value.</p></div>
         
       </li>
     
@@ -444,18 +454,20 @@
 
   <h2>Constructor Detail</h2>
   
-    <div class="entry-detail" id="new(value)-class-method">
+    <div class="entry-detail" id="new(raw:Type)-class-method">
       <div class="signature">
         
-        def self.<strong>new</strong>(value)
+        def self.<strong>new</strong>(raw : <a href="../../Cassandra/DBApi/Type.html">Type</a>)
 
-        <a class="method-permalink" href="#new%28value%29-class-method">#</a>
+        <a class="method-permalink" href="#new%28raw%3AType%29-class-method">#</a>
       </div>
+      
+        <div class="doc"><p>Creates a <code><a href="../../Cassandra/DBApi/Any.html">Cassandra::DBApi::Any</a></code> that wraps the given value.</p></div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kaukas/crystal-cassandra/blob/0e1d9acb1633f650c7a494c2bb5bc52a54b27b87/src/cassandra/dbapi.cr#L19" target="_blank">View source</a>]
+          [<a href="https://github.com/kaukas/crystal-cassandra/blob/0e1d9acb1633f650c7a494c2bb5bc52a54b27b87/src/cassandra/dbapi.cr#L74" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -475,10 +487,12 @@
         <a class="method-permalink" href="#%3D%3D%28other%3AAny%29-instance-method">#</a>
       </div>
       
+        <div class="doc"><p>Compares this <code><a href="../../Cassandra/DBApi/Any.html">Any</a></code> to the given <code><a href="../../Cassandra/DBApi/Any.html">Any</a></code> by comparing their values.</p></div>
+      
       <br/>
       <div>
         
-          [<a href="https://github.com/kaukas/crystal-cassandra/blob/0e1d9acb1633f650c7a494c2bb5bc52a54b27b87/src/cassandra/dbapi.cr#L22" target="_blank">View source</a>]
+          [<a href="https://github.com/kaukas/crystal-cassandra/blob/0e1d9acb1633f650c7a494c2bb5bc52a54b27b87/src/cassandra/dbapi.cr#L78" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -491,10 +505,12 @@
         <a class="method-permalink" href="#%3D%3D%28other%29-instance-method">#</a>
       </div>
       
+        <div class="doc"><p>Compares the raw value to the given value.</p></div>
+      
       <br/>
       <div>
         
-          [<a href="https://github.com/kaukas/crystal-cassandra/blob/0e1d9acb1633f650c7a494c2bb5bc52a54b27b87/src/cassandra/dbapi.cr#L26" target="_blank">View source</a>]
+          [<a href="https://github.com/kaukas/crystal-cassandra/blob/0e1d9acb1633f650c7a494c2bb5bc52a54b27b87/src/cassandra/dbapi.cr#L83" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -510,7 +526,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kaukas/crystal-cassandra/blob/0e1d9acb1633f650c7a494c2bb5bc52a54b27b87/src/cassandra/dbapi.cr#L35" target="_blank">View source</a>]
+          [<a href="https://github.com/kaukas/crystal-cassandra/blob/0e1d9acb1633f650c7a494c2bb5bc52a54b27b87/src/cassandra/dbapi.cr#L92" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -523,44 +539,30 @@
         <a class="method-permalink" href="#as_s-instance-method">#</a>
       </div>
       
-        <div class="doc"><p><span class="flag orange">TODO</span>  test us.</p></div>
+        <div class="doc"><p><span class="flag orange">TODO</span>  test us, write more of us.</p></div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kaukas/crystal-cassandra/blob/0e1d9acb1633f650c7a494c2bb5bc52a54b27b87/src/cassandra/dbapi.cr#L31" target="_blank">View source</a>]
+          [<a href="https://github.com/kaukas/crystal-cassandra/blob/0e1d9acb1633f650c7a494c2bb5bc52a54b27b87/src/cassandra/dbapi.cr#L88" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="value:Array(Cassandra::DBApi::Any)|Bool|Cassandra::DBApi::Date|Cassandra::DBApi::Duration|Cassandra::DBApi::Time|Cassandra::DBApi::TimeUuid|Cassandra::DBApi::Uuid|Float32|Float64|Hash(Cassandra::DBApi::Any,Cassandra::DBApi::Any)|Int16|Int32|Int64|Int8|Set(Cassandra::DBApi::Any)|Slice(UInt8)|String|Time|Nil-instance-method">
+    <div class="entry-detail" id="raw:Type-instance-method">
       <div class="signature">
         
-        def <strong>value</strong> : Array(<a href="../../Cassandra/DBApi/Any.html">Cassandra::DBApi::Any</a>) | Bool | <a href="../../Cassandra/DBApi/Date.html">Cassandra::DBApi::Date</a> | <a href="../../Cassandra/DBApi/Duration.html">Cassandra::DBApi::Duration</a> | <a href="../../Cassandra/DBApi/Time.html">Cassandra::DBApi::Time</a> | <a href="../../Cassandra/DBApi/TimeUuid.html">Cassandra::DBApi::TimeUuid</a> | <a href="../../Cassandra/DBApi/Uuid.html">Cassandra::DBApi::Uuid</a> | Float32 | Float64 | Hash(<a href="../../Cassandra/DBApi/Any.html">Cassandra::DBApi::Any</a>, <a href="../../Cassandra/DBApi/Any.html">Cassandra::DBApi::Any</a>) | Int16 | Int32 | Int64 | Int8 | Set(<a href="../../Cassandra/DBApi/Any.html">Cassandra::DBApi::Any</a>) | Slice(UInt8) | String | Time | Nil
+        def <strong>raw</strong> : <a href="../../Cassandra/DBApi/Type.html">Type</a>
 
-        <a class="method-permalink" href="#value%3AArray%28Cassandra%3A%3ADBApi%3A%3AAny%29%7CBool%7CCassandra%3A%3ADBApi%3A%3ADate%7CCassandra%3A%3ADBApi%3A%3ADuration%7CCassandra%3A%3ADBApi%3A%3ATime%7CCassandra%3A%3ADBApi%3A%3ATimeUuid%7CCassandra%3A%3ADBApi%3A%3AUuid%7CFloat32%7CFloat64%7CHash%28Cassandra%3A%3ADBApi%3A%3AAny%2CCassandra%3A%3ADBApi%3A%3AAny%29%7CInt16%7CInt32%7CInt64%7CInt8%7CSet%28Cassandra%3A%3ADBApi%3A%3AAny%29%7CSlice%28UInt8%29%7CString%7CTime%7CNil-instance-method">#</a>
+        <a class="method-permalink" href="#raw%3AType-instance-method">#</a>
       </div>
+      
+        <div class="doc"><p>Returns the raw underlying value.</p></div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kaukas/crystal-cassandra/blob/0e1d9acb1633f650c7a494c2bb5bc52a54b27b87/src/cassandra/dbapi.cr#L17" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
-    <div class="entry-detail" id="value=(value)-instance-method">
-      <div class="signature">
-        
-        def <strong>value=</strong>(value)
-
-        <a class="method-permalink" href="#value%3D%28value%29-instance-method">#</a>
-      </div>
-      
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/kaukas/crystal-cassandra/blob/0e1d9acb1633f650c7a494c2bb5bc52a54b27b87/src/cassandra/dbapi.cr#L17" target="_blank">View source</a>]
+          [<a href="https://github.com/kaukas/crystal-cassandra/blob/0e1d9acb1633f650c7a494c2bb5bc52a54b27b87/src/cassandra/dbapi.cr#L71" target="_blank">View source</a>]
         
       </div>
     </div>
