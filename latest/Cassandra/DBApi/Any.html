@@ -348,7 +348,7 @@ type checks against the raw underlying value.</p>
   <h2>Defined in:</h2>
   
     
-      <a href="https://github.com/kaukas/crystal-cassandra/blob/0e1d9acb1633f650c7a494c2bb5bc52a54b27b87/src/cassandra/dbapi.cr#L69" target="_blank">
+      <a href="https://github.com/kaukas/crystal-cassandra/blob/6b47bf96a8928b4de57a2445d47999c5172386c0/src/cassandra/dbapi.cr#L69" target="_blank">
         cassandra/dbapi.cr
       </a>
     
@@ -393,14 +393,191 @@ type checks against the raw underlying value.</p>
       </li>
     
       <li class="entry-summary">
-        <a href="#as_i-instance-method" class="signature"><strong>#as_i</strong></a>
+        <a href="#as_bool%3ABool-instance-method" class="signature"><strong>#as_bool</strong> : Bool</a>
+        
+          <div class="summary"><p>Checks that the underlying value is <code>Bool</code>, and returns its value.</p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#as_s-instance-method" class="signature"><strong>#as_s</strong></a>
+        <a href="#as_bool%3F%3ABool%3F-instance-method" class="signature"><strong>#as_bool?</strong> : Bool?</a>
         
-          <div class="summary"><p><span class="flag orange">TODO</span>  test us, write more of us.</p></div>
+          <div class="summary"><p>Checks that the underlying value is <code>Bool</code>, and returns its value.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#as_bytes%3ABytes-instance-method" class="signature"><strong>#as_bytes</strong> : Bytes</a>
+        
+          <div class="summary"><p>Checks that the underlying value is <code>Bytes</code>, and returns its value.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#as_bytes%3F%3ABytes%3F-instance-method" class="signature"><strong>#as_bytes?</strong> : Bytes?</a>
+        
+          <div class="summary"><p>Checks that the underlying value is <code>Bytes</code>, and returns its value.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#as_date%3ADBApi%3A%3ADate-instance-method" class="signature"><strong>#as_date</strong> : DBApi::Date</a>
+        
+          <div class="summary"><p>Checks that the underlying value is <code><a href="../../Cassandra/DBApi/Date.html">DBApi::Date</a></code>, and returns its value.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#as_date%3F%3ADBApi%3A%3ADate%3F-instance-method" class="signature"><strong>#as_date?</strong> : DBApi::Date?</a>
+        
+          <div class="summary"><p>Checks that the underlying value is <code><a href="../../Cassandra/DBApi/Date.html">DBApi::Date</a></code>, and returns its value.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#as_duration%3ADBApi%3A%3ADuration-instance-method" class="signature"><strong>#as_duration</strong> : DBApi::Duration</a>
+        
+          <div class="summary"><p>Checks that the underlying value is <code><a href="../../Cassandra/DBApi/Duration.html">DBApi::Duration</a></code>, and returns its value.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#as_duration%3F%3ADBApi%3A%3ADuration%3F-instance-method" class="signature"><strong>#as_duration?</strong> : DBApi::Duration?</a>
+        
+          <div class="summary"><p>Checks that the underlying value is <code><a href="../../Cassandra/DBApi/Duration.html">DBApi::Duration</a></code>, and returns its value.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#as_f32%3AFloat32-instance-method" class="signature"><strong>#as_f32</strong> : Float32</a>
+        
+          <div class="summary"><p>Checks that the underlying value is <code>Float32</code>, and returns its value.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#as_f32%3F%3AFloat32%3F-instance-method" class="signature"><strong>#as_f32?</strong> : Float32?</a>
+        
+          <div class="summary"><p>Checks that the underlying value is <code>Float32</code>, and returns its value.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#as_f64%3AFloat64-instance-method" class="signature"><strong>#as_f64</strong> : Float64</a>
+        
+          <div class="summary"><p>Checks that the underlying value is <code>Float64</code>, and returns its value.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#as_f64%3F%3AFloat64%3F-instance-method" class="signature"><strong>#as_f64?</strong> : Float64?</a>
+        
+          <div class="summary"><p>Checks that the underlying value is <code>Float64</code>, and returns its value.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#as_i16%3AInt16-instance-method" class="signature"><strong>#as_i16</strong> : Int16</a>
+        
+          <div class="summary"><p>Checks that the underlying value is <code>Int16</code>, and returns its value.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#as_i16%3F%3AInt16%3F-instance-method" class="signature"><strong>#as_i16?</strong> : Int16?</a>
+        
+          <div class="summary"><p>Checks that the underlying value is <code>Int16</code>, and returns its value.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#as_i32%3AInt32-instance-method" class="signature"><strong>#as_i32</strong> : Int32</a>
+        
+          <div class="summary"><p>Checks that the underlying value is <code>Int32</code>, and returns its value.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#as_i32%3F%3AInt32%3F-instance-method" class="signature"><strong>#as_i32?</strong> : Int32?</a>
+        
+          <div class="summary"><p>Checks that the underlying value is <code>Int32</code>, and returns its value.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#as_i64%3AInt64-instance-method" class="signature"><strong>#as_i64</strong> : Int64</a>
+        
+          <div class="summary"><p>Checks that the underlying value is <code>Int64</code>, and returns its value.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#as_i64%3F%3AInt64%3F-instance-method" class="signature"><strong>#as_i64?</strong> : Int64?</a>
+        
+          <div class="summary"><p>Checks that the underlying value is <code>Int64</code>, and returns its value.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#as_i8%3AInt8-instance-method" class="signature"><strong>#as_i8</strong> : Int8</a>
+        
+          <div class="summary"><p>Checks that the underlying value is <code>Int8</code>, and returns its value.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#as_i8%3F%3AInt8%3F-instance-method" class="signature"><strong>#as_i8?</strong> : Int8?</a>
+        
+          <div class="summary"><p>Checks that the underlying value is <code>Int8</code>, and returns its value.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#as_nil-instance-method" class="signature"><strong>#as_nil</strong></a>
+        
+          <div class="summary"><p>Checks that the underlying value is <code>Nil</code>, and returns <code>nil</code>.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#as_s%3AString-instance-method" class="signature"><strong>#as_s</strong> : String</a>
+        
+          <div class="summary"><p>Checks that the underlying value is <code>String</code>, and returns its value.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#as_s%3F%3AString%3F-instance-method" class="signature"><strong>#as_s?</strong> : String?</a>
+        
+          <div class="summary"><p>Checks that the underlying value is <code>String</code>, and returns its value.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#as_time%3ADBApi%3A%3ATime-instance-method" class="signature"><strong>#as_time</strong> : DBApi::Time</a>
+        
+          <div class="summary"><p>Checks that the underlying value is <code><a href="../../Cassandra/DBApi/Time.html">DBApi::Time</a></code>, and returns its value.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#as_time%3F%3ADBApi%3A%3ATime%3F-instance-method" class="signature"><strong>#as_time?</strong> : DBApi::Time?</a>
+        
+          <div class="summary"><p>Checks that the underlying value is <code><a href="../../Cassandra/DBApi/Time.html">DBApi::Time</a></code>, and returns its value.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#as_timestamp%3A%3A%3ATime-instance-method" class="signature"><strong>#as_timestamp</strong> : ::Time</a>
+        
+          <div class="summary"><p>Checks that the underlying value is <code>::Time</code>, and returns its value.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#as_timestamp%3F%3A%3A%3ATime%3F-instance-method" class="signature"><strong>#as_timestamp?</strong> : ::Time?</a>
+        
+          <div class="summary"><p>Checks that the underlying value is <code>::Time</code>, and returns its value.</p></div>
         
       </li>
     
@@ -467,7 +644,7 @@ type checks against the raw underlying value.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kaukas/crystal-cassandra/blob/0e1d9acb1633f650c7a494c2bb5bc52a54b27b87/src/cassandra/dbapi.cr#L74" target="_blank">View source</a>]
+          [<a href="https://github.com/kaukas/crystal-cassandra/blob/6b47bf96a8928b4de57a2445d47999c5172386c0/src/cassandra/dbapi.cr#L74" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -492,7 +669,7 @@ type checks against the raw underlying value.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kaukas/crystal-cassandra/blob/0e1d9acb1633f650c7a494c2bb5bc52a54b27b87/src/cassandra/dbapi.cr#L78" target="_blank">View source</a>]
+          [<a href="https://github.com/kaukas/crystal-cassandra/blob/6b47bf96a8928b4de57a2445d47999c5172386c0/src/cassandra/dbapi.cr#L78" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -510,41 +687,520 @@ type checks against the raw underlying value.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kaukas/crystal-cassandra/blob/0e1d9acb1633f650c7a494c2bb5bc52a54b27b87/src/cassandra/dbapi.cr#L83" target="_blank">View source</a>]
+          [<a href="https://github.com/kaukas/crystal-cassandra/blob/6b47bf96a8928b4de57a2445d47999c5172386c0/src/cassandra/dbapi.cr#L83" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="as_i-instance-method">
+    <div class="entry-detail" id="as_bool:Bool-instance-method">
       <div class="signature">
         
-        def <strong>as_i</strong>
+        def <strong>as_bool</strong> : Bool
 
-        <a class="method-permalink" href="#as_i-instance-method">#</a>
+        <a class="method-permalink" href="#as_bool%3ABool-instance-method">#</a>
       </div>
+      
+        <div class="doc"><p>Checks that the underlying value is <code>Bool</code>, and returns its value.
+Raises otherwise.</p></div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kaukas/crystal-cassandra/blob/0e1d9acb1633f650c7a494c2bb5bc52a54b27b87/src/cassandra/dbapi.cr#L92" target="_blank">View source</a>]
+          [<a href="https://github.com/kaukas/crystal-cassandra/blob/6b47bf96a8928b4de57a2445d47999c5172386c0/src/cassandra/dbapi.cr#L107" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="as_s-instance-method">
+    <div class="entry-detail" id="as_bool?:Bool?-instance-method">
       <div class="signature">
         
-        def <strong>as_s</strong>
+        def <strong>as_bool?</strong> : Bool?
 
-        <a class="method-permalink" href="#as_s-instance-method">#</a>
+        <a class="method-permalink" href="#as_bool%3F%3ABool%3F-instance-method">#</a>
       </div>
       
-        <div class="doc"><p><span class="flag orange">TODO</span>  test us, write more of us.</p></div>
+        <div class="doc"><p>Checks that the underlying value is <code>Bool</code>, and returns its value.
+Returns <code>nil</code> otherwise.</p></div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kaukas/crystal-cassandra/blob/0e1d9acb1633f650c7a494c2bb5bc52a54b27b87/src/cassandra/dbapi.cr#L88" target="_blank">View source</a>]
+          [<a href="https://github.com/kaukas/crystal-cassandra/blob/6b47bf96a8928b4de57a2445d47999c5172386c0/src/cassandra/dbapi.cr#L107" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="as_bytes:Bytes-instance-method">
+      <div class="signature">
+        
+        def <strong>as_bytes</strong> : Bytes
+
+        <a class="method-permalink" href="#as_bytes%3ABytes-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Checks that the underlying value is <code>Bytes</code>, and returns its value.
+Raises otherwise.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kaukas/crystal-cassandra/blob/6b47bf96a8928b4de57a2445d47999c5172386c0/src/cassandra/dbapi.cr#L115" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="as_bytes?:Bytes?-instance-method">
+      <div class="signature">
+        
+        def <strong>as_bytes?</strong> : Bytes?
+
+        <a class="method-permalink" href="#as_bytes%3F%3ABytes%3F-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Checks that the underlying value is <code>Bytes</code>, and returns its value.
+Returns <code>nil</code> otherwise.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kaukas/crystal-cassandra/blob/6b47bf96a8928b4de57a2445d47999c5172386c0/src/cassandra/dbapi.cr#L115" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="as_date:DBApi::Date-instance-method">
+      <div class="signature">
+        
+        def <strong>as_date</strong> : <a href="../../Cassandra/DBApi/Date.html">DBApi::Date</a>
+
+        <a class="method-permalink" href="#as_date%3ADBApi%3A%3ADate-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Checks that the underlying value is <code><a href="../../Cassandra/DBApi/Date.html">DBApi::Date</a></code>, and returns its value.
+Raises otherwise.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kaukas/crystal-cassandra/blob/6b47bf96a8928b4de57a2445d47999c5172386c0/src/cassandra/dbapi.cr#L117" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="as_date?:DBApi::Date?-instance-method">
+      <div class="signature">
+        
+        def <strong>as_date?</strong> : <a href="../../Cassandra/DBApi/Date.html">DBApi::Date</a>?
+
+        <a class="method-permalink" href="#as_date%3F%3ADBApi%3A%3ADate%3F-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Checks that the underlying value is <code><a href="../../Cassandra/DBApi/Date.html">DBApi::Date</a></code>, and returns its value.
+Returns <code>nil</code> otherwise.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kaukas/crystal-cassandra/blob/6b47bf96a8928b4de57a2445d47999c5172386c0/src/cassandra/dbapi.cr#L117" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="as_duration:DBApi::Duration-instance-method">
+      <div class="signature">
+        
+        def <strong>as_duration</strong> : <a href="../../Cassandra/DBApi/Duration.html">DBApi::Duration</a>
+
+        <a class="method-permalink" href="#as_duration%3ADBApi%3A%3ADuration-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Checks that the underlying value is <code><a href="../../Cassandra/DBApi/Duration.html">DBApi::Duration</a></code>, and returns its value.
+Raises otherwise.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kaukas/crystal-cassandra/blob/6b47bf96a8928b4de57a2445d47999c5172386c0/src/cassandra/dbapi.cr#L119" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="as_duration?:DBApi::Duration?-instance-method">
+      <div class="signature">
+        
+        def <strong>as_duration?</strong> : <a href="../../Cassandra/DBApi/Duration.html">DBApi::Duration</a>?
+
+        <a class="method-permalink" href="#as_duration%3F%3ADBApi%3A%3ADuration%3F-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Checks that the underlying value is <code><a href="../../Cassandra/DBApi/Duration.html">DBApi::Duration</a></code>, and returns its value.
+Returns <code>nil</code> otherwise.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kaukas/crystal-cassandra/blob/6b47bf96a8928b4de57a2445d47999c5172386c0/src/cassandra/dbapi.cr#L119" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="as_f32:Float32-instance-method">
+      <div class="signature">
+        
+        def <strong>as_f32</strong> : Float32
+
+        <a class="method-permalink" href="#as_f32%3AFloat32-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Checks that the underlying value is <code>Float32</code>, and returns its value.
+Raises otherwise.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kaukas/crystal-cassandra/blob/6b47bf96a8928b4de57a2445d47999c5172386c0/src/cassandra/dbapi.cr#L112" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="as_f32?:Float32?-instance-method">
+      <div class="signature">
+        
+        def <strong>as_f32?</strong> : Float32?
+
+        <a class="method-permalink" href="#as_f32%3F%3AFloat32%3F-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Checks that the underlying value is <code>Float32</code>, and returns its value.
+Returns <code>nil</code> otherwise.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kaukas/crystal-cassandra/blob/6b47bf96a8928b4de57a2445d47999c5172386c0/src/cassandra/dbapi.cr#L112" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="as_f64:Float64-instance-method">
+      <div class="signature">
+        
+        def <strong>as_f64</strong> : Float64
+
+        <a class="method-permalink" href="#as_f64%3AFloat64-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Checks that the underlying value is <code>Float64</code>, and returns its value.
+Raises otherwise.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kaukas/crystal-cassandra/blob/6b47bf96a8928b4de57a2445d47999c5172386c0/src/cassandra/dbapi.cr#L113" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="as_f64?:Float64?-instance-method">
+      <div class="signature">
+        
+        def <strong>as_f64?</strong> : Float64?
+
+        <a class="method-permalink" href="#as_f64%3F%3AFloat64%3F-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Checks that the underlying value is <code>Float64</code>, and returns its value.
+Returns <code>nil</code> otherwise.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kaukas/crystal-cassandra/blob/6b47bf96a8928b4de57a2445d47999c5172386c0/src/cassandra/dbapi.cr#L113" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="as_i16:Int16-instance-method">
+      <div class="signature">
+        
+        def <strong>as_i16</strong> : Int16
+
+        <a class="method-permalink" href="#as_i16%3AInt16-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Checks that the underlying value is <code>Int16</code>, and returns its value.
+Raises otherwise.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kaukas/crystal-cassandra/blob/6b47bf96a8928b4de57a2445d47999c5172386c0/src/cassandra/dbapi.cr#L109" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="as_i16?:Int16?-instance-method">
+      <div class="signature">
+        
+        def <strong>as_i16?</strong> : Int16?
+
+        <a class="method-permalink" href="#as_i16%3F%3AInt16%3F-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Checks that the underlying value is <code>Int16</code>, and returns its value.
+Returns <code>nil</code> otherwise.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kaukas/crystal-cassandra/blob/6b47bf96a8928b4de57a2445d47999c5172386c0/src/cassandra/dbapi.cr#L109" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="as_i32:Int32-instance-method">
+      <div class="signature">
+        
+        def <strong>as_i32</strong> : Int32
+
+        <a class="method-permalink" href="#as_i32%3AInt32-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Checks that the underlying value is <code>Int32</code>, and returns its value.
+Raises otherwise.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kaukas/crystal-cassandra/blob/6b47bf96a8928b4de57a2445d47999c5172386c0/src/cassandra/dbapi.cr#L110" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="as_i32?:Int32?-instance-method">
+      <div class="signature">
+        
+        def <strong>as_i32?</strong> : Int32?
+
+        <a class="method-permalink" href="#as_i32%3F%3AInt32%3F-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Checks that the underlying value is <code>Int32</code>, and returns its value.
+Returns <code>nil</code> otherwise.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kaukas/crystal-cassandra/blob/6b47bf96a8928b4de57a2445d47999c5172386c0/src/cassandra/dbapi.cr#L110" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="as_i64:Int64-instance-method">
+      <div class="signature">
+        
+        def <strong>as_i64</strong> : Int64
+
+        <a class="method-permalink" href="#as_i64%3AInt64-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Checks that the underlying value is <code>Int64</code>, and returns its value.
+Raises otherwise.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kaukas/crystal-cassandra/blob/6b47bf96a8928b4de57a2445d47999c5172386c0/src/cassandra/dbapi.cr#L111" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="as_i64?:Int64?-instance-method">
+      <div class="signature">
+        
+        def <strong>as_i64?</strong> : Int64?
+
+        <a class="method-permalink" href="#as_i64%3F%3AInt64%3F-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Checks that the underlying value is <code>Int64</code>, and returns its value.
+Returns <code>nil</code> otherwise.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kaukas/crystal-cassandra/blob/6b47bf96a8928b4de57a2445d47999c5172386c0/src/cassandra/dbapi.cr#L111" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="as_i8:Int8-instance-method">
+      <div class="signature">
+        
+        def <strong>as_i8</strong> : Int8
+
+        <a class="method-permalink" href="#as_i8%3AInt8-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Checks that the underlying value is <code>Int8</code>, and returns its value.
+Raises otherwise.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kaukas/crystal-cassandra/blob/6b47bf96a8928b4de57a2445d47999c5172386c0/src/cassandra/dbapi.cr#L108" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="as_i8?:Int8?-instance-method">
+      <div class="signature">
+        
+        def <strong>as_i8?</strong> : Int8?
+
+        <a class="method-permalink" href="#as_i8%3F%3AInt8%3F-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Checks that the underlying value is <code>Int8</code>, and returns its value.
+Returns <code>nil</code> otherwise.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kaukas/crystal-cassandra/blob/6b47bf96a8928b4de57a2445d47999c5172386c0/src/cassandra/dbapi.cr#L108" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="as_nil-instance-method">
+      <div class="signature">
+        
+        def <strong>as_nil</strong>
+
+        <a class="method-permalink" href="#as_nil-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Checks that the underlying value is <code>Nil</code>, and returns <code>nil</code>.
+Raises otherwise.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kaukas/crystal-cassandra/blob/6b47bf96a8928b4de57a2445d47999c5172386c0/src/cassandra/dbapi.cr#L89" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="as_s:String-instance-method">
+      <div class="signature">
+        
+        def <strong>as_s</strong> : String
+
+        <a class="method-permalink" href="#as_s%3AString-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Checks that the underlying value is <code>String</code>, and returns its value.
+Raises otherwise.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kaukas/crystal-cassandra/blob/6b47bf96a8928b4de57a2445d47999c5172386c0/src/cassandra/dbapi.cr#L114" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="as_s?:String?-instance-method">
+      <div class="signature">
+        
+        def <strong>as_s?</strong> : String?
+
+        <a class="method-permalink" href="#as_s%3F%3AString%3F-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Checks that the underlying value is <code>String</code>, and returns its value.
+Returns <code>nil</code> otherwise.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kaukas/crystal-cassandra/blob/6b47bf96a8928b4de57a2445d47999c5172386c0/src/cassandra/dbapi.cr#L114" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="as_time:DBApi::Time-instance-method">
+      <div class="signature">
+        
+        def <strong>as_time</strong> : <a href="../../Cassandra/DBApi/Time.html">DBApi::Time</a>
+
+        <a class="method-permalink" href="#as_time%3ADBApi%3A%3ATime-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Checks that the underlying value is <code><a href="../../Cassandra/DBApi/Time.html">DBApi::Time</a></code>, and returns its value.
+Raises otherwise.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kaukas/crystal-cassandra/blob/6b47bf96a8928b4de57a2445d47999c5172386c0/src/cassandra/dbapi.cr#L118" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="as_time?:DBApi::Time?-instance-method">
+      <div class="signature">
+        
+        def <strong>as_time?</strong> : <a href="../../Cassandra/DBApi/Time.html">DBApi::Time</a>?
+
+        <a class="method-permalink" href="#as_time%3F%3ADBApi%3A%3ATime%3F-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Checks that the underlying value is <code><a href="../../Cassandra/DBApi/Time.html">DBApi::Time</a></code>, and returns its value.
+Returns <code>nil</code> otherwise.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kaukas/crystal-cassandra/blob/6b47bf96a8928b4de57a2445d47999c5172386c0/src/cassandra/dbapi.cr#L118" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="as_timestamp:::Time-instance-method">
+      <div class="signature">
+        
+        def <strong>as_timestamp</strong> : ::Time
+
+        <a class="method-permalink" href="#as_timestamp%3A%3A%3ATime-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Checks that the underlying value is <code>::Time</code>, and returns its value.
+Raises otherwise.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kaukas/crystal-cassandra/blob/6b47bf96a8928b4de57a2445d47999c5172386c0/src/cassandra/dbapi.cr#L116" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="as_timestamp?:::Time?-instance-method">
+      <div class="signature">
+        
+        def <strong>as_timestamp?</strong> : ::Time?
+
+        <a class="method-permalink" href="#as_timestamp%3F%3A%3A%3ATime%3F-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Checks that the underlying value is <code>::Time</code>, and returns its value.
+Returns <code>nil</code> otherwise.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kaukas/crystal-cassandra/blob/6b47bf96a8928b4de57a2445d47999c5172386c0/src/cassandra/dbapi.cr#L116" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -562,7 +1218,7 @@ type checks against the raw underlying value.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kaukas/crystal-cassandra/blob/0e1d9acb1633f650c7a494c2bb5bc52a54b27b87/src/cassandra/dbapi.cr#L71" target="_blank">View source</a>]
+          [<a href="https://github.com/kaukas/crystal-cassandra/blob/6b47bf96a8928b4de57a2445d47999c5172386c0/src/cassandra/dbapi.cr#L71" target="_blank">View source</a>]
         
       </div>
     </div>
