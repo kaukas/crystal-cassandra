@@ -5,16 +5,20 @@ module Cassandra
   module DBApi
     EPOCH_START = ::Time.epoch(0)
 
+    # Implements functionality common to both `Uuid` and `TimeUuid`.
     module CommonUuid
+      # An error
       class UuidError < DB::Error
       end
 
       @cass_uuid : LibCass::CassUuid
 
+      # Initialises the UUID from a string.
       def initialize(s : String)
         @cass_uuid = from_string(s)
       end
 
+      # Initialises the UUID from a Cassandra UUID.
       def initialize(@cass_uuid)
       end
 
@@ -28,6 +32,7 @@ module Cassandra
         @cass_uuid
       end
 
+      # Renders the UUID to a string.
       def to_s
         # Strings are immutable. Create an array of C chars instead.
         output = Array(LibC::Char).new(LibCass::UUID_STRING_LENGTH, 0).to_unsafe
@@ -37,13 +42,16 @@ module Cassandra
       end
     end
 
+    # Represents the Cassandra *uuid* type.
     struct Uuid
       include CommonUuid
     end
 
+    # Represents the Cassandra *timeuuid* type.
     struct TimeUuid
       include CommonUuid
 
+      # Extracts the time part of the *timeuuid*.
       def to_time : ::Time
         milliseconds = LibCass.uuid_timestamp(@cass_uuid)
         EPOCH_START + ::Time::Span.new(nanoseconds: milliseconds * 1_000_000)
@@ -130,62 +138,6 @@ module Cassandra
                 span.hours,
                 span.minutes,
                 span.seconds)
-      end
-    end
-
-    class CassCollectionIterator
-      include Iterator(LibCass::CassValue)
-
-      def initialize(cass_list : LibCass::CassValue)
-        @cass_iterator = LibCass.iterator_from_collection(cass_list)
-      end
-
-      def finalize
-        LibCass.iterator_free(@cass_iterator)
-      end
-
-      def next
-        if LibCass.iterator_next(@cass_iterator) == LibCass::BoolT::True
-          LibCass.iterator_get_value(@cass_iterator)
-        else
-          stop
-        end
-      end
-    end
-
-    module CassMapIterator
-      include Iterator(LibCass::CassValue)
-
-      def initialize(cass_map : LibCass::CassValue)
-        @cass_iterator = LibCass.iterator_from_map(cass_map)
-      end
-
-      def finalize
-        LibCass.iterator_free(@cass_iterator)
-      end
-
-      def next
-        if LibCass.iterator_next(@cass_iterator) == LibCass::BoolT::True
-          parse_val(@cass_iterator)
-        else
-          stop
-        end
-      end
-    end
-
-    class CassMapKeyIterator
-      include CassMapIterator
-
-      def parse_val(cass_iterator)
-        LibCass.iterator_get_map_key(cass_iterator)
-      end
-    end
-
-    class CassMapValueIterator
-      include CassMapIterator
-
-      def parse_val(cass_iterator)
-        LibCass.iterator_get_map_value(cass_iterator)
       end
     end
   end

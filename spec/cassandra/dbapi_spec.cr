@@ -140,7 +140,8 @@ describe Cassandra::DBApi do
     # Expect correct port to succeed.
     DB.open("cassandra://root@127.0.0.1:9042")
     # Expect incorrect port to fail.
-    expect_raises(Cassandra::DBApi::ConnectError, "ErrorLibNoHostsAvailable") do
+    expect_raises(Cassandra::DBApi::Session::ConnectError,
+                  "ErrorLibNoHostsAvailable") do
       DB.open("cassandra://root@127.0.0.1:55")
     end
   end

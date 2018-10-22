@@ -11,7 +11,7 @@ module Cassandra
 
       def bind(any)
         if any.is_a?(Any)
-          Error.from_error(do_bind(any.value), BindError)
+          Error.from_error(do_bind(any.raw), BindError)
         else
           Error.from_error(do_bind(any), BindError)
         end
@@ -116,7 +116,7 @@ module Cassandra
           vals.size
         )
         begin
-          vals.each { |entry| entry.each { |v| append(cass_map, v.value) } }
+          vals.each { |entry| entry.each { |v| append(cass_map, v.raw) } }
           LibCass.statement_bind_collection(@cass_stmt, @i, cass_map)
         ensure
           LibCass.collection_free(cass_map)
@@ -224,7 +224,7 @@ module Cassandra
           vals.size
         )
         begin
-          vals.each { |entry| entry.each { |v| append(cass_map, v.value) } }
+          vals.each { |entry| entry.each { |v| append(cass_map, v.raw) } }
           LibCass.collection_append_collection(cass_coll, cass_map)
         ensure
           LibCass.collection_free(cass_map)
@@ -232,7 +232,7 @@ module Cassandra
       end
 
       private def append(cass_coll : LibCass::CassCollection, any : Any)
-        append(cass_coll, any.value)
+        append(cass_coll, any.raw)
       end
     end
   end

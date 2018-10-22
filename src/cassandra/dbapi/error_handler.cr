@@ -1,6 +1,6 @@
-# TODO: perhaps use https://github.com/dhruvrajvanshi/crz
 module Cassandra
   module DBApi
+    # TODO: Perhaps use https://github.com/dhruvrajvanshi/crz
     module Error
       def self.from_future(cass_future : LibCass::CassFuture | Nil,
                            err_class : Class)

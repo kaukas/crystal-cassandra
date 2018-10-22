@@ -206,6 +206,26 @@ module Cassandra
         end
       end
 
+      private class CassCollectionIterator
+        include Iterator(LibCass::CassValue)
+
+        def initialize(cass_list : LibCass::CassValue)
+          @cass_iterator = LibCass.iterator_from_collection(cass_list)
+        end
+
+        def finalize
+          LibCass.iterator_free(@cass_iterator)
+        end
+
+        def next
+          if LibCass.iterator_next(@cass_iterator) == LibCass::BoolT::True
+            LibCass.iterator_get_value(@cass_iterator)
+          else
+            stop
+          end
+        end
+      end
+
       class ListDecoder < BaseDecoder
         def self.cass_value_codes
           [LibCass::CassValueType::ValueTypeList]
@@ -231,6 +251,42 @@ module Cassandra
       end
 
       class MapDecoder < BaseDecoder
+        private module CassMapIterator
+          include Iterator(LibCass::CassValue)
+
+          def initialize(cass_map : LibCass::CassValue)
+            @cass_iterator = LibCass.iterator_from_map(cass_map)
+          end
+
+          def finalize
+            LibCass.iterator_free(@cass_iterator)
+          end
+
+          def next
+            if LibCass.iterator_next(@cass_iterator) == LibCass::BoolT::True
+              parse_val(@cass_iterator)
+            else
+              stop
+            end
+          end
+        end
+
+        private class CassMapKeyIterator
+          include CassMapIterator
+
+          def parse_val(cass_iterator)
+            LibCass.iterator_get_map_key(cass_iterator)
+          end
+        end
+
+        private class CassMapValueIterator
+          include CassMapIterator
+
+          def parse_val(cass_iterator)
+            LibCass.iterator_get_map_value(cass_iterator)
+          end
+        end
+
         def self.cass_value_codes
           [LibCass::CassValueType::ValueTypeMap]
         end

@@ -1,15 +1,16 @@
 # Crystal DB API for Cassandra
 
-A Crystal wrapper around the [DataStax C/C++ Driver][]. It conforms to the
-[crystal-db][] API.
+A Crystal wrapper around the [DataStax C/C++
+Driver](https://docs.datastax.com/en/developer/cpp-driver/2.9/). It conforms to
+the [crystal-db](https://github.com/crystal-lang/crystal-db) API.
 
 
 ## Status
 
 This is a personal project to create something meaningful while learning
 Crystal. There are no guarantees about future development, maintenance, or
-support. That said, if you need to use Crystal to query Cassandra you could do
-worse than use this library as a starting point. YMMV.
+support. That said, if you need to use Crystal to query Cassandra this library
+could be a good starting point. YMMV.
 
 
 ## Installation
@@ -27,9 +28,16 @@ dependencies:
 ```
 
 
+## Documentation
+
+The [latest Crystal Cassandra API documentation can be found
+here](https://kaukas.github.io/crystal-cassandra/latest/).
+
+
 ## Usage
 
-From the [basic example][]:
+From the [basic
+example](https://github.com/kaukas/crystal-cassandra/blob/master/examples/basic.cr):
 
 ```crystal
 require "cassandra/dbapi"
@@ -60,16 +68,40 @@ DB.open("cassandra://127.0.0.1/test") do |db|
 end
 ```
 
-Please refer to [crystal-db][] for further usage instructions.
+Please refer to [crystal-db](https://github.com/crystal-lang/crystal-db) for
+further usage instructions.
 
 
-## Casting
+## Types
+
+`crystal-cassandra` supports [all the
+`DB::Any`](https://crystal-lang.github.io/crystal-db/api/0.5.0/DB/Any.html)
+primitive types plus `Int8` and `Int16` and some additional value types:
+
+- `date` maps to `Cassandra::DBApi::Date`
+- `time` maps to `Cassandra::DBApi::Time`
+- `duration` maps to `Cassandra::DBApi::Duration`
+- `uuid` maps to `Cassandra::DBApi::Uuid`
+- `timeuuid` maps to `Cassandra::DBApi::TimeUuid`
+
+Some of the collection types are also supported:
+
+- `list` maps to `Array`
+- `set` maps to `Set`
+- `map` maps to `Hash`
+
+
+### Casting
 
 Cassandra supports nested collection types (lists, sets, maps, etc.). Since
-[recursive aliases are deprecated][] these can be represented with recursive
-structs. `crystal-cassandra` has `Cassandra::DBApi::Any` which performs a
-similar function to [`JSON::Any`][]. You can pass collection parameters to
-queries wrapped with `Any` (taken from the [collections example][]):
+Crystal [deprecated recursive
+aliases](https://github.com/crystal-lang/crystal/issues/5155) they can be
+represented with recursive structs. `crystal-cassandra` has
+`Cassandra::DBApi::Any` which performs a similar function to
+[`JSON::Any`](https://crystal-lang.org/api/latest/JSON/Any.html). You can pass
+collection parameters to queries wrapped with `Cassandra::DBApi::Any` (taken
+from the [collections
+example](https://github.com/kaukas/crystal-cassandra/blob/master/examples/collections.cr)):
 
 ```crystal
 alias Any = Cassandra::DBApi::Any
@@ -101,30 +133,7 @@ end
 ```
 
 but shortcuts are defined for them so `Any` can be skipped (see the [basic
-example][]).
-
-
-## Types
-
-`crystal-cassandra` supports [all the
-`DB::Any`](https://crystal-lang.github.io/crystal-db/api/0.5.0/DB/Any.html)
-primitive types plus `Int8` and `Int16`. Additional value types:
-
-| Cassandra Type | Crystal Type |
-|---|---|
-| `date` | `Cassandra::DBApi::Date` |
-| `time` | `Cassandra::DBApi::Time` |
-| `duration` | `Cassandra::DBApi::Duration` |
-| `uuid` | `Cassandra::DBApi::Uuid` |
-| `timeuuid` | `Cassandra::DBApi::TimeUuid` |
-
-Some collection types are also supported:
-
-| Cassandra Type | Crystal Type |
-|---|---|
-| `list` | `Array` |
-| `set` | `Set` |
-| `map` | `Hash` |
+example](https://github.com/kaukas/crystal-cassandra/blob/master/examples/basic.cr)).
 
 
 ## Development
@@ -166,10 +175,3 @@ $ make stop-cassandra
 ## Contributors
 
 - [kaukas](https://github.com/kaukas) Linas Juškevičius - creator, maintainer
-
-[basic example]: https://github.com/kaukas/crystal-cassandra/blob/master/examples/basic.cr
-[collections example]: https://github.com/kaukas/crystal-cassandra/blob/master/examples/collections.cr
-[DataStax C/C++ Driver]: https://docs.datastax.com/en/developer/cpp-driver/2.9/
-[crystal-db]: https://github.com/crystal-lang/crystal-db
-[`JSON::Any`]: https://crystal-lang.org/api/0.26.1/JSON/Any.html
-[recursive aliases are deprecated]: https://github.com/crystal-lang/crystal/issues/5155

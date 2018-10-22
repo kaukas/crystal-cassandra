@@ -5,10 +5,10 @@ require "./decoders"
 
 module Cassandra
   module DBApi
-    class IteratorError < DB::Error
-    end
-
     class ResultSet < DB::ResultSet
+      class IteratorError < DB::Error
+      end
+
       CassTrue = LibCass::BoolT::True
       ITERATION_ERROR = IteratorError.new("No more values in this row")
 

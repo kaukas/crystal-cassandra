@@ -1,5 +1,13 @@
 HERE := $(shell pwd)
 
+DOC_DIR := ../crystal-cassandra-docs/latest
+
+docs:
+	rm -r $(DOC_DIR)
+	mkdir -p $(DOC_DIR)
+	crystal docs --output=$(DOC_DIR)
+PHONY: docs
+
 CPP_DRIVER_DIR := /tmp/cpp-driver-master
 CPP_DRIVER_NAME := cassandra-cpp-driver
 BUILD_DIR := $(CPP_DRIVER_DIR)/build
