@@ -32,7 +32,7 @@ DB.open("cassandra://127.0.0.1/crystal_cassandra_dbapi_test") do |db|
       mentions = rs.read(Hash(Any, Any))
       puts "Authors: #{authors.map { |author| author.as_s }.join(", ")}"
       puts "Tags: #{tags.map { |tag| tag.as_s }.join(" ")}"
-      puts "Mentions: #{mentions.map { |media, count| "#{count.as_i} on #{media.as_s}" }.join(", ")}"
+      puts "Mentions: #{mentions.map { |media, count| "#{count.as_i32} on #{media.as_s}" }.join(", ")}"
     end
   end
 end
