@@ -67,19 +67,48 @@ describe Any do
   test_primitive(String, as_s, "word", "letter", 42_i64)
   test_primitive(Bytes, as_bytes, "word".to_slice, "letter".to_slice, 42_i64)
   test_primitive(::Time, as_timestamp, ::Time.now, ::Time.now + 1.day, 42_i64)
-  test_primitive(Cassandra::DBApi::Date,
-                 as_date,
-                 Cassandra::DBApi::Date.new(::Time.now),
-                 Cassandra::DBApi::Date.new(::Time.now + 1.day),
-                 42_i64)
-  test_primitive(Cassandra::DBApi::Time,
-                 as_time,
-                 Cassandra::DBApi::Time.new(::Time.now),
-                 Cassandra::DBApi::Time.new(::Time.now + 1.day),
-                 42_i64)
-  test_primitive(Cassandra::DBApi::Duration,
-                 as_duration,
-                 Cassandra::DBApi::Duration.new(0, 0),
-                 Cassandra::DBApi::Duration.new(0, 1),
-                 42_i64)
+  test_primitive(
+    Cassandra::DBApi::Date,
+    as_date,
+    Cassandra::DBApi::Date.new(::Time.now),
+    Cassandra::DBApi::Date.new(::Time.now + 1.day),
+    42_i64
+  )
+  test_primitive(
+    Cassandra::DBApi::Time,
+    as_time,
+    Cassandra::DBApi::Time.new(::Time.now),
+    Cassandra::DBApi::Time.new(::Time.now + 1.day),
+    42_i64
+  )
+  test_primitive(
+    Cassandra::DBApi::Duration,
+    as_duration,
+    Cassandra::DBApi::Duration.new(0, 0),
+    Cassandra::DBApi::Duration.new(0, 1),
+    42_i64
+  )
+  test_primitive(
+    Cassandra::DBApi::Uuid,
+    as_uuid,
+    Cassandra::DBApi::Uuid.new("550e8400-e29b-41d4-a716-446655440000"),
+    Cassandra::DBApi::Uuid.new("550e8400-e29b-41d4-a716-446655440999"),
+    42_i64
+  )
+  test_primitive(
+    Cassandra::DBApi::TimeUuid,
+    as_timeuuid,
+    Cassandra::DBApi::TimeUuid.new("00b69180-d0e1-11e2-8b8b-0800200c9a66"),
+    Cassandra::DBApi::TimeUuid.new("00b69180-d0e1-11e2-8b8b-0800200c9a99"),
+    42_i64
+  )
+  test_primitive(Array, as_a, [Any.new(1)], [Any.new(2)], 42_i64)
+  test_primitive(Set, as_set, [Any.new(1)].to_set, [Any.new(2)].to_set, 42_i64)
+  test_primitive(
+    Hash,
+    as_h,
+    { Any.new(1) => Any.new(1) },
+    { Any.new(1) => Any.new(2) },
+    42_i64
+  )
 end

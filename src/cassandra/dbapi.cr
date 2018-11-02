@@ -117,6 +117,11 @@ module Cassandra
       def_for_type(as_date, DBApi::Date)
       def_for_type(as_time, DBApi::Time)
       def_for_type(as_duration, DBApi::Duration)
+      def_for_type(as_uuid, DBApi::Uuid)
+      def_for_type(as_timeuuid, DBApi::TimeUuid)
+      def_for_type(as_a, Array(Any))
+      def_for_type(as_set, Set(Any))
+      def_for_type(as_h, Hash(Any, Any))
     end
   end
 end
