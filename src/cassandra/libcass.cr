@@ -2,7 +2,7 @@ module Cassandra
   @[Link("cassandra")]
   lib LibCass
     VERSION_MAJOR = 2
-    VERSION_MINOR = 9
+    VERSION_MINOR = 10
     VERSION_PATCH = 0
     INET_V4_LENGTH = 4
     INET_V6_LENGTH = 16
@@ -11,10 +11,11 @@ module Cassandra
     LOG_MAX_MESSAGE_SIZE = 1024
     False = 0_i64
     True = 1_i64
-    fun cluster_new = cass_cluster_new : CassCluster
-    type CassCluster = Void*
-    fun cluster_free = cass_cluster_free(cluster : CassCluster)
-    fun cluster_set_contact_points = cass_cluster_set_contact_points(cluster : CassCluster, contact_points : LibC::Char*) : CassError
+    fun execution_profile_new = cass_execution_profile_new : CassExecProfile
+    type CassExecProfile = Void*
+    fun execution_profile_free = cass_execution_profile_free(profile : CassExecProfile)
+    fun execution_profile_set_request_timeout = cass_execution_profile_set_request_timeout(profile : CassExecProfile, timeout_ms : Uint64T) : CassError
+    alias Uint64T = LibC::ULongLong
     enum CassError
       Ok = 0
       ErrorLibBadParams = 16777217
@@ -50,6 +51,7 @@ module Cassandra
       ErrorLibNotEnoughData = 16777247
       ErrorLibInvalidState = 16777248
       ErrorLibNoCustomPayload = 16777249
+      ErrorLibExecutionProfileInvalid = 16777250
       ErrorServerServerError = 33554432
       ErrorServerProtocolError = 33554442
       ErrorServerBadCredentials = 33554688
@@ -76,6 +78,51 @@ module Cassandra
       ErrorSslProtocolError = 50331654
       ErrorLastEntry = 50331655
     end
+    fun execution_profile_set_consistency = cass_execution_profile_set_consistency(profile : CassExecProfile, consistency : CassConsistency) : CassError
+    enum CassConsistency
+      ConsistencyUnknown = 65535
+      ConsistencyAny = 0
+      ConsistencyOne = 1
+      ConsistencyTwo = 2
+      ConsistencyThree = 3
+      ConsistencyQuorum = 4
+      ConsistencyAll = 5
+      ConsistencyLocalQuorum = 6
+      ConsistencyEachQuorum = 7
+      ConsistencySerial = 8
+      ConsistencyLocalSerial = 9
+      ConsistencyLocalOne = 10
+    end
+    fun execution_profile_set_serial_consistency = cass_execution_profile_set_serial_consistency(profile : CassExecProfile, serial_consistency : CassConsistency) : CassError
+    fun execution_profile_set_load_balance_round_robin = cass_execution_profile_set_load_balance_round_robin(profile : CassExecProfile) : CassError
+    fun execution_profile_set_load_balance_dc_aware = cass_execution_profile_set_load_balance_dc_aware(profile : CassExecProfile, local_dc : LibC::Char*, used_hosts_per_remote_dc : LibC::UInt, allow_remote_dcs_for_local_cl : BoolT) : CassError
+    enum BoolT
+      False = 0
+      True = 1
+    end
+    fun execution_profile_set_load_balance_dc_aware_n = cass_execution_profile_set_load_balance_dc_aware_n(profile : CassExecProfile, local_dc : LibC::Char*, local_dc_length : LibC::SizeT, used_hosts_per_remote_dc : LibC::UInt, allow_remote_dcs_for_local_cl : BoolT) : CassError
+    fun execution_profile_set_token_aware_routing = cass_execution_profile_set_token_aware_routing(profile : CassExecProfile, enabled : BoolT) : CassError
+    fun execution_profile_set_token_aware_routing_shuffle_replicas = cass_execution_profile_set_token_aware_routing_shuffle_replicas(profile : CassExecProfile, enabled : BoolT) : CassError
+    fun execution_profile_set_latency_aware_routing = cass_execution_profile_set_latency_aware_routing(profile : CassExecProfile, enabled : BoolT) : CassError
+    fun execution_profile_set_latency_aware_routing_settings = cass_execution_profile_set_latency_aware_routing_settings(profile : CassExecProfile, exclusion_threshold : DoubleT, scale_ms : Uint64T, retry_period_ms : Uint64T, update_rate_ms : Uint64T, min_measured : Uint64T) : CassError
+    alias DoubleT = LibC::Double
+    fun execution_profile_set_whitelist_filtering = cass_execution_profile_set_whitelist_filtering(profile : CassExecProfile, hosts : LibC::Char*) : CassError
+    fun execution_profile_set_whitelist_filtering_n = cass_execution_profile_set_whitelist_filtering_n(profile : CassExecProfile, hosts : LibC::Char*, hosts_length : LibC::SizeT) : CassError
+    fun execution_profile_set_blacklist_filtering = cass_execution_profile_set_blacklist_filtering(profile : CassExecProfile, hosts : LibC::Char*) : CassError
+    fun execution_profile_set_blacklist_filtering_n = cass_execution_profile_set_blacklist_filtering_n(profile : CassExecProfile, hosts : LibC::Char*, hosts_length : LibC::SizeT) : CassError
+    fun execution_profile_set_whitelist_dc_filtering = cass_execution_profile_set_whitelist_dc_filtering(profile : CassExecProfile, dcs : LibC::Char*) : CassError
+    fun execution_profile_set_whitelist_dc_filtering_n = cass_execution_profile_set_whitelist_dc_filtering_n(profile : CassExecProfile, dcs : LibC::Char*, dcs_length : LibC::SizeT) : CassError
+    fun execution_profile_set_blacklist_dc_filtering = cass_execution_profile_set_blacklist_dc_filtering(profile : CassExecProfile, dcs : LibC::Char*) : CassError
+    fun execution_profile_set_blacklist_dc_filtering_n = cass_execution_profile_set_blacklist_dc_filtering_n(profile : CassExecProfile, dcs : LibC::Char*, dcs_length : LibC::SizeT) : CassError
+    fun execution_profile_set_retry_policy = cass_execution_profile_set_retry_policy(profile : CassExecProfile, retry_policy : CassRetryPolicy) : CassError
+    type CassRetryPolicy = Void*
+    fun execution_profile_set_constant_speculative_execution_policy = cass_execution_profile_set_constant_speculative_execution_policy(profile : CassExecProfile, constant_delay_ms : Int64T, max_speculative_executions : LibC::Int) : CassError
+    alias Int64T = LibC::LongLong
+    fun execution_profile_set_no_speculative_execution_policy = cass_execution_profile_set_no_speculative_execution_policy(profile : CassExecProfile) : CassError
+    fun cluster_new = cass_cluster_new : CassCluster
+    type CassCluster = Void*
+    fun cluster_free = cass_cluster_free(cluster : CassCluster)
+    fun cluster_set_contact_points = cass_cluster_set_contact_points(cluster : CassCluster, contact_points : LibC::Char*) : CassError
     fun cluster_set_contact_points_n = cass_cluster_set_contact_points_n(cluster : CassCluster, contact_points : LibC::Char*, contact_points_length : LibC::SizeT) : CassError
     fun cluster_set_port = cass_cluster_set_port(cluster : CassCluster, port : LibC::Int) : CassError
     fun cluster_set_local_address = cass_cluster_set_local_address(cluster : CassCluster, name : LibC::Char*) : CassError
@@ -97,25 +144,7 @@ module Cassandra
     alias CassAuthenticatorDataCleanupCallback = (Void* -> Void)
     fun cluster_set_protocol_version = cass_cluster_set_protocol_version(cluster : CassCluster, protocol_version : LibC::Int) : CassError
     fun cluster_set_use_beta_protocol_version = cass_cluster_set_use_beta_protocol_version(cluster : CassCluster, enable : BoolT) : CassError
-    enum BoolT
-      False = 0
-      True = 1
-    end
     fun cluster_set_consistency = cass_cluster_set_consistency(cluster : CassCluster, consistency : CassConsistency) : CassError
-    enum CassConsistency
-      ConsistencyUnknown = 65535
-      ConsistencyAny = 0
-      ConsistencyOne = 1
-      ConsistencyTwo = 2
-      ConsistencyThree = 3
-      ConsistencyQuorum = 4
-      ConsistencyAll = 5
-      ConsistencyLocalQuorum = 6
-      ConsistencyEachQuorum = 7
-      ConsistencySerial = 8
-      ConsistencyLocalSerial = 9
-      ConsistencyLocalOne = 10
-    end
     fun cluster_set_serial_consistency = cass_cluster_set_serial_consistency(cluster : CassCluster, consistency : CassConsistency) : CassError
     fun cluster_set_num_threads_io = cass_cluster_set_num_threads_io(cluster : CassCluster, num_threads : LibC::UInt) : CassError
     fun cluster_set_queue_size_io = cass_cluster_set_queue_size_io(cluster : CassCluster, queue_size : LibC::UInt) : CassError
@@ -123,6 +152,9 @@ module Cassandra
     fun cluster_set_core_connections_per_host = cass_cluster_set_core_connections_per_host(cluster : CassCluster, num_connections : LibC::UInt) : CassError
     fun cluster_set_max_connections_per_host = cass_cluster_set_max_connections_per_host(cluster : CassCluster, num_connections : LibC::UInt) : CassError
     fun cluster_set_reconnect_wait_time = cass_cluster_set_reconnect_wait_time(cluster : CassCluster, wait_time : LibC::UInt)
+    fun cluster_set_coalesce_delay = cass_cluster_set_coalesce_delay(cluster : CassCluster, delay_us : Int64T) : CassError
+    fun cluster_set_new_request_ratio = cass_cluster_set_new_request_ratio(cluster : CassCluster, ratio : Int32T) : CassError
+    alias Int32T = LibC::Int
     fun cluster_set_max_concurrent_creation = cass_cluster_set_max_concurrent_creation(cluster : CassCluster, num_connections : LibC::UInt) : CassError
     fun cluster_set_max_concurrent_requests_threshold = cass_cluster_set_max_concurrent_requests_threshold(cluster : CassCluster, num_requests : LibC::UInt) : CassError
     fun cluster_set_max_requests_per_flush = cass_cluster_set_max_requests_per_flush(cluster : CassCluster, num_requests : LibC::UInt) : CassError
@@ -133,16 +165,16 @@ module Cassandra
     fun cluster_set_connect_timeout = cass_cluster_set_connect_timeout(cluster : CassCluster, timeout_ms : LibC::UInt)
     fun cluster_set_request_timeout = cass_cluster_set_request_timeout(cluster : CassCluster, timeout_ms : LibC::UInt)
     fun cluster_set_resolve_timeout = cass_cluster_set_resolve_timeout(cluster : CassCluster, timeout_ms : LibC::UInt)
+    fun cluster_set_max_schema_wait_time = cass_cluster_set_max_schema_wait_time(cluster : CassCluster, wait_time_ms : LibC::UInt)
     fun cluster_set_credentials = cass_cluster_set_credentials(cluster : CassCluster, username : LibC::Char*, password : LibC::Char*)
     fun cluster_set_credentials_n = cass_cluster_set_credentials_n(cluster : CassCluster, username : LibC::Char*, username_length : LibC::SizeT, password : LibC::Char*, password_length : LibC::SizeT)
     fun cluster_set_load_balance_round_robin = cass_cluster_set_load_balance_round_robin(cluster : CassCluster)
     fun cluster_set_load_balance_dc_aware = cass_cluster_set_load_balance_dc_aware(cluster : CassCluster, local_dc : LibC::Char*, used_hosts_per_remote_dc : LibC::UInt, allow_remote_dcs_for_local_cl : BoolT) : CassError
     fun cluster_set_load_balance_dc_aware_n = cass_cluster_set_load_balance_dc_aware_n(cluster : CassCluster, local_dc : LibC::Char*, local_dc_length : LibC::SizeT, used_hosts_per_remote_dc : LibC::UInt, allow_remote_dcs_for_local_cl : BoolT) : CassError
     fun cluster_set_token_aware_routing = cass_cluster_set_token_aware_routing(cluster : CassCluster, enabled : BoolT)
+    fun cluster_set_token_aware_routing_shuffle_replicas = cass_cluster_set_token_aware_routing_shuffle_replicas(cluster : CassCluster, enabled : BoolT)
     fun cluster_set_latency_aware_routing = cass_cluster_set_latency_aware_routing(cluster : CassCluster, enabled : BoolT)
     fun cluster_set_latency_aware_routing_settings = cass_cluster_set_latency_aware_routing_settings(cluster : CassCluster, exclusion_threshold : DoubleT, scale_ms : Uint64T, retry_period_ms : Uint64T, update_rate_ms : Uint64T, min_measured : Uint64T)
-    alias DoubleT = LibC::Double
-    alias Uint64T = LibC::ULongLong
     fun cluster_set_whitelist_filtering = cass_cluster_set_whitelist_filtering(cluster : CassCluster, hosts : LibC::Char*)
     fun cluster_set_whitelist_filtering_n = cass_cluster_set_whitelist_filtering_n(cluster : CassCluster, hosts : LibC::Char*, hosts_length : LibC::SizeT)
     fun cluster_set_blacklist_filtering = cass_cluster_set_blacklist_filtering(cluster : CassCluster, hosts : LibC::Char*)
@@ -158,13 +190,14 @@ module Cassandra
     fun cluster_set_connection_heartbeat_interval = cass_cluster_set_connection_heartbeat_interval(cluster : CassCluster, interval_secs : LibC::UInt)
     fun cluster_set_connection_idle_timeout = cass_cluster_set_connection_idle_timeout(cluster : CassCluster, timeout_secs : LibC::UInt)
     fun cluster_set_retry_policy = cass_cluster_set_retry_policy(cluster : CassCluster, retry_policy : CassRetryPolicy)
-    type CassRetryPolicy = Void*
     fun cluster_set_use_schema = cass_cluster_set_use_schema(cluster : CassCluster, enabled : BoolT)
     fun cluster_set_use_hostname_resolution = cass_cluster_set_use_hostname_resolution(cluster : CassCluster, enabled : BoolT) : CassError
     fun cluster_set_use_randomized_contact_points = cass_cluster_set_use_randomized_contact_points(cluster : CassCluster, enabled : BoolT) : CassError
     fun cluster_set_constant_speculative_execution_policy = cass_cluster_set_constant_speculative_execution_policy(cluster : CassCluster, constant_delay_ms : Int64T, max_speculative_executions : LibC::Int) : CassError
-    alias Int64T = LibC::LongLong
     fun cluster_set_no_speculative_execution_policy = cass_cluster_set_no_speculative_execution_policy(cluster : CassCluster) : CassError
+    fun cluster_set_max_reusable_write_objects = cass_cluster_set_max_reusable_write_objects(cluster : CassCluster, num_objects : LibC::UInt) : CassError
+    fun cluster_set_execution_profile = cass_cluster_set_execution_profile(cluster : CassCluster, name : LibC::Char*, profile : CassExecProfile) : CassError
+    fun cluster_set_execution_profile_n = cass_cluster_set_execution_profile_n(cluster : CassCluster, name : LibC::Char*, name_length : LibC::SizeT, profile : CassExecProfile) : CassError
     fun cluster_set_prepare_on_all_hosts = cass_cluster_set_prepare_on_all_hosts(cluster : CassCluster, enabled : BoolT) : CassError
     fun cluster_set_prepare_on_up_or_add_host = cass_cluster_set_prepare_on_up_or_add_host(cluster : CassCluster, enabled : BoolT) : CassError
     fun cluster_set_no_compact = cass_cluster_set_no_compact(cluster : CassCluster, enabled : BoolT) : CassError
@@ -218,6 +251,21 @@ module Cassandra
       pending_request_timeouts : Uint64T
       request_timeouts : Uint64T
     end
+    fun session_get_speculative_execution_metrics = cass_session_get_speculative_execution_metrics(session : CassSession, output : CassSpeculativeExecutionMetrics*)
+    struct CassSpeculativeExecutionMetrics
+      min : Uint64T
+      max : Uint64T
+      mean : Uint64T
+      stddev : Uint64T
+      median : Uint64T
+      percentile_75th : Uint64T
+      percentile_95th : Uint64T
+      percentile_98th : Uint64T
+      percentile_99th : Uint64T
+      percentile_999th : Uint64T
+      count : Uint64T
+      percentage : DoubleT
+    end
     fun schema_meta_free = cass_schema_meta_free(schema_meta : CassSchemaMeta)
     fun schema_meta_snapshot_version = cass_schema_meta_snapshot_version(schema_meta : CassSchemaMeta) : Uint32T
     alias Uint32T = LibC::UInt
@@ -231,6 +279,7 @@ module Cassandra
     type CassKeyspaceMeta = Void*
     fun schema_meta_keyspace_by_name_n = cass_schema_meta_keyspace_by_name_n(schema_meta : CassSchemaMeta, keyspace : LibC::Char*, keyspace_length : LibC::SizeT) : CassKeyspaceMeta
     fun keyspace_meta_name = cass_keyspace_meta_name(keyspace_meta : CassKeyspaceMeta, name : LibC::Char**, name_length : LibC::SizeT*)
+    fun keyspace_meta_is_virtual = cass_keyspace_meta_is_virtual(keyspace_meta : CassKeyspaceMeta) : BoolT
     fun keyspace_meta_table_by_name = cass_keyspace_meta_table_by_name(keyspace_meta : CassKeyspaceMeta, table : LibC::Char*) : CassTableMeta
     type CassTableMeta = Void*
     fun keyspace_meta_table_by_name_n = cass_keyspace_meta_table_by_name_n(keyspace_meta : CassKeyspaceMeta, table : LibC::Char*, table_length : LibC::SizeT) : CassTableMeta
@@ -250,6 +299,7 @@ module Cassandra
     type CassValue = Void*
     fun keyspace_meta_field_by_name_n = cass_keyspace_meta_field_by_name_n(keyspace_meta : CassKeyspaceMeta, name : LibC::Char*, name_length : LibC::SizeT) : CassValue
     fun table_meta_name = cass_table_meta_name(table_meta : CassTableMeta, name : LibC::Char**, name_length : LibC::SizeT*)
+    fun table_meta_is_virtual = cass_table_meta_is_virtual(table_meta : CassTableMeta) : BoolT
     fun table_meta_column_by_name = cass_table_meta_column_by_name(table_meta : CassTableMeta, column : LibC::Char*) : CassColumnMeta
     type CassColumnMeta = Void*
     fun table_meta_column_by_name_n = cass_table_meta_column_by_name_n(table_meta : CassTableMeta, column : LibC::Char*, column_length : LibC::SizeT) : CassColumnMeta
@@ -408,7 +458,6 @@ module Cassandra
     fun statement_bind_int16_by_name = cass_statement_bind_int16_by_name(statement : CassStatement, name : LibC::Char*, value : Int16T) : CassError
     fun statement_bind_int16_by_name_n = cass_statement_bind_int16_by_name_n(statement : CassStatement, name : LibC::Char*, name_length : LibC::SizeT, value : Int16T) : CassError
     fun statement_bind_int32 = cass_statement_bind_int32(statement : CassStatement, index : LibC::SizeT, value : Int32T) : CassError
-    alias Int32T = LibC::Int
     fun statement_bind_int32_by_name = cass_statement_bind_int32_by_name(statement : CassStatement, name : LibC::Char*, value : Int32T) : CassError
     fun statement_bind_int32_by_name_n = cass_statement_bind_int32_by_name_n(statement : CassStatement, name : LibC::Char*, name_length : LibC::SizeT, value : Int32T) : CassError
     fun statement_bind_uint32 = cass_statement_bind_uint32(statement : CassStatement, index : LibC::SizeT, value : Uint32T) : CassError
@@ -466,6 +515,8 @@ module Cassandra
     type CassUserType = Void*
     fun statement_bind_user_type_by_name = cass_statement_bind_user_type_by_name(statement : CassStatement, name : LibC::Char*, user_type : CassUserType) : CassError
     fun statement_bind_user_type_by_name_n = cass_statement_bind_user_type_by_name_n(statement : CassStatement, name : LibC::Char*, name_length : LibC::SizeT, user_type : CassUserType) : CassError
+    fun statement_set_execution_profile = cass_statement_set_execution_profile(statement : CassStatement, name : LibC::Char*) : CassError
+    fun statement_set_execution_profile_n = cass_statement_set_execution_profile_n(statement : CassStatement, name : LibC::Char*, name_length : LibC::SizeT) : CassError
     fun prepared_free = cass_prepared_free(prepared : CassPrepared)
     fun prepared_bind = cass_prepared_bind(prepared : CassPrepared) : CassStatement
     fun prepared_parameter_name = cass_prepared_parameter_name(prepared : CassPrepared, index : LibC::SizeT, name : LibC::Char**, name_length : LibC::SizeT*) : CassError
@@ -489,6 +540,8 @@ module Cassandra
     fun batch_set_retry_policy = cass_batch_set_retry_policy(batch : CassBatch, retry_policy : CassRetryPolicy) : CassError
     fun batch_set_custom_payload = cass_batch_set_custom_payload(batch : CassBatch, payload : CassCustomPayload) : CassError
     fun batch_add_statement = cass_batch_add_statement(batch : CassBatch, statement : CassStatement) : CassError
+    fun batch_set_execution_profile = cass_batch_set_execution_profile(batch : CassBatch, name : LibC::Char*) : CassError
+    fun batch_set_execution_profile_n = cass_batch_set_execution_profile_n(batch : CassBatch, name : LibC::Char*, name_length : LibC::SizeT) : CassError
     fun data_type_new = cass_data_type_new(type : CassValueType) : CassDataType
     enum CassValueType
       ValueTypeUnknown = 65535
@@ -848,5 +901,9 @@ module Cassandra
     fun date_from_epoch = cass_date_from_epoch(epoch_secs : Int64T) : Uint32T
     fun time_from_epoch = cass_time_from_epoch(epoch_secs : Int64T) : Int64T
     fun date_time_to_epoch = cass_date_time_to_epoch(date : Uint32T, time : Int64T) : Int64T
+    fun alloc_set_functions = cass_alloc_set_functions(malloc_func : CassMallocFunction, realloc_func : CassReallocFunction, free_func : CassFreeFunction)
+    alias CassMallocFunction = (LibC::SizeT -> Void*)
+    alias CassReallocFunction = (Void*, LibC::SizeT -> Void*)
+    alias CassFreeFunction = (Void* -> Void)
   end
 end

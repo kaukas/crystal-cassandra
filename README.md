@@ -1,7 +1,7 @@
 # Crystal DB API for Cassandra
 
 A Crystal wrapper around the [DataStax C/C++
-Driver](https://docs.datastax.com/en/developer/cpp-driver/2.9/). It conforms to
+Driver](https://docs.datastax.com/en/developer/cpp-driver/2.10/). It conforms to
 the [crystal-db](https://github.com/crystal-lang/crystal-db) API.
 
 

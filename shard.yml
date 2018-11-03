@@ -16,6 +16,6 @@ development_dependencies:
     github: crystal-lang/crystal_lib
 
 libraries:
-  libcassandra: "~> 2.9"
+  libcassandra: "2.10.0"
 
 license: MIT
