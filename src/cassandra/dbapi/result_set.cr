@@ -51,8 +51,8 @@ module Cassandra
         LibCass.result_column_count(@cass_result)
       end
 
-      def column_name(i : Int32) : String
-        LibCass.result_column_name(@cass_result, i, out name, out _len)
+      def column_name(i : Int32 | UInt64) : String
+        LibCass.result_column_name(@cass_result, i.to_i32, out name, out _len)
         String.new(name)
       end
 

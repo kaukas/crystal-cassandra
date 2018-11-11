@@ -14,6 +14,8 @@ dependencies:
 development_dependencies:
   crystal_lib:
     github: crystal-lang/crystal_lib
+  crecto:
+    github: fridgerator/crecto
 
 libraries:
   libcassandra: "2.10.0"

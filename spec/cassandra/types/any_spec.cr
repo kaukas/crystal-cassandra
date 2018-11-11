@@ -38,25 +38,28 @@ macro test_primitive(type_name,
 end
 
 describe Any do
-  it "wraps a value of type Nil" do
-    Any.new(nil).raw.should eq(nil)
-  end
+  describe "nil" do
+    it "wraps a value of type Nil" do
+      Any.new(nil).raw.should eq(nil)
+    end
 
-  it "can be converted to Nil" do
-    Any.new(nil).as_nil.should eq(nil)
-  end
+    it "can be converted to Nil" do
+      Any.new(nil).as_nil.should eq(nil)
+    end
 
-  it "fails when different type value is converted to Nil" do
-    expect_raises(TypeCastError) do
-      Any.new(42_i64).as_nil
+    it "fails when different type value is converted to Nil" do
+      expect_raises(TypeCastError) do
+        Any.new(42_i64).as_nil
+      end
+    end
+
+    it "compares raw values" do
+      Any.new(nil).should eq(Any.new(nil))
+      Any.new(nil).should eq(nil)
     end
   end
 
-  it "compares raw values" do
-    Any.new(nil).should eq(Any.new(nil))
-    Any.new(nil).should eq(nil)
-  end
-
+  # Primitives
   test_primitive(Bool, as_bool, false, true, 42_i64)
   test_primitive(Int8, as_i8, 42_i8, 43_i8, 42_i64)
   test_primitive(Int16, as_i16, 42_i16, 43_i16, 42_i64)
@@ -111,4 +114,42 @@ describe Any do
     { Any.new(1) => Any.new(2) },
     42_i64
   )
+
+  describe "JSON::Any" do
+    it "wraps a primitive value of type JSON::Any" do
+      Any.new(JSON.parse("1")).raw.should eq(1)
+    end
+
+    it "wraps a collection of type JSON::Any" do
+      Any.new(JSON.parse("[1]")).raw.should eq([Any.new(1)])
+    end
+
+    it "can convert nil to JSON::Any" do
+      Any.new(nil).as_json.should eq(JSON.parse("null"))
+    end
+
+    it "can convert a primitive to JSON::Any" do
+      Any.new(JSON.parse("1")).as_json.should eq(JSON.parse("1"))
+    end
+
+    it "can convert an array to JSON::Any" do
+      Any.new(JSON.parse("[1]")).as_json.should eq(JSON.parse("[1]"))
+    end
+
+    it "can convert a hash to JSON::Any" do
+      Any.new(JSON.parse(%({"1":"2"}))).as_json.
+        should eq(JSON.parse(%({"1":"2"})))
+    end
+
+    it "fails when unsupported type value is converted to JSON::Any" do
+      expect_raises(TypeCastError) do
+        Any.new(Set(Any).new).as_json
+      end
+    end
+
+    it "compares raw values" do
+      Any.new(JSON.parse("[1]")).should eq(Any.new(JSON.parse("[1]")))
+      Any.new(JSON.parse("[1]")).should_not eq(JSON.parse("[2]"))
+    end
+  end
 end

@@ -1,4 +1,5 @@
 require "db"
+require "json"
 require "./libcass"
 require "./dbapi/types"
 require "./dbapi/error_handler"
@@ -74,6 +75,20 @@ module Cassandra
       def initialize(@raw : Type)
       end
 
+      # A convenience method to wrap a `JSON::Any` value. It is re-wrapped with
+      # `Cassandra::DBApi::Any`.
+      def initialize(json : JSON::Any)
+        raw = json.raw
+        @raw = case raw
+               when Array
+                 raw.map { |item| Any.new(item).as(Any) }
+               when Hash
+                 raw.map { |key, val| [Any.new(key), Any.new(val)] }.to_h
+               else
+                 raw
+               end
+      end
+
       # Compares this `Any` to the given `Any` by comparing their values.
       def ==(other : Any)
         @raw == other.raw
@@ -88,6 +103,23 @@ module Cassandra
       # Raises otherwise.
       def as_nil
         @raw.as(Nil)
+      end
+
+      def as_json : JSON::Any
+        raw = @raw
+        json = case raw
+               when Array
+                 raw.map(&.as_json.as(JSON::Any))
+               when Hash
+                 raw.map { |k, v| {k.raw.to_s, v.as_json.as(JSON::Any)} }.to_h
+               when JSON::Any::Type
+                 raw
+               else
+                 raise TypeCastError.new(
+                   "Can not convert #{typeof(raw)} to JSON::Any"
+                 )
+               end
+        JSON::Any.new(json)
       end
 
       private macro def_for_type(as_method, type)
