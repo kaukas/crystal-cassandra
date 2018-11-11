@@ -169,7 +169,7 @@ module Cassandra
 
         def decode_with_type(cass_value) : ::Time
           handle_error(LibCass.value_get_int64(cass_value, out milliseconds))
-          ::Time.epoch_ms(milliseconds)
+          ::Time.unix_ms(milliseconds)
         end
       end
 

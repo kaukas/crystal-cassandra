@@ -10,11 +10,11 @@ module Cassandra
       end
 
       def bind(any)
-        if any.is_a?(Any)
-          Error.from_error(do_bind(any.raw), BindError)
-        else
-          Error.from_error(do_bind(any), BindError)
-        end
+        Error.from_error(do_bind(any), BindError)
+      end
+
+      private def do_bind(val : Any)
+        do_bind(val.raw)
       end
 
       private def do_bind(val : Nil)

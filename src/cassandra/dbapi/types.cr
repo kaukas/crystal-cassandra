@@ -3,24 +3,17 @@ require "../libcass"
 
 module Cassandra
   module DBApi
-    EPOCH_START = ::Time.epoch(0)
+    EPOCH_START = ::Time.unix(0)
 
     # Implements functionality common to both `Uuid` and `TimeUuid`.
     module CommonUuid
+      GENERATOR = LibCass.uuid_gen_new
+
       # An error
       class UuidError < DB::Error
       end
 
       @cass_uuid : LibCass::CassUuid
-
-      # Initialises the UUID from a string.
-      def initialize(s : String)
-        @cass_uuid = from_string(s)
-      end
-
-      # Initialises the UUID from a Cassandra UUID.
-      def initialize(@cass_uuid)
-      end
 
       private def from_string(s : String)
         Error.from_error(LibCass.uuid_from_string_n(s, s.size, out cass_uuid),
@@ -45,11 +38,39 @@ module Cassandra
     # Represents the Cassandra *uuid* type.
     struct Uuid
       include CommonUuid
+
+      # Autogenerates a UUID.
+      def initialize
+        LibCass.uuid_gen_random(GENERATOR, out @cass_uuid)
+      end
+
+      # Initialises the UUID from a string.
+      def initialize(s : String)
+        @cass_uuid = from_string(s)
+      end
+
+      # Initialises the UUID from a Cassandra UUID.
+      def initialize(@cass_uuid)
+      end
     end
 
     # Represents the Cassandra *timeuuid* type.
     struct TimeUuid
       include CommonUuid
+
+      # Autogenerates a Time UUID.
+      def initialize
+        LibCass.uuid_gen_time(GENERATOR, out @cass_uuid)
+      end
+
+      # Initialises the UUID from a string.
+      def initialize(s : String)
+        @cass_uuid = from_string(s)
+      end
+
+      # Initialises the UUID from a Cassandra UUID.
+      def initialize(@cass_uuid)
+      end
 
       # Extracts the time part of the *timeuuid*.
       def to_time : ::Time
