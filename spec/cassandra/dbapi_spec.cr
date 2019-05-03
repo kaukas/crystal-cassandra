@@ -1,4 +1,4 @@
-require "spec"
+require "../spec_helper"
 require "../../src/cassandra/dbapi"
 require "./aliases"
 require "./custom_dbapi"
@@ -202,15 +202,9 @@ CassandraSpecs.run do
   # Expect correct port to succeed.
   connection_string "cassandra://root@127.0.0.1/crystal_cassandra_dbapi_test"
 
-  DB.open "cassandra://root@127.0.0.1" do |db|
-    db.exec "drop keyspace if exists crystal_cassandra_dbapi_test"
-    db.exec <<-CQL
-      create keyspace crystal_cassandra_dbapi_test
-      with replication = { 'class': 'SimpleStrategy', 'replication_factor': 1 }
-    CQL
-  end
+  DBHelper.setup
 
-  DB.open "cassandra://root@127.0.0.1/crystal_cassandra_dbapi_test" do |db|
+  DBHelper.connect do |db|
     db.exec "drop table if exists scalars"
 
     simple_columns = PRIMITIVE_TYPES.map do |type|

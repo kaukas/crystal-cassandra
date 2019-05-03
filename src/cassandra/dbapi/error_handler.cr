@@ -2,9 +2,11 @@ module Cassandra
   module DBApi
     # TODO: Perhaps use https://github.com/dhruvrajvanshi/crz
     module Error
-      def self.from_future(cass_future : LibCass::CassFuture | Nil,
-                           err_class : Class)
-        return if cass_future.is_a?(Nil)
+      def self.from_future(cass_future : LibCass::CassFuture, err_class : Class)
+        # Give other fibers a chance while we're waiting for the future to
+        # resolve.
+        Fiber.yield
+
         error_code = LibCass.future_error_code(cass_future)
         # TODO: handle errors properly, with tests.
         unless error_code == LibCass::CassError::Ok
