@@ -146,7 +146,7 @@ describe Cassandra::DBApi do
   end
 end
 
-# According to https://docs.datastax.com/en/dse/6.0/cql/cql/cql_reference/refDataTypes.html
+# According to https://cassandra.apache.org/doc/latest/cql/types.html
 PRIMITIVE_TYPES = [
   # String types
   {name: "ascii", raw: "ascii value", encoded: "'ascii value'"},
@@ -161,7 +161,7 @@ PRIMITIVE_TYPES = [
   # TODO:
   # {name: "varint", raw: 42_000_000_000_i64, encoded: "42000000000"},
 
-  # Decimals
+  # Floating point
   # TODO:
   # {name: "decimal", raw: ..., encoded: "..."},
   {name: "float", raw: 42.5_f32, encoded: "42.5"},
@@ -171,10 +171,6 @@ PRIMITIVE_TYPES = [
   {name: "date",
    raw: Cassandra::DBApi::Date.new(Time.utc(2016, 2, 15)),
    encoded: Cassandra::DBApi::Date.new(Time.utc(2016, 2, 15)).days.to_s},
-  # TODO: requires dse.
-  # {name: "DateRangeType",
-  #  raw: "2016-02", # Cassandra::DBApi::Date.new(Time.utc(2016, 2, 15)),
-  #  encoded: "'2016-02'"}, #Cassandra::DBApi::Date.new(Time.utc(2016, 2, 15)).days.to_s},
   {name: "duration",
    raw: Cassandra::DBApi::Duration.new(0, 0, Time::Span.new(12, 30, 0)),
    encoded: "12h30m"},
@@ -185,7 +181,7 @@ PRIMITIVE_TYPES = [
             .to_s},
   {name: "timestamp",
    raw: Time.utc(2016, 2, 15, 4, 20, 25),
-   encoded: (Time.utc(2016, 2, 15, 4, 20, 25) - Time.epoch(0)).
+   encoded: (Time.utc(2016, 2, 15, 4, 20, 25) - Time.unix_ms(0)).
             total_milliseconds.
             to_i64.
             to_s},
@@ -201,9 +197,7 @@ PRIMITIVE_TYPES = [
   # Specialized
   # TODO: blob
   {name: "boolean", raw: true, encoded: "true"},
-  # TODO: counter, DseExecutorStateType, inet
-
-  # TODO: Geo-spatial
+  # TODO: counter, inet
 ]
 
 CassandraSpecs.run do
@@ -275,7 +269,7 @@ CassandraSpecs.run do
   end
 
   PRIMITIVE_TYPES.each do |type|
-    sample_value type[:raw], type[:name], type[:encoded]
+    sample_value(type[:raw], type[:name], type[:encoded], type_safe_value: false)
   end
 
   binding_syntax do |_index|
@@ -320,7 +314,7 @@ CassandraSpecs.run do
     create table #{table_name} (
       id timeuuid primary key,
       #{col1.name} #{col1.sql_type},
-      #{col2.name} #{col2.sql_type},
+      #{col2.name} #{col2.sql_type}
     )
     CQL
   end
@@ -386,7 +380,7 @@ CassandraSpecs.run do
     exec_result.rows_affected.should eq(0)
   end
 
-  it "does not support the affected row count", prepared: :default do |db|
+  it "does not support the last inserted id", prepared: :default do |db|
     db.exec("truncate compound_scalars")
     exec_result = db.exec("insert into compound_scalars (id) values (now())")
     exec_result.last_insert_id.should eq(0)
