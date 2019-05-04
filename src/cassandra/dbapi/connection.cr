@@ -36,9 +36,26 @@ module Cassandra
 
     # Represents a Cassandra connection. It contains cluster configuration and a
     # session. The connection is also used to construct statements from strings.
+    #
+    # The wrapped cpp-driver session already maintains a connection pool so the
+    # DB pool is unnecessary. Instead of creating Connection instances we
+    # acquire the same instance.
     class Connection < DB::Connection
+      @@connections = {} of String => Connection
+
+      def self.acquire(context : DB::ConnectionContext)
+        uri = context.uri.to_s
+        connection = @@connections.fetch(uri) do
+          @@connections[uri] = Connection.new(context)
+        end
+        connection.add_reference
+      end
+
       # Return the session that can be used to issue Cassandra queries.
       getter session : DBApi::Session
+      # Track how many times this instance has been acquired.
+      @acquire_count = Atomic(Int32).new(0)
+      @uri : String
 
       # Creates a connection.
       #
@@ -46,6 +63,7 @@ module Cassandra
       # session.
       def initialize(context : DB::ConnectionContext)
         super(context)
+        @uri = context.uri.to_s
         @cluster = Cluster.new(context)
         @session = DBApi::Session.new(@cluster, context)
       end
@@ -56,8 +74,18 @@ module Cassandra
       # Needs to be called to prevent connection and memory leaks. `crystal-db`
       # automatically calls *do_close* for the connections that it manages.
       def do_close
-        @session.do_close
-        @cluster.do_close
+        @acquire_count.sub(1)
+        if @acquire_count.get <= 0
+          # All references returned. Destruct self.
+          @session.do_close
+          @cluster.do_close
+          @@connections.delete(@uri)
+        end
+      end
+
+      def add_reference
+        @acquire_count.add(1)
+        self
       end
 
       # Creates a prepared statement from a *query*.

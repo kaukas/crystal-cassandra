@@ -115,7 +115,7 @@ module Cassandra
       end
 
       def total_nanoseconds : Int64
-        (@time - @time.date).total_nanoseconds.to_i64
+        (@time - @time.at_beginning_of_day).total_nanoseconds.to_i64
       end
 
       def ==(other : self) : Bool

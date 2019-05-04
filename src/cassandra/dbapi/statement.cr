@@ -14,9 +14,7 @@ module Cassandra
       @session : Cassandra::DBApi::Session
 
       def initialize(connection : DBApi::Connection, cql : String)
-        super(connection)
-        @session = connection.session
-        @cass_statement = create_statement(cql)
+        initialize(connection, create_statement(cql))
       end
 
       def initialize(connection : DBApi::Connection, @cass_statement)
