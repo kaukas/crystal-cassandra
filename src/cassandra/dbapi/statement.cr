@@ -24,6 +24,7 @@ module Cassandra
 
       def do_close
         LibCass.statement_free(@cass_statement)
+        super
       end
 
       protected def create_statement(cql : String)
@@ -74,6 +75,7 @@ module Cassandra
       def do_close
         @statement.do_close
         LibCass.prepared_free(@cass_prepared)
+        super
       end
 
       protected def prepare(session, cql)

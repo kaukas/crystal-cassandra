@@ -32,6 +32,7 @@ module Cassandra
         LibCass.iterator_free(@cass_row_iterator)
         LibCass.result_free(@cass_result)
         LibCass.future_free(@cass_result_future)
+        super
       end
 
       def move_next : Bool

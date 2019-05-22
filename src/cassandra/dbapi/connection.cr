@@ -81,6 +81,7 @@ module Cassandra
           @cluster.do_close
           @@connections.delete(@uri)
         end
+        super
       end
 
       def add_reference
