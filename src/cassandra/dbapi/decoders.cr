@@ -126,20 +126,6 @@ module Cassandra
         end
       end
 
-      class DurationDecoder < BaseDecoder
-        def self.cass_value_codes
-          [LibCass::CassValueType::ValueTypeDuration]
-        end
-
-        def decode_with_type(cass_value) : DBApi::Duration
-          handle_error(LibCass.value_get_duration(cass_value,
-                                                  out months,
-                                                  out days,
-                                                  out nanoseconds))
-          DBApi::Duration.new(months, days, nanoseconds)
-        end
-      end
-
       class DateDecoder < BaseDecoder
         def self.cass_value_codes
           [LibCass::CassValueType::ValueTypeDate]

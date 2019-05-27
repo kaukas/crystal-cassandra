@@ -59,14 +59,6 @@ module Cassandra
         LibCass.statement_bind_string_n(@cass_stmt, @i, val, val.bytesize)
       end
 
-      private def do_bind(val : DBApi::Duration)
-        LibCass.statement_bind_duration(@cass_stmt,
-                                        @i,
-                                        val.months,
-                                        val.days,
-                                        val.nanoseconds)
-      end
-
       private def do_bind(val : DBApi::Date)
         LibCass.statement_bind_uint32(@cass_stmt, @i, val.days)
       end
@@ -176,14 +168,6 @@ module Cassandra
 
       private def append(cass_coll : LibCass::CassCollection, val : DBApi::Time)
         LibCass.collection_append_int64(cass_coll, val.total_nanoseconds)
-      end
-
-      private def append(cass_coll : LibCass::CassCollection,
-                         val : DBApi::Duration)
-        LibCass.collection_append_duration(cass_coll,
-                                           val.months,
-                                           val.days,
-                                           val.nanoseconds)
       end
 
       private def append(cass_coll : LibCass::CassCollection,

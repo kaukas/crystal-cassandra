@@ -32,8 +32,8 @@ module Cassandra
     #   end
     # end
     # ```
-    alias Primitive = DB::Any | Int8 | Int16 | DBApi::Date | DBApi::Duration |
-      DBApi::Time | DBApi::Uuid | DBApi::TimeUuid
+    alias Primitive = DB::Any | Int8 | Int16 | DBApi::Date | DBApi::Time |
+      DBApi::Uuid | DBApi::TimeUuid
 
     # All supported Cassandra types.
     #
@@ -116,7 +116,6 @@ module Cassandra
       def_for_type(as_timestamp, ::Time)
       def_for_type(as_date, DBApi::Date)
       def_for_type(as_time, DBApi::Time)
-      def_for_type(as_duration, DBApi::Duration)
       def_for_type(as_uuid, DBApi::Uuid)
       def_for_type(as_timeuuid, DBApi::TimeUuid)
       def_for_type(as_a, Array(Any))

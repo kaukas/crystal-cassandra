@@ -80,7 +80,6 @@ primitive types plus `Int8` and `Int16` and some additional value types:
 
 - `date` maps to `Cassandra::DBApi::Date`
 - `time` maps to `Cassandra::DBApi::Time`
-- `duration` maps to `Cassandra::DBApi::Duration`
 - `uuid` maps to `Cassandra::DBApi::Uuid`
 - `timeuuid` maps to `Cassandra::DBApi::TimeUuid`
 

@@ -82,13 +82,6 @@ describe Any do
     42_i64
   )
   test_primitive(
-    Cassandra::DBApi::Duration,
-    as_duration,
-    Cassandra::DBApi::Duration.new(0, 0),
-    Cassandra::DBApi::Duration.new(0, 1),
-    42_i64
-  )
-  test_primitive(
     Cassandra::DBApi::Uuid,
     as_uuid,
     Cassandra::DBApi::Uuid.new("550e8400-e29b-41d4-a716-446655440000"),

@@ -126,43 +126,5 @@ module Cassandra
         @time.to_s
       end
     end
-
-    # Represents the Cassandra *duration* type.
-    struct Duration
-      getter months
-      getter days
-      getter nanoseconds
-
-      def initialize(@months : Int32 = 0,
-                     @days : Int32 = 0,
-                     @nanoseconds : Int64 = 0)
-      end
-
-      def initialize(@months : Int32 = 0,
-                     @days : Int32 = 0,
-                     time_span : ::Time::Span = Time::Span.zero)
-        @nanoseconds = time_span.total_nanoseconds.to_i64
-      end
-
-      def ==(other : self) : Bool
-        @months == other.months &&
-          @days == other.days &&
-          @nanoseconds == other.nanoseconds
-      end
-
-      def time_span : ::Time::Span
-        ::Time::Span.new(nanoseconds: @nanoseconds)
-      end
-
-      def to_s
-        span = ::Time::Span.new(nanoseconds: @nanoseconds)
-        sprintf("P0000-%02d-%02dT%02d:%02d:%02d",
-                @months,
-                @days,
-                span.hours,
-                span.minutes,
-                span.seconds)
-      end
-    end
   end
 end

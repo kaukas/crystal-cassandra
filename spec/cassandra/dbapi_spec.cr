@@ -171,9 +171,7 @@ PRIMITIVE_TYPES = [
   {name: "date",
    raw: Cassandra::DBApi::Date.new(Time.utc(2016, 2, 15)),
    encoded: Cassandra::DBApi::Date.new(Time.utc(2016, 2, 15)).days.to_s},
-  {name: "duration",
-   raw: Cassandra::DBApi::Duration.new(0, 0, Time::Span.new(12, 30, 0)),
-   encoded: "12h30m"},
+  # TODO: duration
   {name: "time",
    raw: Cassandra::DBApi::Time.new(Time.utc(1970, 1, 1, 4)),
    encoded: Cassandra::DBApi::Time.new(Time.utc(1970, 1, 1, 4))
