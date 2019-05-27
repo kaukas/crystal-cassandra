@@ -1,5 +1,9 @@
 module Cassandra
+  {% if flag?(:static) %}
+  @[Link("cassandra_static")]
+  {% else %}
   @[Link("cassandra")]
+  {% end %}
   lib LibCass
     VERSION_MAJOR = 2
     VERSION_MINOR = 10

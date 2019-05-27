@@ -1,6 +1,10 @@
 module Cassandra
   @[Include("cassandra.h", prefix: %w(cass_ CASS_))]
+  {% if flag?(:static) %}
+  @[Link("cassandra_static")]
+  {% else %}
   @[Link("cassandra")]
+  {% end %}
   lib LibCass
   end
 end
