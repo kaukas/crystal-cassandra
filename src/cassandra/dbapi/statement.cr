@@ -9,7 +9,7 @@ module Cassandra
     end
 
     class RawStatement < DB::Statement
-      @cass_result_future : LibCass::CassFuture | Nil
+      @cass_result_future : LibCass::CassFuture?
       @cass_statement : LibCass::CassStatement
       @session : Cassandra::DBApi::Session
 

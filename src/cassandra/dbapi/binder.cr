@@ -10,7 +10,13 @@ module Cassandra
       end
 
       def bind(any)
-        Error.from_error(do_bind(any), BindError)
+        cass_error = do_bind(any)
+        if cass_error != LibCass::CassError::Ok
+          val_s = any.inspect
+          val_s = "#{val_s[0..1000]}…" if val_s.size > 1500
+          raise BindError.new("#{cass_error}: passed\n#{val_s}\n" \
+                              "of type #{typeof(any)} at index #{@i}")
+        end
       end
 
       private def do_bind(val : Any)

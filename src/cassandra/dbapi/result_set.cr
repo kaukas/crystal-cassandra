@@ -12,7 +12,7 @@ module Cassandra
       CassTrue = LibCass::BoolT::True
       ITERATION_ERROR = IteratorError.new("No more values in this row")
 
-      @cass_column_iterator : LibCass::CassIterator | Nil
+      @cass_column_iterator : LibCass::CassIterator?
       @decoders : Array(Decoders::BaseDecoder)
 
       def initialize(statement : RawStatement,
