@@ -1,4 +1,4 @@
-require "../../libcass"
+require "../libcass"
 
 module Cassandra
   module DBApi

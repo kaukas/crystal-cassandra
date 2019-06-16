@@ -5,14 +5,13 @@ require "./dbapi/error_handler"
 require "./dbapi/result_set"
 require "./dbapi/session"
 require "./dbapi/statement"
-require "./dbapi/connection"
 
 module Cassandra
   module DBApi
     class Driver < DB::Driver
       # Builds a Cassandra connection for the given `DB::ConnectionContext`.
       def build_connection(context : DB::ConnectionContext)
-        DBApi::Connection.acquire(context)
+        DBApi::Session.new(context)
       end
     end
 
@@ -125,4 +124,4 @@ module Cassandra
   end
 end
 
-DB.register_driver "cassandra", Cassandra::DBApi::Driver
+DB.register_driver("cassandra", Cassandra::DBApi::Driver)

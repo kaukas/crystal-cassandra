@@ -1,6 +1,6 @@
 require "db"
 require "../libcass"
-require "./connection"
+require "./session"
 require "./binder"
 
 module Cassandra
@@ -13,13 +13,12 @@ module Cassandra
       @cass_statement : LibCass::CassStatement
       @session : Cassandra::DBApi::Session
 
-      def initialize(connection : DBApi::Connection, cql : String)
-        initialize(connection, create_statement(cql))
+      def initialize(session : DBApi::Session, cql : String)
+        initialize(session, create_statement(cql))
       end
 
-      def initialize(connection : DBApi::Connection, @cass_statement)
-        super(connection)
-        @session = connection.session
+      def initialize(@session : DBApi::Session, @cass_statement)
+        super(@session)
       end
 
       def do_close
@@ -65,11 +64,11 @@ module Cassandra
       class StatementPrepareError < DB::Error
       end
 
-      def initialize(connection : DBApi::Connection, cql : String)
-        super(connection)
-        @cass_prepared = prepare(connection.session, cql)
+      def initialize(@session : DBApi::Session, cql : String)
+        super(@session)
+        @cass_prepared = prepare(@session, cql)
         cass_statement = create_statement(@cass_prepared)
-        @statement = RawStatement.new(connection, cass_statement)
+        @statement = RawStatement.new(@session, cass_statement)
       end
 
       def do_close
