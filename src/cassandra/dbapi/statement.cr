@@ -13,12 +13,15 @@ module Cassandra
       @cass_statement : LibCass::CassStatement
       @session : Cassandra::DBApi::Session
 
-      def initialize(session : DBApi::Session, cql : String)
-        initialize(session, create_statement(cql))
+      def initialize(session, cql : String, paging_size)
+        initialize(session, create_statement(cql), paging_size)
       end
 
-      def initialize(@session : DBApi::Session, @cass_statement)
+      def initialize(@session, @cass_statement, paging_size : UInt64?)
         super(@session)
+        if paging_size
+          LibCass.statement_set_paging_size(@cass_statement, paging_size)
+        end
       end
 
       def do_close
@@ -26,15 +29,21 @@ module Cassandra
         super
       end
 
-      protected def create_statement(cql : String)
+      def to_unsafe
+        @cass_statement
+      end
+
+      def reset_paging_state
+        LibCass.statement_set_paging_state_token(@cass_statement, "", 0)
+      end
+
+      protected def create_statement(cql)
         LibCass.statement_new(cql, 0)
       end
 
       protected def perform_query(args : Enumerable) : ResultSet
         rebind_params(args)
-        cass_result_future = LibCass.session_execute(@session, @cass_statement)
-        Error.from_future(cass_result_future, StatementError)
-        ResultSet.new(self, cass_result_future)
+        ResultSet.new(@session, self)
       end
 
       protected def perform_exec(args : Enumerable) : DB::ExecResult
@@ -64,11 +73,13 @@ module Cassandra
       class StatementPrepareError < DB::Error
       end
 
-      def initialize(@session : DBApi::Session, cql : String)
+      def initialize(@session : DBApi::Session,
+                     cql : String,
+                     paging_size : UInt64?)
         super(@session)
         @cass_prepared = prepare(@session, cql)
         cass_statement = create_statement(@cass_prepared)
-        @statement = RawStatement.new(@session, cass_statement)
+        @statement = RawStatement.new(@session, cass_statement, paging_size)
       end
 
       def do_close

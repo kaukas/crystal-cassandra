@@ -1,4 +1,3 @@
-# require "./session"
 require "../libcass"
 
 module Cassandra
@@ -21,6 +20,7 @@ module Cassandra
       # Track how many times this instance has been acquired.
       @acquire_count = Atomic(Int32).new(0)
       @uri_s : String
+      getter paging_size : UInt64?
 
       @cass_cluster : LibCass::CassCluster
 
@@ -36,6 +36,9 @@ module Cassandra
 
         port = context.uri.port
         LibCass.cluster_set_port(@cass_cluster, port) if port
+
+        params = HTTP::Params.parse(context.uri.query || "")
+        @paging_size = params["paging_size"]?.try(&.to_u64?)
       end
 
       # Close the connection.

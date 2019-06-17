@@ -12,9 +12,8 @@ module DBHelper
     end
   end
 
-  def self.connect
-    DB.open("cassandra://root@127.0.0.1/crystal_cassandra_dbapi_test") do |db|
-      yield(db)
-    end
+  def self.connect(params : String = "")
+    uri = "cassandra://root@127.0.0.1/crystal_cassandra_dbapi_test?#{params}"
+    DB.open(uri) { |db| yield(db) }
   end
 end

@@ -60,14 +60,14 @@ module Cassandra
       #
       # The statement is bound to a session and can be executed.
       def build_prepared_statement(query : String)
-        PreparedStatement.new(self, query)
+        PreparedStatement.new(self, query, @cluster.paging_size)
       end
 
       # Creates an unprepared (one-off) statement from a *query*.
       #
       # The statement is bound to a session and can be executed.
       def build_unprepared_statement(query : String)
-        RawStatement.new(self, query)
+        RawStatement.new(self, query, @cluster.paging_size)
       end
     end
   end
