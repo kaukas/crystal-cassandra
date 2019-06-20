@@ -144,6 +144,11 @@ describe Cassandra::DBApi do
       DB.open("cassandra://root@127.0.0.1:55")
     end
   end
+
+  it "supports multiple hosts" do
+    # Expect the last address to succeed.
+    DB.open("cassandra://root@127.0.0.3,127.0.0.2,127.0.0.1:9042")
+  end
 end
 
 # According to https://cassandra.apache.org/doc/latest/cql/types.html
