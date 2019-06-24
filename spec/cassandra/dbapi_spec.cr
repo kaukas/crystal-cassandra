@@ -198,7 +198,7 @@ PRIMITIVE_TYPES = [
    encoded: "00b69180-d0e1-11e2-8b8b-0800200c9a66"},
 
   # Specialized
-  # TODO: blob
+  {name: "blob", raw: UInt8.slice(1, 2, 3, 4), encoded: "0x01020304"},
   {name: "boolean", raw: true, encoded: "true"},
   # TODO: counter, inet
 ]

@@ -192,6 +192,17 @@ module Cassandra
         end
       end
 
+      class BytesDecoder < BaseDecoder
+        def self.cass_value_codes
+          [LibCass::CassValueType::ValueTypeBlob]
+        end
+
+        def decode_with_type(cass_value)
+          handle_error(LibCass.value_get_bytes(cass_value, out s, out len))
+          Bytes.new(s, len)
+        end
+      end
+
       private class CassCollectionIterator
         include Iterator(LibCass::CassValue)
 

@@ -57,8 +57,7 @@ module Cassandra
       end
 
       private def do_bind(val : Bytes)
-        # LibCass.statement_bind_bytes(@cass_stmt, @i, val, val.size)
-        raise NotImplementedError.new("Test first")
+        LibCass.statement_bind_bytes(@cass_stmt, @i, val, val.size)
       end
 
       private def do_bind(val : String)
