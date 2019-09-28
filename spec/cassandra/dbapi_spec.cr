@@ -48,7 +48,7 @@ macro test_compound_scalar(col_name, type_name, raw, encoded)
     db.exec(
       "insert into compound_scalars (id, #{ {{col_name}} }) " \
         "values (now(), ?)",
-      [{{raw}}]
+      args: [{{raw}}]
     )
     db.query_one(
       "select #{ {{col_name}} } from compound_scalars allow filtering",
@@ -61,7 +61,7 @@ macro test_compound_scalar(col_name, type_name, raw, encoded)
     db.exec("truncate compound_scalars")
     db.exec(
       "insert into compound_scalars (id, #{ {{col_name}} }) values (now(), ?)",
-      [{{raw}}]
+      args: [{{raw}}]
     )
     db.query_one(
       "select #{ {{col_name}} } from compound_scalars allow filtering",
