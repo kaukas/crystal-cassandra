@@ -10,7 +10,7 @@ module Cassandra
   module DBApi
     class Driver < DB::Driver
       # Builds a Cassandra connection for the given `DB::ConnectionContext`.
-      def build_connection(context : DB::ConnectionContext)
+      def build_connection(context : DB::ConnectionContext) : DB::Connection
         DBApi::Session.new(context)
       end
     end

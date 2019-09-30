@@ -8,13 +8,12 @@ module Cassandra
         Fiber.yield
 
         error_code = LibCass.future_error_code(cass_future)
+        return if error_code == LibCass::CassError::Ok
+
         # TODO: handle errors properly, with tests.
-        unless error_code == LibCass::CassError::Ok
-          LibCass.future_error_message(cass_future, out msg, out len)
-          error_message = String.new(msg, len)
-          LibCass.future_free(cass_future)
-          raise err_class.new("#{error_code}: #{error_message}")
-        end
+        LibCass.future_error_message(cass_future, out msg, out len)
+        error_message = String.new(msg, len)
+        raise err_class.new("#{error_code}: #{error_message}")
       end
 
       # TODO: handle errors properly, with tests.

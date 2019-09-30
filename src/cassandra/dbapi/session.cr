@@ -41,8 +41,11 @@ module Cassandra
                               else
                                 LibCass.session_connect(@cass_session, @cluster)
                               end
-        Error.from_future(cass_connect_future, ConnectError)
-        LibCass.future_free(cass_connect_future)
+        begin
+          Error.from_future(cass_connect_future, ConnectError)
+        ensure
+          LibCass.future_free(cass_connect_future)
+        end
       end
 
       # Close the session.
@@ -59,14 +62,14 @@ module Cassandra
       # Creates a prepared statement from a *query*.
       #
       # The statement is bound to a session and can be executed.
-      def build_prepared_statement(query : String)
+      def build_prepared_statement(query : String) : DB::Statement
         PreparedStatement.new(self, query, @cluster.paging_size)
       end
 
       # Creates an unprepared (one-off) statement from a *query*.
       #
       # The statement is bound to a session and can be executed.
-      def build_unprepared_statement(query : String)
+      def build_unprepared_statement(query : String) : DB::Statement
         RawStatement.new(self, query, @cluster.paging_size)
       end
     end

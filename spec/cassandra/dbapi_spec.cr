@@ -204,7 +204,6 @@ PRIMITIVE_TYPES = [
 ]
 
 CassandraSpecs.run do
-  # Expect correct port to succeed.
   connection_string "cassandra://root@127.0.0.1/crystal_cassandra_dbapi_test"
 
   DBHelper.setup

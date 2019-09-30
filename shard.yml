@@ -4,7 +4,7 @@ version: 0.1.0
 authors:
   - Linas Juškevičius <linas@prodigito.lt>
 
-crystal: 0.25.1
+crystal: 0.31.0
 
 dependencies:
   db:

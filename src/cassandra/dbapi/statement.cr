@@ -49,8 +49,11 @@ module Cassandra
       protected def perform_exec(args : Enumerable) : DB::ExecResult
         rebind_params(args)
         cass_result_future = LibCass.session_execute(@session, @cass_statement)
-        Error.from_future(cass_result_future, StatementError)
-        LibCass.future_free(cass_result_future)
+        begin
+          Error.from_future(cass_result_future, StatementError)
+        ensure
+          LibCass.future_free(cass_result_future)
+        end
 
         # Cassandra does not support affected rows nor last_insert_id.
         DB::ExecResult.new(0, 0)
@@ -67,8 +70,6 @@ module Cassandra
     class PreparedStatement < DB::Statement
       @cass_prepared : LibCass::CassPrepared
       @statement : RawStatement
-
-      delegate perform_query, perform_exec, to: @statement
 
       class StatementPrepareError < DB::Error
       end
@@ -90,14 +91,24 @@ module Cassandra
 
       protected def prepare(session, cql)
         cass_prepare_future = LibCass.session_prepare(session, cql)
-        Error.from_future(cass_prepare_future, StatementPrepareError)
-        cass_prepared = LibCass.future_get_prepared(cass_prepare_future)
-        LibCass.future_free(cass_prepare_future)
-        cass_prepared
+        begin
+          Error.from_future(cass_prepare_future, StatementPrepareError)
+          LibCass.future_get_prepared(cass_prepare_future)
+        ensure
+          LibCass.future_free(cass_prepare_future)
+        end
       end
 
       protected def create_statement(cass_prepared : LibCass::CassPrepared)
         LibCass.prepared_bind(cass_prepared)
+      end
+
+      def perform_query(*args, **options) : DB::ResultSet
+        @statement.perform_query(*args, **options)
+      end
+
+      def perform_exec(*args, **options) : DB::ExecResult
+        @statement.perform_exec(*args, **options)
       end
     end
   end

@@ -7,33 +7,29 @@ macro test_primitive(type_name,
                      raw,
                      another_raw,
                      raw_of_another_type)
-  value = {{ raw }}
-  another_value = {{ another_raw }}
-  value_of_another_type = {{ raw_of_another_type }}
-
   it "wraps a value of type {{ type_name }}" do
-    Any.new(value).raw.should eq(value)
+    Any.new({{ raw }}).raw.should eq({{ raw }})
   end
 
   it "can be converted to {{ type_name }}" do
-    Any.new(value).{{ as_type }}.should eq(value)
-    Any.new(value).{{ as_type }}?.should eq(value)
+    Any.new({{ raw }}).{{ as_type }}.should eq({{ raw }})
+    Any.new({{ raw }}).{{ as_type }}?.should eq({{ raw }})
   end
 
   it "fails when different type value is converted to {{ type_name }}" do
     expect_raises(TypeCastError) do
-      Any.new(value_of_another_type).{{ as_type }}
+      Any.new({{ raw_of_another_type }}).{{ as_type }}
     end
   end
 
   it "returns nil when different type value is converted to {{ type_name }}" do
-    Any.new(value_of_another_type).{{ as_type }}?.should eq(nil)
+    Any.new({{ raw_of_another_type }}).{{ as_type }}?.should eq(nil)
   end
 
   it "compares raw values" do
-    Any.new(value).should eq(Any.new(value))
-    Any.new(value).should_not eq(another_value)
-    Any.new(value).should eq(value)
+    Any.new({{ raw }}).should eq(Any.new({{ raw }}))
+    Any.new({{ raw }}).should_not eq({{ another_raw }})
+    Any.new({{ raw }}).should eq({{ raw }})
   end
 end
 
@@ -57,6 +53,8 @@ describe Any do
     Any.new(nil).should eq(nil)
   end
 
+  now = ::Time.local
+
   test_primitive(Bool, as_bool, false, true, 42_i64)
   test_primitive(Int8, as_i8, 42_i8, 43_i8, 42_i64)
   test_primitive(Int16, as_i16, 42_i16, 43_i16, 42_i64)
@@ -66,19 +64,19 @@ describe Any do
   test_primitive(Float64, as_f64, 42_f64, 43_f64, 42_f32)
   test_primitive(String, as_s, "word", "letter", 42_i64)
   test_primitive(Bytes, as_bytes, "word".to_slice, "letter".to_slice, 42_i64)
-  test_primitive(::Time, as_timestamp, ::Time.now, ::Time.now + 1.day, 42_i64)
+  test_primitive(::Time, as_timestamp, now, now + 1.day, 42_i64)
   test_primitive(
     Cassandra::DBApi::Date,
     as_date,
-    Cassandra::DBApi::Date.new(::Time.now),
-    Cassandra::DBApi::Date.new(::Time.now + 1.day),
+    Cassandra::DBApi::Date.new(now),
+    Cassandra::DBApi::Date.new(now + 1.day),
     42_i64
   )
   test_primitive(
     Cassandra::DBApi::Time,
     as_time,
-    Cassandra::DBApi::Time.new(::Time.now),
-    Cassandra::DBApi::Time.new(::Time.now + 1.day),
+    Cassandra::DBApi::Time.new(now),
+    Cassandra::DBApi::Time.new(now + 1.day),
     42_i64
   )
   test_primitive(

@@ -298,7 +298,7 @@ module Cassandra
           vals = val_decoder.decode_iterator(CassMapValueIterator.new(cass_map))
 
           count_of_items = LibCass.value_item_count(cass_map)
-          hsh = Hash(Any, Any).new(nil, count_of_items)
+          hsh = Hash(Any, Any).new(block: nil, initial_capacity: count_of_items)
           keys.zip(vals).each do |(key, val)|
             hsh[key] = val
           end

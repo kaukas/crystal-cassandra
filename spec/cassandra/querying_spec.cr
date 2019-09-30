@@ -36,4 +36,34 @@ describe "Querying" do
       end
     end
   end
+
+  DBHelper.connect("prepared_statements=true") do |db|
+    db.exec "drop table if exists books"
+    db.exec "create table books (id timeuuid primary key, title varchar)"
+
+    it "throws errors on invalid prepared statements" do
+      # Expect a valid statement to succeed.
+      db.exec("insert into books (id, title) values (now(), ?)", "A title")
+      # Expect an invalid statement to fail.
+      expect_raises(Cassandra::DBApi::PreparedStatement::StatementPrepareError,
+                    "ErrorServerSyntaxError") do
+        db.exec("do not insert into books (id, title) values (now(), ?)")
+      end
+    end
+  end
+
+  DBHelper.connect("prepared_statements=false") do |db|
+    db.exec "drop table if exists books"
+    db.exec "create table books (id timeuuid primary key, title varchar)"
+
+    it "throws errors on invalid unprepared statements" do
+      # Expect a valid statement to succeed.
+      db.exec("insert into books (id, title) values (now(), ?)", "A title")
+      # Expect an invalid statement to fail.
+      expect_raises(Cassandra::DBApi::StatementError,
+                    "ErrorServerSyntaxError") do
+        db.exec("do not insert into books (id, title) values (now(), ?)")
+      end
+    end
+  end
 end
