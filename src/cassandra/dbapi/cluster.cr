@@ -2,10 +2,10 @@ require "../libcass"
 
 module Cassandra
   module DBApi
-    # Represents a Cassandra cluster. Stores connection parameters, like host
-    # and port. A single cluster can be used to create many sessions, so a
-    # custom reference counting mechanism is used to track and destroy sessions
-    # as needed.
+    # Represents a Cassandra cluster. Stores connection parameters like host and
+    # port. A single cluster can be used to create many sessions so a custom
+    # reference counting mechanism is used to track and destroy sessions as
+    # needed.
     class Cluster
       @@clusters = {} of String => Cluster
 
