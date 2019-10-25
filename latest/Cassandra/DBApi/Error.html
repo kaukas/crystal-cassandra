@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Crystal Docs 0.26.1">
+<meta name="generator" content="Crystal Docs 0.30.1">
 
 
 <link href="../../css/style.css" rel="stylesheet" type="text/css">
@@ -71,11 +71,6 @@
       
     </li>
   
-  <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/Connection" data-name="cassandra::dbapi::connection">
-      <a href="../../Cassandra/DBApi/Connection.html">Connection</a>
-      
-    </li>
-  
   <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/Date" data-name="cassandra::dbapi::date">
       <a href="../../Cassandra/DBApi/Date.html">Date</a>
       
@@ -101,6 +96,11 @@
       
     </li>
   
+  <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/Decoders/BytesDecoder" data-name="cassandra::dbapi::decoders::bytesdecoder">
+      <a href="../../Cassandra/DBApi/Decoders/BytesDecoder.html">BytesDecoder</a>
+      
+    </li>
+  
   <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/Decoders/DateDecoder" data-name="cassandra::dbapi::decoders::datedecoder">
       <a href="../../Cassandra/DBApi/Decoders/DateDecoder.html">DateDecoder</a>
       
@@ -108,11 +108,6 @@
   
   <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/Decoders/DoubleDecoder" data-name="cassandra::dbapi::decoders::doubledecoder">
       <a href="../../Cassandra/DBApi/Decoders/DoubleDecoder.html">DoubleDecoder</a>
-      
-    </li>
-  
-  <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/Decoders/DurationDecoder" data-name="cassandra::dbapi::decoders::durationdecoder">
-      <a href="../../Cassandra/DBApi/Decoders/DurationDecoder.html">DurationDecoder</a>
       
     </li>
   
@@ -183,11 +178,6 @@
   
   <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/Driver" data-name="cassandra::dbapi::driver">
       <a href="../../Cassandra/DBApi/Driver.html">Driver</a>
-      
-    </li>
-  
-  <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/Duration" data-name="cassandra::dbapi::duration">
-      <a href="../../Cassandra/DBApi/Duration.html">Duration</a>
       
     </li>
   
@@ -338,7 +328,7 @@
   <h2>Defined in:</h2>
   
     
-      <a href="https://github.com/kaukas/crystal-cassandra/blob/be30cc70903e4e9077df07a56b485a8fc059332b/src/cassandra/dbapi/error_handler.cr#L4" target="_blank">
+      <a href="https://github.com/kaukas/crystal-cassandra/blob/c6ce30096e90ffe18fd6874cf4488c1186f45aef/src/cassandra/dbapi/error_handler.cr#L4" target="_blank">
         cassandra/dbapi/error_handler.cr
       </a>
     
@@ -355,14 +345,14 @@
   <ul class="list-summary">
     
       <li class="entry-summary">
-        <a href="#from_error%28cass_error%3ALibCass%3A%3ACassError%2Cerr_class%3DDB%3A%3AError%29-class-method" class="signature"><strong>.from_error</strong>(cass_error : LibCass::CassError, err_class = <span class="t">DB</span><span class="t">::</span><span class="t">Error</span>)</a>
+        <a href="#from_error(cass_error:LibCass::CassError,err_class=DB::Error)-class-method" class="signature"><strong>.from_error</strong>(cass_error : LibCass::CassError, err_class = <span class="t">DB</span><span class="t">::</span><span class="t">Error</span>)</a>
         
           <div class="summary"><p><span class="flag orange">TODO</span>  handle errors properly, with tests.</p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#from_future%28cass_future%3ALibCass%3A%3ACassFuture%3F%2Cerr_class%3AClass%29-class-method" class="signature"><strong>.from_future</strong>(cass_future : LibCass::CassFuture?, err_class : Class)</a>
+        <a href="#from_future(cass_future:LibCass::CassFuture,err_class:Class)-class-method" class="signature"><strong>.from_future</strong>(cass_future : LibCass::CassFuture, err_class : Class)</a>
         
       </li>
     
@@ -388,31 +378,34 @@
         
         def self.<strong>from_error</strong>(cass_error : LibCass::CassError, err_class = <span class="t">DB</span><span class="t">::</span><span class="t">Error</span>)
 
-        <a class="method-permalink" href="#from_error%28cass_error%3ALibCass%3A%3ACassError%2Cerr_class%3DDB%3A%3AError%29-class-method">#</a>
+        <a class="method-permalink" href="#from_error(cass_error:LibCass::CassError,err_class=DB::Error)-class-method">#</a>
       </div>
       
-        <div class="doc"><p><span class="flag orange">TODO</span>  handle errors properly, with tests.</p></div>
+        <div class="doc">
+          
+          <p><span class="flag orange">TODO</span>  handle errors properly, with tests.</p>
+        </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kaukas/crystal-cassandra/blob/be30cc70903e4e9077df07a56b485a8fc059332b/src/cassandra/dbapi/error_handler.cr#L19" target="_blank">View source</a>]
+          [<a href="https://github.com/kaukas/crystal-cassandra/blob/c6ce30096e90ffe18fd6874cf4488c1186f45aef/src/cassandra/dbapi/error_handler.cr#L20" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="from_future(cass_future:LibCass::CassFuture?,err_class:Class)-class-method">
+    <div class="entry-detail" id="from_future(cass_future:LibCass::CassFuture,err_class:Class)-class-method">
       <div class="signature">
         
-        def self.<strong>from_future</strong>(cass_future : LibCass::CassFuture?, err_class : Class)
+        def self.<strong>from_future</strong>(cass_future : LibCass::CassFuture, err_class : Class)
 
-        <a class="method-permalink" href="#from_future%28cass_future%3ALibCass%3A%3ACassFuture%3F%2Cerr_class%3AClass%29-class-method">#</a>
+        <a class="method-permalink" href="#from_future(cass_future:LibCass::CassFuture,err_class:Class)-class-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kaukas/crystal-cassandra/blob/be30cc70903e4e9077df07a56b485a8fc059332b/src/cassandra/dbapi/error_handler.cr#L5" target="_blank">View source</a>]
+          [<a href="https://github.com/kaukas/crystal-cassandra/blob/c6ce30096e90ffe18fd6874cf4488c1186f45aef/src/cassandra/dbapi/error_handler.cr#L5" target="_blank">View source</a>]
         
       </div>
     </div>

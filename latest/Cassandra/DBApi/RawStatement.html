@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Crystal Docs 0.26.1">
+<meta name="generator" content="Crystal Docs 0.30.1">
 
 
 <link href="../../css/style.css" rel="stylesheet" type="text/css">
@@ -71,11 +71,6 @@
       
     </li>
   
-  <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/Connection" data-name="cassandra::dbapi::connection">
-      <a href="../../Cassandra/DBApi/Connection.html">Connection</a>
-      
-    </li>
-  
   <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/Date" data-name="cassandra::dbapi::date">
       <a href="../../Cassandra/DBApi/Date.html">Date</a>
       
@@ -101,6 +96,11 @@
       
     </li>
   
+  <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/Decoders/BytesDecoder" data-name="cassandra::dbapi::decoders::bytesdecoder">
+      <a href="../../Cassandra/DBApi/Decoders/BytesDecoder.html">BytesDecoder</a>
+      
+    </li>
+  
   <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/Decoders/DateDecoder" data-name="cassandra::dbapi::decoders::datedecoder">
       <a href="../../Cassandra/DBApi/Decoders/DateDecoder.html">DateDecoder</a>
       
@@ -108,11 +108,6 @@
   
   <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/Decoders/DoubleDecoder" data-name="cassandra::dbapi::decoders::doubledecoder">
       <a href="../../Cassandra/DBApi/Decoders/DoubleDecoder.html">DoubleDecoder</a>
-      
-    </li>
-  
-  <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/Decoders/DurationDecoder" data-name="cassandra::dbapi::decoders::durationdecoder">
-      <a href="../../Cassandra/DBApi/Decoders/DurationDecoder.html">DurationDecoder</a>
       
     </li>
   
@@ -183,11 +178,6 @@
   
   <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/Driver" data-name="cassandra::dbapi::driver">
       <a href="../../Cassandra/DBApi/Driver.html">Driver</a>
-      
-    </li>
-  
-  <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/Duration" data-name="cassandra::dbapi::duration">
-      <a href="../../Cassandra/DBApi/Duration.html">Duration</a>
       
     </li>
   
@@ -336,7 +326,7 @@
   <h2>Defined in:</h2>
   
     
-      <a href="https://github.com/kaukas/crystal-cassandra/blob/be30cc70903e4e9077df07a56b485a8fc059332b/src/cassandra/dbapi/statement.cr#L11" target="_blank">
+      <a href="https://github.com/kaukas/crystal-cassandra/blob/c6ce30096e90ffe18fd6874cf4488c1186f45aef/src/cassandra/dbapi/statement.cr#L11" target="_blank">
         cassandra/dbapi/statement.cr
       </a>
     
@@ -351,12 +341,12 @@
   <ul class="list-summary">
     
       <li class="entry-summary">
-        <a href="#new%28connection%3ADBApi%3A%3AConnection%2Ccql%3AString%29-class-method" class="signature"><strong>.new</strong>(connection : DBApi::Connection, cql : String)</a>
+        <a href="#new(session,cql:String,paging_size)-class-method" class="signature"><strong>.new</strong>(session, cql : String, paging_size)</a>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#new%28connection%3ADBApi%3A%3AConnection%2Ccass_statement%29-class-method" class="signature"><strong>.new</strong>(connection : DBApi::Connection, cass_statement)</a>
+        <a href="#new(session,cass_statement,paging_size:UInt64?)-class-method" class="signature"><strong>.new</strong>(session, cass_statement, paging_size : UInt64?)</a>
         
       </li>
     
@@ -371,6 +361,18 @@
     
       <li class="entry-summary">
         <a href="#do_close-instance-method" class="signature"><strong>#do_close</strong></a>
+        
+          <div class="summary"><p>Implementors overrides this method to perform resource cleanup If an exception is raised, the resource will not be marked as closed.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#reset_paging_state-instance-method" class="signature"><strong>#reset_paging_state</strong></a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#to_unsafe:Cassandra::LibCass::CassStatement-instance-method" class="signature"><strong>#to_unsafe</strong> : Cassandra::LibCass::CassStatement</a>
         
       </li>
     
@@ -437,34 +439,34 @@
 
   <h2>Constructor Detail</h2>
   
-    <div class="entry-detail" id="new(connection:DBApi::Connection,cql:String)-class-method">
+    <div class="entry-detail" id="new(session,cql:String,paging_size)-class-method">
       <div class="signature">
         
-        def self.<strong>new</strong>(connection : <a href="../../Cassandra/DBApi/Connection.html">DBApi::Connection</a>, cql : String)
+        def self.<strong>new</strong>(session, cql : String, paging_size)
 
-        <a class="method-permalink" href="#new%28connection%3ADBApi%3A%3AConnection%2Ccql%3AString%29-class-method">#</a>
+        <a class="method-permalink" href="#new(session,cql:String,paging_size)-class-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kaukas/crystal-cassandra/blob/be30cc70903e4e9077df07a56b485a8fc059332b/src/cassandra/dbapi/statement.cr#L16" target="_blank">View source</a>]
+          [<a href="https://github.com/kaukas/crystal-cassandra/blob/c6ce30096e90ffe18fd6874cf4488c1186f45aef/src/cassandra/dbapi/statement.cr#L16" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="new(connection:DBApi::Connection,cass_statement)-class-method">
+    <div class="entry-detail" id="new(session,cass_statement,paging_size:UInt64?)-class-method">
       <div class="signature">
         
-        def self.<strong>new</strong>(connection : <a href="../../Cassandra/DBApi/Connection.html">DBApi::Connection</a>, cass_statement)
+        def self.<strong>new</strong>(session, cass_statement, paging_size : UInt64?)
 
-        <a class="method-permalink" href="#new%28connection%3ADBApi%3A%3AConnection%2Ccass_statement%29-class-method">#</a>
+        <a class="method-permalink" href="#new(session,cass_statement,paging_size:UInt64?)-class-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kaukas/crystal-cassandra/blob/be30cc70903e4e9077df07a56b485a8fc059332b/src/cassandra/dbapi/statement.cr#L22" target="_blank">View source</a>]
+          [<a href="https://github.com/kaukas/crystal-cassandra/blob/c6ce30096e90ffe18fd6874cf4488c1186f45aef/src/cassandra/dbapi/statement.cr#L20" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -484,10 +486,52 @@
         <a class="method-permalink" href="#do_close-instance-method">#</a>
       </div>
       
+        <div class="doc">
+          
+            <div class="doc-inherited">
+              Description copied from module DB::Disposable
+            </div>
+          
+          <p>Implementors overrides this method to perform resource cleanup
+If an exception is raised, the resource will not be marked as closed.</p>
+        </div>
+      
       <br/>
       <div>
         
-          [<a href="https://github.com/kaukas/crystal-cassandra/blob/be30cc70903e4e9077df07a56b485a8fc059332b/src/cassandra/dbapi/statement.cr#L27" target="_blank">View source</a>]
+          [<a href="https://github.com/kaukas/crystal-cassandra/blob/c6ce30096e90ffe18fd6874cf4488c1186f45aef/src/cassandra/dbapi/statement.cr#L27" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="reset_paging_state-instance-method">
+      <div class="signature">
+        
+        def <strong>reset_paging_state</strong>
+
+        <a class="method-permalink" href="#reset_paging_state-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kaukas/crystal-cassandra/blob/c6ce30096e90ffe18fd6874cf4488c1186f45aef/src/cassandra/dbapi/statement.cr#L36" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="to_unsafe:Cassandra::LibCass::CassStatement-instance-method">
+      <div class="signature">
+        
+        def <strong>to_unsafe</strong> : Cassandra::LibCass::CassStatement
+
+        <a class="method-permalink" href="#to_unsafe:Cassandra::LibCass::CassStatement-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kaukas/crystal-cassandra/blob/c6ce30096e90ffe18fd6874cf4488c1186f45aef/src/cassandra/dbapi/statement.cr#L32" target="_blank">View source</a>]
         
       </div>
     </div>

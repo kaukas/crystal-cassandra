@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Crystal Docs 0.26.1">
+<meta name="generator" content="Crystal Docs 0.30.1">
 
 
 <link href="../../../css/style.css" rel="stylesheet" type="text/css">
@@ -71,11 +71,6 @@
       
     </li>
   
-  <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/Connection" data-name="cassandra::dbapi::connection">
-      <a href="../../../Cassandra/DBApi/Connection.html">Connection</a>
-      
-    </li>
-  
   <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/Date" data-name="cassandra::dbapi::date">
       <a href="../../../Cassandra/DBApi/Date.html">Date</a>
       
@@ -101,6 +96,11 @@
       
     </li>
   
+  <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/Decoders/BytesDecoder" data-name="cassandra::dbapi::decoders::bytesdecoder">
+      <a href="../../../Cassandra/DBApi/Decoders/BytesDecoder.html">BytesDecoder</a>
+      
+    </li>
+  
   <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/Decoders/DateDecoder" data-name="cassandra::dbapi::decoders::datedecoder">
       <a href="../../../Cassandra/DBApi/Decoders/DateDecoder.html">DateDecoder</a>
       
@@ -108,11 +108,6 @@
   
   <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/Decoders/DoubleDecoder" data-name="cassandra::dbapi::decoders::doubledecoder">
       <a href="../../../Cassandra/DBApi/Decoders/DoubleDecoder.html">DoubleDecoder</a>
-      
-    </li>
-  
-  <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/Decoders/DurationDecoder" data-name="cassandra::dbapi::decoders::durationdecoder">
-      <a href="../../../Cassandra/DBApi/Decoders/DurationDecoder.html">DurationDecoder</a>
       
     </li>
   
@@ -183,11 +178,6 @@
   
   <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/Driver" data-name="cassandra::dbapi::driver">
       <a href="../../../Cassandra/DBApi/Driver.html">Driver</a>
-      
-    </li>
-  
-  <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/Duration" data-name="cassandra::dbapi::duration">
-      <a href="../../../Cassandra/DBApi/Duration.html">Duration</a>
       
     </li>
   
@@ -335,11 +325,11 @@
   
     <li class="other-type"><a href="../../../Cassandra/DBApi/Decoders/BooleanDecoder.html">Cassandra::DBApi::Decoders::BooleanDecoder</a></li>
   
+    <li class="other-type"><a href="../../../Cassandra/DBApi/Decoders/BytesDecoder.html">Cassandra::DBApi::Decoders::BytesDecoder</a></li>
+  
     <li class="other-type"><a href="../../../Cassandra/DBApi/Decoders/DateDecoder.html">Cassandra::DBApi::Decoders::DateDecoder</a></li>
   
     <li class="other-type"><a href="../../../Cassandra/DBApi/Decoders/DoubleDecoder.html">Cassandra::DBApi::Decoders::DoubleDecoder</a></li>
-  
-    <li class="other-type"><a href="../../../Cassandra/DBApi/Decoders/DurationDecoder.html">Cassandra::DBApi::Decoders::DurationDecoder</a></li>
   
     <li class="other-type"><a href="../../../Cassandra/DBApi/Decoders/FloatDecoder.html">Cassandra::DBApi::Decoders::FloatDecoder</a></li>
   
@@ -375,7 +365,7 @@
   <h2>Defined in:</h2>
   
     
-      <a href="https://github.com/kaukas/crystal-cassandra/blob/be30cc70903e4e9077df07a56b485a8fc059332b/src/cassandra/dbapi/decoders.cr#L6" target="_blank">
+      <a href="https://github.com/kaukas/crystal-cassandra/blob/c6ce30096e90ffe18fd6874cf4488c1186f45aef/src/cassandra/dbapi/decoders.cr#L6" target="_blank">
         cassandra/dbapi/decoders.cr
       </a>
     
@@ -392,12 +382,12 @@
   <ul class="list-summary">
     
       <li class="entry-summary">
-        <a href="#get_decoder%28cass_value_type%3ALibCass%3A%3ACassValueType%29-class-method" class="signature"><strong>.get_decoder</strong>(cass_value_type : LibCass::CassValueType)</a>
+        <a href="#get_decoder(cass_value_type:LibCass::CassValueType)-class-method" class="signature"><strong>.get_decoder</strong>(cass_value_type : LibCass::CassValueType)</a>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#register_type%28type_class%3ABaseDecoder.class%29-class-method" class="signature"><strong>.register_type</strong>(type_class : BaseDecoder.class)</a>
+        <a href="#register_type(type_class:BaseDecoder.class)-class-method" class="signature"><strong>.register_type</strong>(type_class : <span class="t">BaseDecoder</span>.<span class="k">class</span>)</a>
         
       </li>
     
@@ -409,22 +399,22 @@
   <ul class="list-summary">
     
       <li class="entry-summary">
-        <a href="#decode%28cass_value%3ALibCass%3A%3ACassValue%29-instance-method" class="signature"><strong>#decode</strong>(cass_value : LibCass::CassValue)</a>
+        <a href="#decode(cass_value:LibCass::CassValue)-instance-method" class="signature"><strong>#decode</strong>(cass_value : LibCass::CassValue)</a>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#decode_iterator%28iter%3AIterator%29-instance-method" class="signature"><strong>#decode_iterator</strong>(iter : Iterator)</a>
+        <a href="#decode_iterator(iter:Iterator)-instance-method" class="signature"><strong>#decode_iterator</strong>(iter : Iterator)</a>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#decode_with_type%28cass_value%3ALibCass%3A%3ACassValue%29-instance-method" class="signature"><strong>#decode_with_type</strong>(cass_value : LibCass::CassValue)</a>
+        <a href="#decode_with_type(cass_value:LibCass::CassValue)-instance-method" class="signature"><strong>#decode_with_type</strong>(cass_value : LibCass::CassValue)</a>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#handle_error%28cass_error%3ALibCass%3A%3ACassError%29-instance-method" class="signature"><strong>#handle_error</strong>(cass_error : LibCass::CassError)</a>
+        <a href="#handle_error(cass_error:LibCass::CassError)-instance-method" class="signature"><strong>#handle_error</strong>(cass_error : LibCass::CassError)</a>
         
       </li>
     
@@ -468,13 +458,13 @@
         
         def self.<strong>get_decoder</strong>(cass_value_type : LibCass::CassValueType)
 
-        <a class="method-permalink" href="#get_decoder%28cass_value_type%3ALibCass%3A%3ACassValueType%29-class-method">#</a>
+        <a class="method-permalink" href="#get_decoder(cass_value_type:LibCass::CassValueType)-class-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kaukas/crystal-cassandra/blob/be30cc70903e4e9077df07a56b485a8fc059332b/src/cassandra/dbapi/decoders.cr#L46" target="_blank">View source</a>]
+          [<a href="https://github.com/kaukas/crystal-cassandra/blob/c6ce30096e90ffe18fd6874cf4488c1186f45aef/src/cassandra/dbapi/decoders.cr#L46" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -482,15 +472,15 @@
     <div class="entry-detail" id="register_type(type_class:BaseDecoder.class)-class-method">
       <div class="signature">
         
-        def self.<strong>register_type</strong>(type_class : BaseDecoder.class)
+        def self.<strong>register_type</strong>(type_class : <span class="t">BaseDecoder</span>.<span class="k">class</span>)
 
-        <a class="method-permalink" href="#register_type%28type_class%3ABaseDecoder.class%29-class-method">#</a>
+        <a class="method-permalink" href="#register_type(type_class:BaseDecoder.class)-class-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kaukas/crystal-cassandra/blob/be30cc70903e4e9077df07a56b485a8fc059332b/src/cassandra/dbapi/decoders.cr#L39" target="_blank">View source</a>]
+          [<a href="https://github.com/kaukas/crystal-cassandra/blob/c6ce30096e90ffe18fd6874cf4488c1186f45aef/src/cassandra/dbapi/decoders.cr#L39" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -505,13 +495,13 @@
         
         def <strong>decode</strong>(cass_value : LibCass::CassValue)
 
-        <a class="method-permalink" href="#decode%28cass_value%3ALibCass%3A%3ACassValue%29-instance-method">#</a>
+        <a class="method-permalink" href="#decode(cass_value:LibCass::CassValue)-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kaukas/crystal-cassandra/blob/be30cc70903e4e9077df07a56b485a8fc059332b/src/cassandra/dbapi/decoders.cr#L9" target="_blank">View source</a>]
+          [<a href="https://github.com/kaukas/crystal-cassandra/blob/c6ce30096e90ffe18fd6874cf4488c1186f45aef/src/cassandra/dbapi/decoders.cr#L9" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -521,13 +511,13 @@
         
         def <strong>decode_iterator</strong>(iter : Iterator)
 
-        <a class="method-permalink" href="#decode_iterator%28iter%3AIterator%29-instance-method">#</a>
+        <a class="method-permalink" href="#decode_iterator(iter:Iterator)-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kaukas/crystal-cassandra/blob/be30cc70903e4e9077df07a56b485a8fc059332b/src/cassandra/dbapi/decoders.cr#L23" target="_blank">View source</a>]
+          [<a href="https://github.com/kaukas/crystal-cassandra/blob/c6ce30096e90ffe18fd6874cf4488c1186f45aef/src/cassandra/dbapi/decoders.cr#L23" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -537,13 +527,13 @@
         abstract 
         def <strong>decode_with_type</strong>(cass_value : LibCass::CassValue)
 
-        <a class="method-permalink" href="#decode_with_type%28cass_value%3ALibCass%3A%3ACassValue%29-instance-method">#</a>
+        <a class="method-permalink" href="#decode_with_type(cass_value:LibCass::CassValue)-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kaukas/crystal-cassandra/blob/be30cc70903e4e9077df07a56b485a8fc059332b/src/cassandra/dbapi/decoders.cr#L17" target="_blank">View source</a>]
+          [<a href="https://github.com/kaukas/crystal-cassandra/blob/c6ce30096e90ffe18fd6874cf4488c1186f45aef/src/cassandra/dbapi/decoders.cr#L17" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -553,13 +543,13 @@
         
         def <strong>handle_error</strong>(cass_error : LibCass::CassError)
 
-        <a class="method-permalink" href="#handle_error%28cass_error%3ALibCass%3A%3ACassError%29-instance-method">#</a>
+        <a class="method-permalink" href="#handle_error(cass_error:LibCass::CassError)-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kaukas/crystal-cassandra/blob/be30cc70903e4e9077df07a56b485a8fc059332b/src/cassandra/dbapi/decoders.cr#L19" target="_blank">View source</a>]
+          [<a href="https://github.com/kaukas/crystal-cassandra/blob/c6ce30096e90ffe18fd6874cf4488c1186f45aef/src/cassandra/dbapi/decoders.cr#L19" target="_blank">View source</a>]
         
       </div>
     </div>

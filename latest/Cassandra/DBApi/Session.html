@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Crystal Docs 0.26.1">
+<meta name="generator" content="Crystal Docs 0.30.1">
 
 
 <link href="../../css/style.css" rel="stylesheet" type="text/css">
@@ -71,11 +71,6 @@
       
     </li>
   
-  <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/Connection" data-name="cassandra::dbapi::connection">
-      <a href="../../Cassandra/DBApi/Connection.html">Connection</a>
-      
-    </li>
-  
   <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/Date" data-name="cassandra::dbapi::date">
       <a href="../../Cassandra/DBApi/Date.html">Date</a>
       
@@ -101,6 +96,11 @@
       
     </li>
   
+  <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/Decoders/BytesDecoder" data-name="cassandra::dbapi::decoders::bytesdecoder">
+      <a href="../../Cassandra/DBApi/Decoders/BytesDecoder.html">BytesDecoder</a>
+      
+    </li>
+  
   <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/Decoders/DateDecoder" data-name="cassandra::dbapi::decoders::datedecoder">
       <a href="../../Cassandra/DBApi/Decoders/DateDecoder.html">DateDecoder</a>
       
@@ -108,11 +108,6 @@
   
   <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/Decoders/DoubleDecoder" data-name="cassandra::dbapi::decoders::doubledecoder">
       <a href="../../Cassandra/DBApi/Decoders/DoubleDecoder.html">DoubleDecoder</a>
-      
-    </li>
-  
-  <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/Decoders/DurationDecoder" data-name="cassandra::dbapi::decoders::durationdecoder">
-      <a href="../../Cassandra/DBApi/Decoders/DurationDecoder.html">DurationDecoder</a>
       
     </li>
   
@@ -183,11 +178,6 @@
   
   <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/Driver" data-name="cassandra::dbapi::driver">
       <a href="../../Cassandra/DBApi/Driver.html">Driver</a>
-      
-    </li>
-  
-  <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/Duration" data-name="cassandra::dbapi::duration">
-      <a href="../../Cassandra/DBApi/Duration.html">Duration</a>
       
     </li>
   
@@ -315,7 +305,7 @@
 </h1>
 
 
-  <ul class="superclass-hierarchy"><li class="superclass"><a href="../../Cassandra/DBApi/Session.html">Cassandra::DBApi::Session</a></li><li class="superclass">Reference</li><li class="superclass">Object</li></ul>
+  <ul class="superclass-hierarchy"><li class="superclass"><a href="../../Cassandra/DBApi/Session.html">Cassandra::DBApi::Session</a></li><li class="superclass">DB::Connection</li><li class="superclass">Reference</li><li class="superclass">Object</li></ul>
 
 
 
@@ -341,7 +331,7 @@ Cassandra.</p>
   <h2>Defined in:</h2>
   
     
-      <a href="https://github.com/kaukas/crystal-cassandra/blob/be30cc70903e4e9077df07a56b485a8fc059332b/src/cassandra/dbapi/session.cr#L8" target="_blank">
+      <a href="https://github.com/kaukas/crystal-cassandra/blob/c6ce30096e90ffe18fd6874cf4488c1186f45aef/src/cassandra/dbapi/session.cr#L9" target="_blank">
         cassandra/dbapi/session.cr
       </a>
     
@@ -356,9 +346,9 @@ Cassandra.</p>
   <ul class="list-summary">
     
       <li class="entry-summary">
-        <a href="#new%28cluster%3ACluster%2Ccontext%3ADB%3A%3AConnectionContext%29-class-method" class="signature"><strong>.new</strong>(cluster : Cluster, context : DB::ConnectionContext)</a>
+        <a href="#new(context:DB::ConnectionContext)-class-method" class="signature"><strong>.new</strong>(context : DB::ConnectionContext)</a>
         
-          <div class="summary"><p>Creates a <code><a href="../../Cassandra/DBApi/Session.html">Session</a></code> object and initiates a connection to Cassandra.</p></div>
+          <div class="summary"><p>Creates a <code>Session</code> object and initiates a Cassandra cluster.</p></div>
         
       </li>
     
@@ -370,6 +360,20 @@ Cassandra.</p>
 
   <h2>Instance Method Summary</h2>
   <ul class="list-summary">
+    
+      <li class="entry-summary">
+        <a href="#build_prepared_statement(query:String):DB::Statement-instance-method" class="signature"><strong>#build_prepared_statement</strong>(query : String) : DB::Statement</a>
+        
+          <div class="summary"><p>Creates a prepared statement from a <em>query</em>.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#build_unprepared_statement(query:String):DB::Statement-instance-method" class="signature"><strong>#build_unprepared_statement</strong>(query : String) : DB::Statement</a>
+        
+          <div class="summary"><p>Creates an unprepared (one-off) statement from a <em>query</em>.</p></div>
+        
+      </li>
     
       <li class="entry-summary">
         <a href="#do_close-instance-method" class="signature"><strong>#do_close</strong></a>
@@ -406,25 +410,78 @@ Cassandra.</p>
 
 
   
+    
+
+
+    
+
+
+    
+
+
+  
+    
+
+
+    
+
+
+    
+
+
+  
+    
+
+
+    
+
+
+    
+
+
+  
+    
+
+
+    
+
+
+    
+
+
+  
+    
+
+
+    
+
+
+    
+
+
+  
 </div>
 
 
   <h2>Constructor Detail</h2>
   
-    <div class="entry-detail" id="new(cluster:Cluster,context:DB::ConnectionContext)-class-method">
+    <div class="entry-detail" id="new(context:DB::ConnectionContext)-class-method">
       <div class="signature">
         
-        def self.<strong>new</strong>(cluster : <a href="../../Cassandra/DBApi/Cluster.html">Cluster</a>, context : DB::ConnectionContext)
+        def self.<strong>new</strong>(context : DB::ConnectionContext)
 
-        <a class="method-permalink" href="#new%28cluster%3ACluster%2Ccontext%3ADB%3A%3AConnectionContext%29-class-method">#</a>
+        <a class="method-permalink" href="#new(context:DB::ConnectionContext)-class-method">#</a>
       </div>
       
-        <div class="doc"><p>Creates a <code><a href="../../Cassandra/DBApi/Session.html">Session</a></code> object and initiates a connection to Cassandra.</p></div>
+        <div class="doc">
+          
+          <p>Creates a <code>Session</code> object and initiates a Cassandra cluster.</p>
+        </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kaukas/crystal-cassandra/blob/be30cc70903e4e9077df07a56b485a8fc059332b/src/cassandra/dbapi/session.cr#L16" target="_blank">View source</a>]
+          [<a href="https://github.com/kaukas/crystal-cassandra/blob/c6ce30096e90ffe18fd6874cf4488c1186f45aef/src/cassandra/dbapi/session.cr#L18" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -436,6 +493,52 @@ Cassandra.</p>
 
   <h2>Instance Method Detail</h2>
   
+    <div class="entry-detail" id="build_prepared_statement(query:String):DB::Statement-instance-method">
+      <div class="signature">
+        
+        def <strong>build_prepared_statement</strong>(query : String) : DB::Statement
+
+        <a class="method-permalink" href="#build_prepared_statement(query:String):DB::Statement-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Creates a prepared statement from a <em>query</em>.</p>
+
+<p>The statement is bound to a session and can be executed.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kaukas/crystal-cassandra/blob/c6ce30096e90ffe18fd6874cf4488c1186f45aef/src/cassandra/dbapi/session.cr#L65" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="build_unprepared_statement(query:String):DB::Statement-instance-method">
+      <div class="signature">
+        
+        def <strong>build_unprepared_statement</strong>(query : String) : DB::Statement
+
+        <a class="method-permalink" href="#build_unprepared_statement(query:String):DB::Statement-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Creates an unprepared (one-off) statement from a <em>query</em>.</p>
+
+<p>The statement is bound to a session and can be executed.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kaukas/crystal-cassandra/blob/c6ce30096e90ffe18fd6874cf4488c1186f45aef/src/cassandra/dbapi/session.cr#L72" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
     <div class="entry-detail" id="do_close-instance-method">
       <div class="signature">
         
@@ -444,15 +547,20 @@ Cassandra.</p>
         <a class="method-permalink" href="#do_close-instance-method">#</a>
       </div>
       
-        <div class="doc"><p>Close the session.</p>
+        <div class="doc">
+          
+          <p>Close the session.</p>
 
-<p>Closes the Cassandra connection and frees memory. Needs to be called to
-prevent connection and memory leaks.</p></div>
+<p>Closes the Cassandra session and frees memory. Also invokes cluster
+disposal which will actually happen if this cluster reference is the
+last one for that cluster. Needs to be called to prevent connection and
+memory leaks.</p>
+        </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kaukas/crystal-cassandra/blob/be30cc70903e4e9077df07a56b485a8fc059332b/src/cassandra/dbapi/session.cr#L53" target="_blank">View source</a>]
+          [<a href="https://github.com/kaukas/crystal-cassandra/blob/c6ce30096e90ffe18fd6874cf4488c1186f45aef/src/cassandra/dbapi/session.cr#L57" target="_blank">View source</a>]
         
       </div>
     </div>

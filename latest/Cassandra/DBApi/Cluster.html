@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Crystal Docs 0.26.1">
+<meta name="generator" content="Crystal Docs 0.30.1">
 
 
 <link href="../../css/style.css" rel="stylesheet" type="text/css">
@@ -71,11 +71,6 @@
       
     </li>
   
-  <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/Connection" data-name="cassandra::dbapi::connection">
-      <a href="../../Cassandra/DBApi/Connection.html">Connection</a>
-      
-    </li>
-  
   <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/Date" data-name="cassandra::dbapi::date">
       <a href="../../Cassandra/DBApi/Date.html">Date</a>
       
@@ -101,6 +96,11 @@
       
     </li>
   
+  <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/Decoders/BytesDecoder" data-name="cassandra::dbapi::decoders::bytesdecoder">
+      <a href="../../Cassandra/DBApi/Decoders/BytesDecoder.html">BytesDecoder</a>
+      
+    </li>
+  
   <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/Decoders/DateDecoder" data-name="cassandra::dbapi::decoders::datedecoder">
       <a href="../../Cassandra/DBApi/Decoders/DateDecoder.html">DateDecoder</a>
       
@@ -108,11 +108,6 @@
   
   <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/Decoders/DoubleDecoder" data-name="cassandra::dbapi::decoders::doubledecoder">
       <a href="../../Cassandra/DBApi/Decoders/DoubleDecoder.html">DoubleDecoder</a>
-      
-    </li>
-  
-  <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/Decoders/DurationDecoder" data-name="cassandra::dbapi::decoders::durationdecoder">
-      <a href="../../Cassandra/DBApi/Decoders/DurationDecoder.html">DurationDecoder</a>
       
     </li>
   
@@ -183,11 +178,6 @@
   
   <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/Driver" data-name="cassandra::dbapi::driver">
       <a href="../../Cassandra/DBApi/Driver.html">Driver</a>
-      
-    </li>
-  
-  <li class=" " data-id="github.com/kaukas/crystal-cassandra/Cassandra/DBApi/Duration" data-name="cassandra::dbapi::duration">
-      <a href="../../Cassandra/DBApi/Duration.html">Duration</a>
       
     </li>
   
@@ -322,8 +312,10 @@
 
   <h2>Overview</h2>
 
-  <p>Represents a Cassandra cluster. Stores connection parameters, like host
-and port.</p>
+  <p>Represents a Cassandra cluster. Stores connection parameters like host and
+port. A single cluster can be used to create many sessions so a custom
+reference counting mechanism is used to track and destroy sessions as
+needed.</p>
 
 
 
@@ -341,8 +333,8 @@ and port.</p>
   <h2>Defined in:</h2>
   
     
-      <a href="https://github.com/kaukas/crystal-cassandra/blob/be30cc70903e4e9077df07a56b485a8fc059332b/src/cassandra/dbapi/connection.cr#L8" target="_blank">
-        cassandra/dbapi/connection.cr
+      <a href="https://github.com/kaukas/crystal-cassandra/blob/c6ce30096e90ffe18fd6874cf4488c1186f45aef/src/cassandra/dbapi/cluster.cr#L9" target="_blank">
+        cassandra/dbapi/cluster.cr
       </a>
     
     <br/>
@@ -356,7 +348,7 @@ and port.</p>
   <ul class="list-summary">
     
       <li class="entry-summary">
-        <a href="#new%28context%3ADB%3A%3AConnectionContext%29-class-method" class="signature"><strong>.new</strong>(context : DB::ConnectionContext)</a>
+        <a href="#new(context:DB::ConnectionContext)-class-method" class="signature"><strong>.new</strong>(context : DB::ConnectionContext)</a>
         
           <div class="summary"><p>Initialises a cluster object with the supplied host and port from the <em>context</em>.</p></div>
         
@@ -365,6 +357,16 @@ and port.</p>
   </ul>
 
 
+
+  <h2>Class Method Summary</h2>
+  <ul class="list-summary">
+    
+      <li class="entry-summary">
+        <a href="#acquire(context:DB::ConnectionContext)-class-method" class="signature"><strong>.acquire</strong>(context : DB::ConnectionContext)</a>
+        
+      </li>
+    
+  </ul>
 
 
 
@@ -375,6 +377,11 @@ and port.</p>
         <a href="#do_close-instance-method" class="signature"><strong>#do_close</strong></a>
         
           <div class="summary"><p>Close the connection.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#paging_size:UInt64?-instance-method" class="signature"><strong>#paging_size</strong> : UInt64?</a>
         
       </li>
     
@@ -416,22 +423,44 @@ and port.</p>
         
         def self.<strong>new</strong>(context : DB::ConnectionContext)
 
-        <a class="method-permalink" href="#new%28context%3ADB%3A%3AConnectionContext%29-class-method">#</a>
+        <a class="method-permalink" href="#new(context:DB::ConnectionContext)-class-method">#</a>
       </div>
       
-        <div class="doc"><p>Initialises a cluster object with the supplied host and port from the
-<em>context</em>.</p></div>
+        <div class="doc">
+          
+          <p>Initialises a cluster object with the supplied host and port from the
+<em>context</em>.</p>
+        </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kaukas/crystal-cassandra/blob/be30cc70903e4e9077df07a56b485a8fc059332b/src/cassandra/dbapi/connection.cr#L13" target="_blank">View source</a>]
+          [<a href="https://github.com/kaukas/crystal-cassandra/blob/c6ce30096e90ffe18fd6874cf4488c1186f45aef/src/cassandra/dbapi/cluster.cr#L29" target="_blank">View source</a>]
         
       </div>
     </div>
   
 
 
+
+  <h2>Class Method Detail</h2>
+  
+    <div class="entry-detail" id="acquire(context:DB::ConnectionContext)-class-method">
+      <div class="signature">
+        
+        def self.<strong>acquire</strong>(context : DB::ConnectionContext)
+
+        <a class="method-permalink" href="#acquire(context:DB::ConnectionContext)-class-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kaukas/crystal-cassandra/blob/c6ce30096e90ffe18fd6874cf4488c1186f45aef/src/cassandra/dbapi/cluster.cr#L12" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
 
 
 
@@ -445,14 +474,34 @@ and port.</p>
         <a class="method-permalink" href="#do_close-instance-method">#</a>
       </div>
       
-        <div class="doc"><p>Close the connection.</p>
+        <div class="doc">
+          
+          <p>Close the connection.</p>
 
-<p>Disposes the cluster. Needs to be called to prevent memory leaks.</p></div>
+<p>Disposes the cluster when the last reference is removed. Needs to be
+called to prevent memory leaks.</p>
+        </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kaukas/crystal-cassandra/blob/be30cc70903e4e9077df07a56b485a8fc059332b/src/cassandra/dbapi/connection.cr#L27" target="_blank">View source</a>]
+          [<a href="https://github.com/kaukas/crystal-cassandra/blob/c6ce30096e90ffe18fd6874cf4488c1186f45aef/src/cassandra/dbapi/cluster.cr#L47" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="paging_size:UInt64?-instance-method">
+      <div class="signature">
+        
+        def <strong>paging_size</strong> : UInt64?
+
+        <a class="method-permalink" href="#paging_size:UInt64?-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kaukas/crystal-cassandra/blob/c6ce30096e90ffe18fd6874cf4488c1186f45aef/src/cassandra/dbapi/cluster.cr#L25" target="_blank">View source</a>]
         
       </div>
     </div>
