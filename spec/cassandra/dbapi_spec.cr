@@ -126,29 +126,10 @@ macro test_compound_scalar(col_name, type_name, raw, encoded)
   end
 end
 
-Cassandra::LibCass.log_set_level(Cassandra::LibCass::CassLogLevel::LogDisabled)
-
 private def assert_single_read(rs, value_type, value)
   rs.move_next.should be_true
   rs.read(value_type).should eq(value)
   rs.move_next.should be_false
-end
-
-describe Cassandra::DBApi do
-  it "supports a custom port" do
-    # Expect correct port to succeed.
-    DB.open("cassandra://root@127.0.0.1:9042")
-    # Expect incorrect port to fail.
-    expect_raises(Cassandra::DBApi::Session::ConnectError,
-                  "ErrorLibNoHostsAvailable") do
-      DB.open("cassandra://root@127.0.0.1:55")
-    end
-  end
-
-  it "supports multiple hosts" do
-    # Expect the last address to succeed.
-    DB.open("cassandra://root@127.0.0.3,127.0.0.2,127.0.0.1:9042")
-  end
 end
 
 # According to https://cassandra.apache.org/doc/latest/cql/types.html
@@ -203,65 +184,73 @@ PRIMITIVE_TYPES = [
   # TODO: counter, inet
 ]
 
+dbapi_specs_initialized = false
+
 CassandraSpecs.run do
   connection_string "cassandra://root@127.0.0.1/crystal_cassandra_dbapi_test"
 
-  DBHelper.setup
+  before do
+    unless dbapi_specs_initialized
+      DBHelper.setup
 
-  DBHelper.connect do |db|
-    db.exec "drop table if exists scalars"
+      DBHelper.connect do |db|
+        db.exec "drop table if exists scalars"
 
-    simple_columns = PRIMITIVE_TYPES.map do |type|
-      name = type[:name]
-      name = "'#{name}'" if name.chars.any?(&.uppercase?)
-      "#{type[:name]}_val #{name}"
-    end
-    db.exec <<-CQL
-      create table scalars (
-        id timeuuid primary key,
-        null_val text,
-        null_cond text,
-        #{simple_columns.join(",\n     ")}
-      )
-    CQL
-    db.exec "insert into scalars (id, null_val, null_cond) " \
-            "values (now(), NULL, 'NULL')"
-    PRIMITIVE_TYPES.each do |type|
-      db.exec "insert into scalars (id, #{type[:name]}_val) " \
-              "values (now(), #{type[:encoded]})"
-    end
-
-    compound_columns = (
-      Array.
-        product(["list", "set"], PRIMITIVE_TYPES).
-        reject do |(coll_type, prim_type)|
-          # Skip unsupported combinations.
-          coll_type == "set" && prim_type.as(NamedTuple)[:name] == "duration"
-        end.
-        map do |(coll_type, prim_type)|
-          coll = coll_type.as(String)
-          prim = prim_type.as(NamedTuple)[:name]
-          "#{coll}_#{prim} #{coll}<#{prim}>"
+        simple_columns = PRIMITIVE_TYPES.map do |type|
+          name = type[:name]
+          name = "'#{name}'" if name.chars.any?(&.uppercase?)
+          "#{type[:name]}_val #{name}"
         end
-    ) + (
-      Array.
-        product(PRIMITIVE_TYPES, PRIMITIVE_TYPES).
-        reject do |(key_def, _)|
-          # Skip unsupported combinations.
-          key_def[:name] == "duration"
-        end.
-        map do |(key_def, val_def)|
-          key = key_def[:name]
-          val = val_def[:name]
-          "map_#{key}_#{val} map<#{key}, #{val}>"
+        db.exec <<-CQL
+          create table scalars (
+            id timeuuid primary key,
+            null_val text,
+            null_cond text,
+            #{simple_columns.join(",\n     ")}
+          )
+        CQL
+        db.exec "insert into scalars (id, null_val, null_cond) " \
+                "values (now(), NULL, 'NULL')"
+        PRIMITIVE_TYPES.each do |type|
+          db.exec "insert into scalars (id, #{type[:name]}_val) " \
+                  "values (now(), #{type[:encoded]})"
         end
-    )
-    db.exec <<-CQL
-      create table compound_scalars (
-        id timeuuid primary key,
-        #{compound_columns.join(",\n    ")}
-      )
-    CQL
+
+        compound_columns = (
+          Array.
+            product(["list", "set"], PRIMITIVE_TYPES).
+            reject do |(coll_type, prim_type)|
+              # Skip unsupported combinations.
+              coll_type == "set" &&
+                prim_type.as(NamedTuple)[:name] == "duration"
+            end.
+            map do |(coll_type, prim_type)|
+              coll = coll_type.as(String)
+              prim = prim_type.as(NamedTuple)[:name]
+              "#{coll}_#{prim} #{coll}<#{prim}>"
+            end
+        ) + (
+          Array.
+            product(PRIMITIVE_TYPES, PRIMITIVE_TYPES).
+            reject do |(key_def, _)|
+              # Skip unsupported combinations.
+              key_def[:name] == "duration"
+            end.
+            map do |(key_def, val_def)|
+              key = key_def[:name]
+              val = val_def[:name]
+              "map_#{key}_#{val} map<#{key}, #{val}>"
+            end
+        )
+        db.exec <<-CQL
+          create table compound_scalars (
+            id timeuuid primary key,
+            #{compound_columns.join(",\n    ")}
+          )
+        CQL
+      end
+    end
+    dbapi_specs_initialized = true
   end
 
   PRIMITIVE_TYPES.each do |type|

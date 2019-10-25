@@ -1,4 +1,4 @@
-require "spec"
+require "spectator"
 require "../aliases"
 require "../../../src/cassandra/dbapi"
 
@@ -8,12 +8,12 @@ macro test_primitive(type_name,
                      another_raw,
                      raw_of_another_type)
   it "wraps a value of type {{ type_name }}" do
-    Any.new({{ raw }}).raw.should eq({{ raw }})
+    expect(Any.new({{ raw }}).raw).to eq({{ raw }})
   end
 
   it "can be converted to {{ type_name }}" do
-    Any.new({{ raw }}).{{ as_type }}.should eq({{ raw }})
-    Any.new({{ raw }}).{{ as_type }}?.should eq({{ raw }})
+    expect(Any.new({{ raw }}).{{ as_type }}).to eq({{ raw }})
+    expect(Any.new({{ raw }}).{{ as_type }}?).to eq({{ raw }})
   end
 
   it "fails when different type value is converted to {{ type_name }}" do
@@ -23,23 +23,23 @@ macro test_primitive(type_name,
   end
 
   it "returns nil when different type value is converted to {{ type_name }}" do
-    Any.new({{ raw_of_another_type }}).{{ as_type }}?.should eq(nil)
+    expect(Any.new({{ raw_of_another_type }}).{{ as_type }}?).to eq(nil)
   end
 
   it "compares raw values" do
-    Any.new({{ raw }}).should eq(Any.new({{ raw }}))
-    Any.new({{ raw }}).should_not eq({{ another_raw }})
-    Any.new({{ raw }}).should eq({{ raw }})
+    expect(Any.new({{ raw }}) == Any.new({{ raw }})).to eq(true)
+    expect(Any.new({{ raw }}) == {{ another_raw }}).to eq(false)
+    expect(Any.new({{ raw }}) == {{ raw }}).to eq(true)
   end
 end
 
-describe Any do
+Spectator.describe Any do
   it "wraps a value of type Nil" do
-    Any.new(nil).raw.should eq(nil)
+    expect(Any.new(nil).raw).to eq(nil)
   end
 
   it "can be converted to Nil" do
-    Any.new(nil).as_nil.should eq(nil)
+    expect(Any.new(nil).as_nil).to eq(nil)
   end
 
   it "fails when different type value is converted to Nil" do
@@ -49,11 +49,11 @@ describe Any do
   end
 
   it "compares raw values" do
-    Any.new(nil).should eq(Any.new(nil))
-    Any.new(nil).should eq(nil)
+    expect(Any.new(nil) == Any.new(nil)).to eq(true)
+    expect(Any.new(nil) == nil).to eq(true)
   end
 
-  now = ::Time.local
+  let(now) { ::Time.local }
 
   test_primitive(Bool, as_bool, false, true, 42_i64)
   test_primitive(Int8, as_i8, 42_i8, 43_i8, 42_i64)
