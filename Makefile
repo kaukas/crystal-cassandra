@@ -46,15 +46,15 @@ gen-binding:
 
 
 CASS_DOCKER_NAME := crystal-cassandra-dbapi-test
-CASS_DOCKER_VERSION := 3
 
 start-cassandra:
+	docker build --tag custom-cassandra spec/docker
 	docker run \
 		--name $(CASS_DOCKER_NAME) \
 		--publish 9042:9042 \
 		--rm \
 		--detach \
-		cassandra:$(CASS_DOCKER_VERSION)
+		custom-cassandra
 .PHONY: start-cassandra
 
 stop-cassandra:

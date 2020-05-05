@@ -7,7 +7,7 @@ module DBHelper
       Cassandra::LibCass::CassLogLevel::LogDisabled
     )
 
-    DB.open("cassandra://root@127.0.0.1") do |db|
+    DB.open(host) do |db|
       db.exec "drop keyspace if exists crystal_cassandra_dbapi_test"
       db.exec <<-CQL
         create keyspace crystal_cassandra_dbapi_test
@@ -26,6 +26,10 @@ module DBHelper
   end
 
   private def self.db_uri(params : String)
-    "cassandra://root@127.0.0.1/crystal_cassandra_dbapi_test?#{params}"
+    "#{host}/crystal_cassandra_dbapi_test?#{params}"
+  end
+
+  private def self.host
+    "cassandra://cassandra:cassandra@127.0.0.1"
   end
 end

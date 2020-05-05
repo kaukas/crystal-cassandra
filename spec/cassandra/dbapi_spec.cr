@@ -187,7 +187,9 @@ PRIMITIVE_TYPES = [
 dbapi_specs_initialized = false
 
 CassandraSpecs.run do
-  connection_string "cassandra://root@127.0.0.1/crystal_cassandra_dbapi_test"
+  connection_string(
+    "cassandra://cassandra:cassandra@127.0.0.1/crystal_cassandra_dbapi_test"
+  )
 
   before do
     unless dbapi_specs_initialized

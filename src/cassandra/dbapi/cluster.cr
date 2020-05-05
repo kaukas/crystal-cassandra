@@ -36,6 +36,12 @@ module Cassandra
         port = context.uri.port
         LibCass.cluster_set_port(@cass_cluster, port) if port
 
+        user = context.uri.user
+        password = context.uri.password
+        if user && password
+          LibCass.cluster_set_credentials(@cass_cluster, user, password)
+        end
+
         params = HTTP::Params.parse(context.uri.query || "")
         @paging_size = params["paging_size"]?.try(&.to_u64?)
       end
