@@ -87,7 +87,7 @@ module Cassandra
       end
 
       def initialize(days : UInt32)
-        @date = EPOCH_START + ::Time::Span.new(days, 0, 0, 0)
+        @date = EPOCH_START + ::Time::Span.new(days: days)
       end
 
       def days : UInt32
