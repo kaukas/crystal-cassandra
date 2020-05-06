@@ -6,7 +6,7 @@ module Cassandra
   {% end %}
   lib LibCass
     VERSION_MAJOR = 2
-    VERSION_MINOR = 10
+    VERSION_MINOR = 11
     VERSION_PATCH = 0
     INET_V4_LENGTH = 4
     INET_V6_LENGTH = 16
@@ -56,6 +56,7 @@ module Cassandra
       ErrorLibInvalidState = 16777248
       ErrorLibNoCustomPayload = 16777249
       ErrorLibExecutionProfileInvalid = 16777250
+      ErrorLibNoTracingId = 16777251
       ErrorServerServerError = 33554432
       ErrorServerProtocolError = 33554442
       ErrorServerBadCredentials = 33554688
@@ -170,6 +171,9 @@ module Cassandra
     fun cluster_set_request_timeout = cass_cluster_set_request_timeout(cluster : CassCluster, timeout_ms : LibC::UInt)
     fun cluster_set_resolve_timeout = cass_cluster_set_resolve_timeout(cluster : CassCluster, timeout_ms : LibC::UInt)
     fun cluster_set_max_schema_wait_time = cass_cluster_set_max_schema_wait_time(cluster : CassCluster, wait_time_ms : LibC::UInt)
+    fun cluster_set_tracing_max_wait_time = cass_cluster_set_tracing_max_wait_time(cluster : CassCluster, max_wait_time_ms : LibC::UInt)
+    fun cluster_set_tracing_retry_wait_time = cass_cluster_set_tracing_retry_wait_time(cluster : CassCluster, retry_wait_time_ms : LibC::UInt)
+    fun cluster_set_tracing_consistency = cass_cluster_set_tracing_consistency(cluster : CassCluster, consistency : CassConsistency)
     fun cluster_set_credentials = cass_cluster_set_credentials(cluster : CassCluster, username : LibC::Char*, password : LibC::Char*)
     fun cluster_set_credentials_n = cass_cluster_set_credentials_n(cluster : CassCluster, username : LibC::Char*, username_length : LibC::SizeT, password : LibC::Char*, password_length : LibC::SizeT)
     fun cluster_set_load_balance_round_robin = cass_cluster_set_load_balance_round_robin(cluster : CassCluster)
@@ -205,6 +209,19 @@ module Cassandra
     fun cluster_set_prepare_on_all_hosts = cass_cluster_set_prepare_on_all_hosts(cluster : CassCluster, enabled : BoolT) : CassError
     fun cluster_set_prepare_on_up_or_add_host = cass_cluster_set_prepare_on_up_or_add_host(cluster : CassCluster, enabled : BoolT) : CassError
     fun cluster_set_no_compact = cass_cluster_set_no_compact(cluster : CassCluster, enabled : BoolT) : CassError
+    fun cluster_set_host_listener_callback = cass_cluster_set_host_listener_callback(cluster : CassCluster, callback : CassHostListenerCallback, data : Void*) : CassError
+    enum CassHostListenerEvent
+      HostListenerEventUp = 0
+      HostListenerEventDown = 1
+      HostListenerEventAdd = 2
+      HostListenerEventRemove = 3
+    end
+    struct CassInet
+      address : Uint8T[16]
+      address_length : Uint8T
+    end
+    alias CassHostListenerCallback = (CassHostListenerEvent, CassInet, Void* -> Void)
+    alias Uint8T = UInt8
     fun session_new = cass_session_new : CassSession
     type CassSession = Void*
     fun session_free = cass_session_free(session : CassSession)
@@ -401,11 +418,6 @@ module Cassandra
     fun ssl_set_private_key = cass_ssl_set_private_key(ssl : CassSsl, key : LibC::Char*, password : LibC::Char*) : CassError
     fun ssl_set_private_key_n = cass_ssl_set_private_key_n(ssl : CassSsl, key : LibC::Char*, key_length : LibC::SizeT, password : LibC::Char*, password_length : LibC::SizeT) : CassError
     fun authenticator_address = cass_authenticator_address(auth : CassAuthenticator, address : CassInet*)
-    struct CassInet
-      address : Uint8T[16]
-      address_length : Uint8T
-    end
-    alias Uint8T = UInt8
     fun authenticator_hostname = cass_authenticator_hostname(auth : CassAuthenticator, length : LibC::SizeT*) : LibC::Char*
     fun authenticator_class_name = cass_authenticator_class_name(auth : CassAuthenticator, length : LibC::SizeT*) : LibC::Char*
     fun authenticator_exchange_data = cass_authenticator_exchange_data(auth : CassAuthenticator) : Void*
@@ -429,6 +441,11 @@ module Cassandra
     type CassPrepared = Void*
     fun future_error_code = cass_future_error_code(future : CassFuture) : CassError
     fun future_error_message = cass_future_error_message(future : CassFuture, message : LibC::Char**, message_length : LibC::SizeT*)
+    fun future_tracing_id = cass_future_tracing_id(future : CassFuture, tracing_id : CassUuid*) : CassError
+    struct CassUuid
+      time_and_version : Uint64T
+      clock_seq_and_node : Uint64T
+    end
     fun future_custom_payload_item_count = cass_future_custom_payload_item_count(future : CassFuture) : LibC::SizeT
     fun future_custom_payload_item = cass_future_custom_payload_item(future : CassFuture, index : LibC::SizeT, name : LibC::Char**, name_length : LibC::SizeT*, value : ByteT**, value_size : LibC::SizeT*) : CassError
     alias ByteT = Uint8T
@@ -450,6 +467,12 @@ module Cassandra
     fun statement_set_retry_policy = cass_statement_set_retry_policy(statement : CassStatement, retry_policy : CassRetryPolicy) : CassError
     fun statement_set_custom_payload = cass_statement_set_custom_payload(statement : CassStatement, payload : CassCustomPayload) : CassError
     type CassCustomPayload = Void*
+    fun statement_set_execution_profile = cass_statement_set_execution_profile(statement : CassStatement, name : LibC::Char*) : CassError
+    fun statement_set_execution_profile_n = cass_statement_set_execution_profile_n(statement : CassStatement, name : LibC::Char*, name_length : LibC::SizeT) : CassError
+    fun statement_set_tracing = cass_statement_set_tracing(statement : CassStatement, enabled : BoolT) : CassError
+    fun statement_set_host = cass_statement_set_host(statement : CassStatement, host : LibC::Char*, port : LibC::Int) : CassError
+    fun statement_set_host_n = cass_statement_set_host_n(statement : CassStatement, host : LibC::Char*, host_length : LibC::SizeT, port : LibC::Int) : CassError
+    fun statement_set_host_inet = cass_statement_set_host_inet(statement : CassStatement, host : CassInet*, port : LibC::Int) : CassError
     fun statement_bind_null = cass_statement_bind_null(statement : CassStatement, index : LibC::SizeT) : CassError
     fun statement_bind_null_by_name = cass_statement_bind_null_by_name(statement : CassStatement, name : LibC::Char*) : CassError
     fun statement_bind_null_by_name_n = cass_statement_bind_null_by_name_n(statement : CassStatement, name : LibC::Char*, name_length : LibC::SizeT) : CassError
@@ -492,10 +515,6 @@ module Cassandra
     fun statement_bind_custom_by_name = cass_statement_bind_custom_by_name(statement : CassStatement, name : LibC::Char*, class_name : LibC::Char*, value : ByteT*, value_size : LibC::SizeT) : CassError
     fun statement_bind_custom_by_name_n = cass_statement_bind_custom_by_name_n(statement : CassStatement, name : LibC::Char*, name_length : LibC::SizeT, class_name : LibC::Char*, class_name_length : LibC::SizeT, value : ByteT*, value_size : LibC::SizeT) : CassError
     fun statement_bind_uuid = cass_statement_bind_uuid(statement : CassStatement, index : LibC::SizeT, value : CassUuid) : CassError
-    struct CassUuid
-      time_and_version : Uint64T
-      clock_seq_and_node : Uint64T
-    end
     fun statement_bind_uuid_by_name = cass_statement_bind_uuid_by_name(statement : CassStatement, name : LibC::Char*, value : CassUuid) : CassError
     fun statement_bind_uuid_by_name_n = cass_statement_bind_uuid_by_name_n(statement : CassStatement, name : LibC::Char*, name_length : LibC::SizeT, value : CassUuid) : CassError
     fun statement_bind_inet = cass_statement_bind_inet(statement : CassStatement, index : LibC::SizeT, value : CassInet) : CassError
@@ -519,8 +538,6 @@ module Cassandra
     type CassUserType = Void*
     fun statement_bind_user_type_by_name = cass_statement_bind_user_type_by_name(statement : CassStatement, name : LibC::Char*, user_type : CassUserType) : CassError
     fun statement_bind_user_type_by_name_n = cass_statement_bind_user_type_by_name_n(statement : CassStatement, name : LibC::Char*, name_length : LibC::SizeT, user_type : CassUserType) : CassError
-    fun statement_set_execution_profile = cass_statement_set_execution_profile(statement : CassStatement, name : LibC::Char*) : CassError
-    fun statement_set_execution_profile_n = cass_statement_set_execution_profile_n(statement : CassStatement, name : LibC::Char*, name_length : LibC::SizeT) : CassError
     fun prepared_free = cass_prepared_free(prepared : CassPrepared)
     fun prepared_bind = cass_prepared_bind(prepared : CassPrepared) : CassStatement
     fun prepared_parameter_name = cass_prepared_parameter_name(prepared : CassPrepared, index : LibC::SizeT, name : LibC::Char**, name_length : LibC::SizeT*) : CassError
@@ -543,6 +560,7 @@ module Cassandra
     fun batch_set_is_idempotent = cass_batch_set_is_idempotent(batch : CassBatch, is_idempotent : BoolT) : CassError
     fun batch_set_retry_policy = cass_batch_set_retry_policy(batch : CassBatch, retry_policy : CassRetryPolicy) : CassError
     fun batch_set_custom_payload = cass_batch_set_custom_payload(batch : CassBatch, payload : CassCustomPayload) : CassError
+    fun batch_set_tracing = cass_batch_set_tracing(batch : CassBatch, enabled : BoolT) : CassError
     fun batch_add_statement = cass_batch_add_statement(batch : CassBatch, statement : CassStatement) : CassError
     fun batch_set_execution_profile = cass_batch_set_execution_profile(batch : CassBatch, name : LibC::Char*) : CassError
     fun batch_set_execution_profile_n = cass_batch_set_execution_profile_n(batch : CassBatch, name : LibC::Char*, name_length : LibC::SizeT) : CassError
