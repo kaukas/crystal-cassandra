@@ -6,8 +6,8 @@ module Cassandra
   {% end %}
   lib LibCass
     VERSION_MAJOR = 2
-    VERSION_MINOR = 13
-    VERSION_PATCH = 0
+    VERSION_MINOR = 14
+    VERSION_PATCH = 1
     INET_V4_LENGTH = 4
     INET_V6_LENGTH = 16
     INET_STRING_LENGTH = 46
@@ -81,7 +81,8 @@ module Cassandra
       ErrorSslInvalidPeerCert = 50331652
       ErrorSslIdentityMismatch = 50331653
       ErrorSslProtocolError = 50331654
-      ErrorLastEntry = 50331655
+      ErrorSslClosed = 50331655
+      ErrorLastEntry = 50331656
     end
     fun execution_profile_set_consistency = cass_execution_profile_set_consistency(profile : CassExecProfile, consistency : CassConsistency) : CassError
     enum CassConsistency
@@ -224,6 +225,10 @@ module Cassandra
     end
     alias CassHostListenerCallback = (CassHostListenerEvent, CassInet, Void* -> Void)
     alias Uint8T = UInt8
+    fun cluster_set_cloud_secure_connection_bundle = cass_cluster_set_cloud_secure_connection_bundle(cluster : CassCluster, path : LibC::Char*) : CassError
+    fun cluster_set_cloud_secure_connection_bundle_n = cass_cluster_set_cloud_secure_connection_bundle_n(cluster : CassCluster, path : LibC::Char*, path_length : LibC::SizeT) : CassError
+    fun cluster_set_cloud_secure_connection_bundle_no_ssl_lib_init = cass_cluster_set_cloud_secure_connection_bundle_no_ssl_lib_init(cluster : CassCluster, path : LibC::Char*) : CassError
+    fun cluster_set_cloud_secure_connection_bundle_no_ssl_lib_init_n = cass_cluster_set_cloud_secure_connection_bundle_no_ssl_lib_init_n(cluster : CassCluster, path : LibC::Char*, path_length : LibC::SizeT) : CassError
     fun session_new = cass_session_new : CassSession
     type CassSession = Void*
     fun session_free = cass_session_free(session : CassSession)
