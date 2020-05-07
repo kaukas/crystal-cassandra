@@ -18,6 +18,6 @@ development_dependencies:
     gitlab: arctic-fox/spectator
 
 libraries:
-  libcassandra: "2.12.0"
+  libcassandra: "2.13.0"
 
 license: MIT

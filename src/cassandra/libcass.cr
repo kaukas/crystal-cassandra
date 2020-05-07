@@ -6,7 +6,7 @@ module Cassandra
   {% end %}
   lib LibCass
     VERSION_MAJOR = 2
-    VERSION_MINOR = 12
+    VERSION_MINOR = 13
     VERSION_PATCH = 0
     INET_V4_LENGTH = 4
     INET_V6_LENGTH = 16
@@ -157,6 +157,8 @@ module Cassandra
     fun cluster_set_core_connections_per_host = cass_cluster_set_core_connections_per_host(cluster : CassCluster, num_connections : LibC::UInt) : CassError
     fun cluster_set_max_connections_per_host = cass_cluster_set_max_connections_per_host(cluster : CassCluster, num_connections : LibC::UInt) : CassError
     fun cluster_set_reconnect_wait_time = cass_cluster_set_reconnect_wait_time(cluster : CassCluster, wait_time : LibC::UInt)
+    fun cluster_set_constant_reconnect = cass_cluster_set_constant_reconnect(cluster : CassCluster, delay_ms : Uint64T)
+    fun cluster_set_exponential_reconnect = cass_cluster_set_exponential_reconnect(cluster : CassCluster, base_delay_ms : Uint64T, max_delay_ms : Uint64T) : CassError
     fun cluster_set_coalesce_delay = cass_cluster_set_coalesce_delay(cluster : CassCluster, delay_us : Int64T) : CassError
     fun cluster_set_new_request_ratio = cass_cluster_set_new_request_ratio(cluster : CassCluster, ratio : Int32T) : CassError
     alias Int32T = LibC::Int
