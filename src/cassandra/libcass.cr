@@ -6,7 +6,7 @@ module Cassandra
   {% end %}
   lib LibCass
     VERSION_MAJOR = 2
-    VERSION_MINOR = 11
+    VERSION_MINOR = 12
     VERSION_PATCH = 0
     INET_V4_LENGTH = 4
     INET_V6_LENGTH = 16
