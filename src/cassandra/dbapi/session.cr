@@ -30,7 +30,7 @@ module Cassandra
       # :nodoc:
       def connect(path : String?)
         keyspace = if path && path.size > 1
-                     path[1..-1]
+                     URI.decode(path[1..-1])
                    else
                      nil
                    end
