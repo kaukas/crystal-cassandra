@@ -4,14 +4,12 @@ A Crystal wrapper around the [DataStax C/C++
 Driver](https://docs.datastax.com/en/developer/cpp-driver/2.10/). It conforms to
 the [crystal-db](https://github.com/crystal-lang/crystal-db) API.
 
-
 ## Status
 
 This is a personal project to create something meaningful while learning
 Crystal. There are no guarantees about future development, maintenance, or
 support. That said, if you need to use Crystal to query Cassandra this library
 could be a good starting point. YMMV.
-
 
 ## Installation
 
@@ -27,12 +25,10 @@ dependencies:
     github: kaukas/crystal-cassandra
 ```
 
-
 ## Documentation
 
 The [latest Crystal Cassandra API documentation can be found
 here](https://kaukas.github.io/crystal-cassandra/latest/).
-
 
 ## Usage
 
@@ -71,7 +67,6 @@ end
 Please refer to [crystal-db](https://github.com/crystal-lang/crystal-db) for
 further usage instructions.
 
-
 ## Types
 
 `crystal-cassandra` supports [all the
@@ -88,7 +83,6 @@ Some of the collection types are also supported:
 - `list` maps to `Array`
 - `set` maps to `Set`
 - `map` maps to `Hash`
-
 
 ### Casting
 
@@ -134,33 +128,31 @@ end
 but shortcuts are defined for them so `Any` can be skipped (see the [basic
 example](https://github.com/kaukas/crystal-cassandra/blob/master/examples/basic.cr)).
 
-
 ## Development
 
 Install the C/C++ Driver. The `Makefile` commands work on MacOS:
 
 ```bash
-$ make build-cppdriver
+make build-cppdriver
 ```
 
 Start a Docker container with an instance of Cassandra:
 
 ```bash
-$ make start-cassandra
+make start-cassandra
 ```
 
 Run the tests:
 
 ```bash
-$ crystal spec
+crystal spec
 ```
 
 Stop Cassandra when finished:
 
 ```bash
-$ make stop-cassandra
+make stop-cassandra
 ```
-
 
 ## Contributing
 
@@ -169,7 +161,6 @@ $ make stop-cassandra
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create a new Pull Request
-
 
 ## Contributors
 
