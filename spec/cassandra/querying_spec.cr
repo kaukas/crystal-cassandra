@@ -2,6 +2,8 @@ require "../spec_helper"
 require "../../src/cassandra/dbapi"
 
 Spectator.describe "Querying" do
+  let(db) { DBHelper.connect("paging_size=1") }
+
   before_all do
     DBHelper.setup
 
@@ -18,8 +20,6 @@ Spectator.describe "Querying" do
   end
 
   context("pagination") do
-    let(db) { DBHelper.connect("paging_size=1") }
-
     it "performs result page handling automatically" do
       titles = Array.new(5) { |i| i.to_s }.to_set
       titles.each do |title|
@@ -57,7 +57,7 @@ Spectator.describe "Querying" do
       db.exec("insert into books (id, title) values (now(), ?)", "A title")
       # Expect an invalid statement to fail.
       expect_raises(Cassandra::DBApi::PreparedStatement::StatementPrepareError,
-                    /ErrorServerSyntaxError/) do
+        /ErrorServerSyntaxError/) do
         db.exec("do not insert into books (id, title) values (now(), ?)")
       end
     end
@@ -71,7 +71,7 @@ Spectator.describe "Querying" do
       db.exec("insert into books (id, title) values (now(), ?)", "A title")
       # Expect an invalid statement to fail.
       expect_raises(Cassandra::DBApi::StatementError,
-                    /ErrorServerSyntaxError/) do
+        /ErrorServerSyntaxError/) do
         db.exec("do not insert into books (id, title) values (now(), ?)")
       end
     end

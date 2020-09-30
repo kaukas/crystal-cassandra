@@ -4,12 +4,12 @@ version: 0.1.0
 authors:
   - Linas Juškevičius <linas@prodigito.lt>
 
-crystal: 0.31.0
+crystal: 0.35.1
 
 dependencies:
   db:
     github: crystal-lang/crystal-db
-    version: ~> 0.7.0
+    version: ~> 0.9.0
 
 development_dependencies:
   crystal_lib:
