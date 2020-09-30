@@ -14,11 +14,11 @@ module Cassandra
       @session : Cassandra::DBApi::Session
 
       def initialize(session, cql : String, paging_size)
-        initialize(session, create_statement(cql), paging_size)
+        initialize(session, create_statement(cql), cql, paging_size)
       end
 
-      def initialize(@session, @cass_statement, paging_size : UInt64?)
-        super(@session)
+      def initialize(@session, @cass_statement, cql : String, paging_size : UInt64?)
+        super(@session, cql)
         if paging_size
           LibCass.statement_set_paging_size(@cass_statement, paging_size)
         end
@@ -77,10 +77,10 @@ module Cassandra
       def initialize(@session : DBApi::Session,
                      cql : String,
                      paging_size : UInt64?)
-        super(@session)
+        super(@session, cql)
         @cass_prepared = prepare(@session, cql)
         cass_statement = create_statement(@cass_prepared)
-        @statement = RawStatement.new(@session, cass_statement, paging_size)
+        @statement = RawStatement.new(@session, cass_statement, cql, paging_size)
       end
 
       def do_close
