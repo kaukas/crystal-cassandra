@@ -12,7 +12,7 @@ Spectator.describe Cassandra::DBApi do
     DB.open(DB_URI)
     # Expect incorrect port to fail.
     expect_raises(Cassandra::DBApi::Session::ConnectError,
-                  /ErrorLibNoHostsAvailable/) do
+      /ErrorLibNoHostsAvailable/) do
       DB.open("cassandra://cassandra:cassandra@127.0.0.1:55")
     end
   end
@@ -35,7 +35,7 @@ Spectator.describe Cassandra::DBApi do
     DB.open("#{DB_URI}/crystal_cassandra_dbapi_test")
     # Expect incorrect keyspace to fail.
     expect_raises(Cassandra::DBApi::Session::ConnectError,
-                  /ErrorLibUnableToSetKeyspace/) do
+      /ErrorLibUnableToSetKeyspace/) do
       DB.open("#{DB_URI}/onaoweingaowifaowinow")
     end
   end
@@ -48,7 +48,7 @@ Spectator.describe Cassandra::DBApi do
     keyspace = URI.encode(%("onaoweingaowifaowinow"))
     # Expect incorrect keyspace to fail.
     expect_raises(Cassandra::DBApi::Session::ConnectError,
-                  /ErrorLibUnableToSetKeyspace/) do
+      /ErrorLibUnableToSetKeyspace/) do
       DB.open("#{DB_URI}/#{keyspace}")
     end
   end
@@ -58,7 +58,7 @@ Spectator.describe Cassandra::DBApi do
     DB.open(DB_URI)
     # Expect incorrect credentials to fail.
     expect_raises(Cassandra::DBApi::Session::ConnectError,
-                  /ErrorServerBadCredentials/) do
+      /ErrorServerBadCredentials/) do
       DB.open("cassandra://incorrect:incorrect@127.0.0.1:9042")
     end
   end
