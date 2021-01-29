@@ -3,21 +3,16 @@
 <head>
   <meta charset="utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Crystal Docs 0.34.0">
+<meta name="generator" content="Crystal Docs 0.35.1">
 <meta name="crystal_docs.project_version" content="master">
 <meta name="crystal_docs.project_name" content="cassandra">
+
 
 
 <link href="css/style.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="js/doc.js"></script>
 
-<svg class="hidden">
-  <symbol id="octicon-link" viewBox="0 0 16 16">
-    <path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
-  </symbol>
-</svg>
-
-  <meta id="repository-name" content="cassandra">
+  <meta name="repository-name" content="cassandra">
   <title>cassandra master</title>
   <script type="text/javascript">
   CrystalDocs.base_path = "";
@@ -25,6 +20,11 @@
 </head>
 <body>
 
+<svg class="hidden">
+  <symbol id="octicon-link" viewBox="0 0 16 16">
+    <path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+  </symbol>
+</svg>
 <div class="sidebar">
   <div class="sidebar-header">
     <div class="search-box">
@@ -44,7 +44,7 @@
     </div>
   </div>
 
-  <div class="search-results" class="hidden">
+  <div class="search-results hidden">
     <ul class="search-list"></ul>
   </div>
 
@@ -319,9 +319,9 @@
   </svg>
 </a>Crystal DB API for Cassandra</h1>
 
-<p>A Crystal wrapper around the <a href="https://docs.datastax.com/en/developer/cpp-driver/2.10/" target="_blank">DataStax C/C++
+<p>A Crystal wrapper around the <a href="https://docs.datastax.com/en/developer/cpp-driver/2.10/">DataStax C/C++
 Driver</a>. It conforms to
-the <a href="https://github.com/crystal-lang/crystal-db" target="_blank">crystal-db</a> API.</p>
+the <a href="https://github.com/crystal-lang/crystal-db">crystal-db</a> API.</p>
 
 <h2><a id="status" class="anchor" href="#status">
   <svg class="octicon-link" aria-hidden="true">
@@ -340,7 +340,7 @@ could be a good starting point. YMMV.</p>
   </svg>
 </a>Installation</h2>
 
-<p>Please make sure you have <a href="https://datastax.github.io/cpp-driver/topics/building/" target="_blank">installed the DataStax C/C++
+<p>Please make sure you have <a href="https://datastax.github.io/cpp-driver/topics/building/">installed the DataStax C/C++
 Driver</a>. You can use
 "development" packages if they are available or build from source.</p>
 
@@ -356,7 +356,7 @@ Driver</a>. You can use
   </svg>
 </a>Documentation</h2>
 
-<p>The <a href="https://kaukas.github.io/crystal-cassandra/latest/" target="_blank">latest Crystal Cassandra API documentation can be found
+<p>The <a href="https://kaukas.github.io/crystal-cassandra/latest/">latest Crystal Cassandra API documentation can be found
 here</a>.</p>
 
 <h2><a id="usage" class="anchor" href="#usage">
@@ -365,7 +365,7 @@ here</a>.</p>
   </svg>
 </a>Usage</h2>
 
-<p>From the <a href="https://github.com/kaukas/crystal-cassandra/blob/master/examples/basic.cr" target="_blank">basic
+<p>From the <a href="https://github.com/kaukas/crystal-cassandra/blob/master/examples/basic.cr">basic
 example</a>:</p>
 
 <pre><code class="language-crystal"><span class="k">require</span> <span class="s">&quot;cassandra/dbapi&quot;</span>
@@ -395,7 +395,7 @@ example</a>:</p>
   <span class="k">end</span>
 <span class="k">end</span></code></pre>
 
-<p>Please refer to <a href="https://github.com/crystal-lang/crystal-db" target="_blank">crystal-db</a> for
+<p>Please refer to <a href="https://github.com/crystal-lang/crystal-db">crystal-db</a> for
 further usage instructions.</p>
 
 <h2><a id="types" class="anchor" href="#types">
@@ -404,7 +404,7 @@ further usage instructions.</p>
   </svg>
 </a>Types</h2>
 
-<p><code>crystal-cassandra</code> supports <a href="https://crystal-lang.github.io/crystal-db/api/0.5.0/DB/Any.html" target="_blank">all the
+<p><code>crystal-cassandra</code> supports <a href="https://crystal-lang.github.io/crystal-db/api/0.5.0/DB/Any.html">all the
 <code>DB::Any</code></a>
 primitive types plus <code>Int8</code> and <code>Int16</code> and some additional value types:</p>
 
@@ -421,13 +421,13 @@ primitive types plus <code>Int8</code> and <code>Int16</code> and some additiona
 </a>Casting</h3>
 
 <p>Cassandra supports nested collection types (lists, sets, maps, etc.). Since
-Crystal <a href="https://github.com/crystal-lang/crystal/issues/5155" target="_blank">deprecated recursive
+Crystal <a href="https://github.com/crystal-lang/crystal/issues/5155">deprecated recursive
 aliases</a> they can be
 represented with recursive structs. <code>crystal-cassandra</code> has
 <code><a href="Cassandra/DBApi/Any.html">Cassandra::DBApi::Any</a></code> which performs a similar function to
-<a href="https://crystal-lang.org/api/latest/JSON/Any.html" target="_blank"><code>JSON::Any</code></a>. You can pass
+<a href="https://crystal-lang.org/api/latest/JSON/Any.html"><code>JSON::Any</code></a>. You can pass
 collection parameters to queries wrapped with <code><a href="Cassandra/DBApi/Any.html">Cassandra::DBApi::Any</a></code> (taken
-from the <a href="https://github.com/kaukas/crystal-cassandra/blob/master/examples/collections.cr" target="_blank">collections
+from the <a href="https://github.com/kaukas/crystal-cassandra/blob/master/examples/collections.cr">collections
 example</a>):</p>
 
 <pre><code class="language-crystal"><span class="k">alias</span> <span class="t">Any</span> <span class="o">=</span> <span class="t">Cassandra</span><span class="t">::</span><span class="t">DBApi</span><span class="t">::</span><span class="t">Any</span>
@@ -455,7 +455,7 @@ db.query(<span class="s">&quot;select title from posts&quot;</span>) <span class
   <span class="k">end</span>
 <span class="k">end</span></code></pre>
 
-<p>but shortcuts are defined for them so <code>Any</code> can be skipped (see the <a href="https://github.com/kaukas/crystal-cassandra/blob/master/examples/basic.cr" target="_blank">basic
+<p>but shortcuts are defined for them so <code>Any</code> can be skipped (see the <a href="https://github.com/kaukas/crystal-cassandra/blob/master/examples/basic.cr">basic
 example</a>).</p>
 
 <h2><a id="development" class="anchor" href="#development">
@@ -494,7 +494,7 @@ example</a>).</p>
   </svg>
 </a>Contributors</h2>
 
-<ul><li><a href="https://github.com/kaukas" target="_blank">kaukas</a> Linas Juškevičius - creator, maintainer</li></ul>
+<ul><li><a href="https://github.com/kaukas">kaukas</a> Linas Juškevičius - creator, maintainer</li></ul>
 </div>
 </body>
 </html>
