@@ -9,7 +9,7 @@ crystal: ">= 0.35.1"
 dependencies:
   db:
     github: crystal-lang/crystal-db
-    version: ~> 0.10.0
+    version: ~> 0.11.0
 
 development_dependencies:
   crystal_lib:

@@ -120,6 +120,10 @@ module Cassandra
         @column_names[i]
       end
 
+      def next_column_index : Int32
+        @col_index + 1
+      end
+
       def read
         decoder = get_next_decoder
         cass_value = read_next_column
