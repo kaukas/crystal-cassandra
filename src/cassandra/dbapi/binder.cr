@@ -6,17 +6,44 @@ module Cassandra
       class BindError < DB::Error
       end
 
-      def initialize(@cass_stmt : LibCass::CassStatement, @i : Int32)
-      end
+      def initialize(@cass_stmt : LibCass::CassStatement, @i : Int32); end
 
       def bind(any)
-        cass_error = do_bind(any)
-        if cass_error != LibCass::CassError::Ok
-          val_s = any.inspect
-          val_s = "#{val_s[0..1000]}…" if val_s.size > 1500
-          raise BindError.new("#{cass_error}: passed\n#{val_s}\n" \
-                              "of type #{typeof(any)} at index #{@i}")
-        end
+        param_count, _setter = do_bind(any)
+        {param_count, ->do
+          cass_error = _setter.call
+          if cass_error != LibCass::CassError::Ok
+            val_s = any.inspect
+            val_s = "#{val_s[0..1000]}…" if val_s.size > 1500
+            raise BindError.new("#{cass_error}: passed\n#{val_s}\n" \
+                                "of type #{typeof(any)} at index #{@i}")
+          end
+        end}
+      end
+
+      private def do_bind(consistency : Consistency)
+        {0, ->do
+          LibCass.statement_set_consistency(@cass_stmt,
+            Cassandra::LibCass::CassConsistency.new(consistency.value))
+        end}
+      end
+
+      private def do_bind(consistency : SerialConsistency)
+        {0, ->do
+          LibCass.statement_set_serial_consistency(@cass_stmt,
+            Cassandra::LibCass::CassConsistency.new(consistency.value))
+        end}
+      end
+
+      private def do_bind(timeout : RequestTimeout)
+        {0, ->do
+          LibCass.statement_set_request_timeout(@cass_stmt, timeout.timeout_ms)
+        end}
+      end
+
+      private def do_bind(idempotent : Idempotent)
+        cass_value = idempotent.idempotent ? LibCass::BoolT::True : LibCass::BoolT::False
+        {0, ->{ LibCass.statement_set_is_idempotent(@cass_stmt, cass_value) }}
       end
 
       private def do_bind(val : Any)
@@ -24,100 +51,106 @@ module Cassandra
       end
 
       private def do_bind(val : Nil)
-        LibCass.statement_bind_null(@cass_stmt, @i)
+        {1, ->{ LibCass.statement_bind_null(@cass_stmt, @i) }}
       end
 
       private def do_bind(val : Bool)
         cass_value = val ? LibCass::BoolT::True : LibCass::BoolT::False
-        LibCass.statement_bind_bool(@cass_stmt, @i, cass_value)
+        {1, ->{ LibCass.statement_bind_bool(@cass_stmt, @i, cass_value) }}
       end
 
       private def do_bind(val : Float32)
-        LibCass.statement_bind_float(@cass_stmt, @i, val)
+        {1, ->{ LibCass.statement_bind_float(@cass_stmt, @i, val) }}
       end
 
       private def do_bind(val : Float64)
-        LibCass.statement_bind_double(@cass_stmt, @i, val)
+        {1, ->{ LibCass.statement_bind_double(@cass_stmt, @i, val) }}
       end
 
       private def do_bind(val : Int8)
-        LibCass.statement_bind_int8(@cass_stmt, @i, val)
+        {1, ->{ LibCass.statement_bind_int8(@cass_stmt, @i, val) }}
       end
 
       private def do_bind(val : Int16)
-        LibCass.statement_bind_int16(@cass_stmt, @i, val)
+        {1, ->{ LibCass.statement_bind_int16(@cass_stmt, @i, val) }}
       end
 
       private def do_bind(val : Int32)
-        LibCass.statement_bind_int32(@cass_stmt, @i, val)
+        {1, ->{ LibCass.statement_bind_int32(@cass_stmt, @i, val) }}
       end
 
       private def do_bind(val : Int64)
-        LibCass.statement_bind_int64(@cass_stmt, @i, val)
+        {1, ->{ LibCass.statement_bind_int64(@cass_stmt, @i, val) }}
       end
 
       private def do_bind(val : Bytes)
-        LibCass.statement_bind_bytes(@cass_stmt, @i, val, val.size)
+        {1, ->{ LibCass.statement_bind_bytes(@cass_stmt, @i, val, val.size) }}
       end
 
       private def do_bind(val : String)
-        LibCass.statement_bind_string_n(@cass_stmt, @i, val, val.bytesize)
+        {1, ->{ LibCass.statement_bind_string_n(@cass_stmt, @i, val, val.bytesize) }}
       end
 
       private def do_bind(val : DBApi::Date)
-        LibCass.statement_bind_uint32(@cass_stmt, @i, val.days)
+        {1, ->{ LibCass.statement_bind_uint32(@cass_stmt, @i, val.days) }}
       end
 
       private def do_bind(val : DBApi::Time)
-        LibCass.statement_bind_int64(@cass_stmt, @i, val.total_nanoseconds)
+        {1, ->{ LibCass.statement_bind_int64(@cass_stmt, @i, val.total_nanoseconds) }}
       end
 
       private def do_bind(val : ::Time)
         ms = (val - EPOCH_START).total_milliseconds.to_i64
-        LibCass.statement_bind_int64(@cass_stmt, @i, ms)
+        {1, ->{ LibCass.statement_bind_int64(@cass_stmt, @i, ms) }}
       end
 
       private def do_bind(val : DBApi::Uuid | DBApi::TimeUuid)
-        LibCass.statement_bind_uuid(@cass_stmt, @i, val)
+        {1, ->{ LibCass.statement_bind_uuid(@cass_stmt, @i, val) }}
       end
 
       private def do_bind(vals : Array)
-        cass_collection = LibCass.collection_new(
-          LibCass::CassCollectionType::CollectionTypeList,
-          vals.size
-        )
-        begin
-          vals.each { |val| append(cass_collection, val) }
-          LibCass.statement_bind_collection(@cass_stmt, @i, cass_collection)
-        ensure
-          LibCass.collection_free(cass_collection)
-        end
+        {1, ->do
+          cass_collection = LibCass.collection_new(
+            LibCass::CassCollectionType::CollectionTypeList,
+            vals.size
+          )
+          begin
+            vals.each { |val| append(cass_collection, val) }
+            LibCass.statement_bind_collection(@cass_stmt, @i, cass_collection)
+          ensure
+            LibCass.collection_free(cass_collection)
+          end
+        end}
       end
 
       private def do_bind(vals : Set)
-        cass_collection = LibCass.collection_new(
-          LibCass::CassCollectionType::CollectionTypeSet,
-          vals.size
-        )
-        begin
-          vals.each { |val| append(cass_collection, val) }
-          LibCass.statement_bind_collection(@cass_stmt, @i, cass_collection)
-        ensure
-          LibCass.collection_free(cass_collection)
-        end
+        {1, ->do
+          cass_collection = LibCass.collection_new(
+            LibCass::CassCollectionType::CollectionTypeSet,
+            vals.size
+          )
+          begin
+            vals.each { |val| append(cass_collection, val) }
+            LibCass.statement_bind_collection(@cass_stmt, @i, cass_collection)
+          ensure
+            LibCass.collection_free(cass_collection)
+          end
+        end}
       end
 
       private def do_bind(vals : Hash(Any, Any))
-        cass_map = LibCass.collection_new(
-          LibCass::CassCollectionType::CollectionTypeMap,
-          vals.size
-        )
-        begin
-          vals.each { |entry| entry.each { |v| append(cass_map, v.raw) } }
-          LibCass.statement_bind_collection(@cass_stmt, @i, cass_map)
-        ensure
-          LibCass.collection_free(cass_map)
-        end
+        {1, ->do
+          cass_map = LibCass.collection_new(
+            LibCass::CassCollectionType::CollectionTypeMap,
+            vals.size
+          )
+          begin
+            vals.each { |entry| entry.each { |v| append(cass_map, v.raw) } }
+            LibCass.statement_bind_collection(@cass_stmt, @i, cass_map)
+          ensure
+            LibCass.collection_free(cass_map)
+          end
+        end}
       end
 
       private def append(cass_coll : LibCass::CassCollection, val : Nil)

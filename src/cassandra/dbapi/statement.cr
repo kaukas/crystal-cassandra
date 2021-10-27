@@ -60,10 +60,15 @@ module Cassandra
       end
 
       protected def rebind_params(args : Enumerable)
-        LibCass.statement_reset_parameters(@cass_statement, args.size)
-        args.each_with_index do |arg, i|
-          ValueBinder.new(@cass_statement, i).bind(arg)
+        i = 0
+        param_setters = args.map do |arg|
+          param_count, _setter = ValueBinder.new(@cass_statement, i).bind(arg)
+          i += param_count
+          _setter
         end
+
+        LibCass.statement_reset_parameters(@cass_statement, i)
+        param_setters.each(&.call)
       end
     end
 

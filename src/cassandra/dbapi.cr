@@ -18,13 +18,13 @@ module Cassandra
     # These types that can be supplied to queries as bound parameters without
     # wrapping them with `Cassandra::DBApi::Any`. Example:
     #
-    # ```crystal
+    # ```
     # db.exec("insert into posts (id, title) values (?, ?)", 1, "A Post")
     # ```
     #
     # They are also returned as query results:
     #
-    # ```crystal
+    # ```
     # db.query("select id, title from posts") do |rs|
     #   rs.each do
     #     puts rs.read(Int32), rs.read(String)
@@ -32,22 +32,22 @@ module Cassandra
     # end
     # ```
     alias Primitive = DB::Any | Int8 | Int16 | DBApi::Date | DBApi::Time |
-      DBApi::Uuid | DBApi::TimeUuid
+                      DBApi::Uuid | DBApi::TimeUuid
 
     # All supported Cassandra types.
     #
     # Items of collections are wrapped with `Cassandra::DBApi::Any`. A query
     # parameter example:
     #
-    # ```crystal
+    # ```
     # db.exec("insert into posts (id, authors) values (?, ?)",
-    #         1,
-    #         Any.new([Any.new("A Post")]))
+    #   1,
+    #   Any.new([Any.new("A Post")]))
     # ```
     #
     # A query result example:
     #
-    # ```crystal
+    # ```
     # db.query("select id, authors from posts") do |rs|
     #   rs.each do
     #     puts rs.read(Int32), rs.read(Array(Any)).map(&.as_s)
@@ -121,6 +121,37 @@ module Cassandra
       def_for_type(as_set, Set(Any))
       def_for_type(as_h, Hash(Any, Any))
     end
+
+    enum Consistency
+      ConsistencyUnknown     = LibCass::CassConsistency::ConsistencyUnknown
+      ConsistencyAny         = LibCass::CassConsistency::ConsistencyAny
+      ConsistencyOne         = LibCass::CassConsistency::ConsistencyOne
+      ConsistencyTwo         = LibCass::CassConsistency::ConsistencyTwo
+      ConsistencyThree       = LibCass::CassConsistency::ConsistencyThree
+      ConsistencyQuorum      = LibCass::CassConsistency::ConsistencyQuorum
+      ConsistencyAll         = LibCass::CassConsistency::ConsistencyAll
+      ConsistencyLocalQuorum = LibCass::CassConsistency::ConsistencyLocalQuorum
+      ConsistencyEachQuorum  = LibCass::CassConsistency::ConsistencyEachQuorum
+      ConsistencySerial      = LibCass::CassConsistency::ConsistencySerial
+      ConsistencyLocalSerial = LibCass::CassConsistency::ConsistencyLocalSerial
+      ConsistencyLocalOne    = LibCass::CassConsistency::ConsistencyLocalOne
+    end
+    enum SerialConsistency
+      ConsistencyUnknown     = LibCass::CassConsistency::ConsistencyUnknown
+      ConsistencyAny         = LibCass::CassConsistency::ConsistencyAny
+      ConsistencyOne         = LibCass::CassConsistency::ConsistencyOne
+      ConsistencyTwo         = LibCass::CassConsistency::ConsistencyTwo
+      ConsistencyThree       = LibCass::CassConsistency::ConsistencyThree
+      ConsistencyQuorum      = LibCass::CassConsistency::ConsistencyQuorum
+      ConsistencyAll         = LibCass::CassConsistency::ConsistencyAll
+      ConsistencyLocalQuorum = LibCass::CassConsistency::ConsistencyLocalQuorum
+      ConsistencyEachQuorum  = LibCass::CassConsistency::ConsistencyEachQuorum
+      ConsistencySerial      = LibCass::CassConsistency::ConsistencySerial
+      ConsistencyLocalSerial = LibCass::CassConsistency::ConsistencyLocalSerial
+      ConsistencyLocalOne    = LibCass::CassConsistency::ConsistencyLocalOne
+    end
+    record RequestTimeout, timeout_ms : UInt64
+    record Idempotent, idempotent : Bool
   end
 end
 

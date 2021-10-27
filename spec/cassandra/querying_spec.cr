@@ -11,14 +11,12 @@ Spectator.describe "Querying" do
     end
   end
 
-  after_each { db.close }
-
-  before_each do
-    db.exec "truncate table books"
-  end
-
   context("pagination") do
     let(db) { DBHelper.connect("paging_size=1") }
+
+    before_each { db.exec("truncate table books") }
+
+    after_each { db.close }
 
     it "performs result page handling automatically" do
       titles = Array.new(5) { |i| i.to_s }.to_set
@@ -49,15 +47,54 @@ Spectator.describe "Querying" do
     end
   end
 
+  context("statement options") do
+    let(db) { DBHelper.connect }
+
+    before_each { db.exec("truncate table books") }
+
+    after_each { db.close }
+
+    it "sets statement consistency" do
+      expect_raises(Cassandra::DBApi::StatementError) do
+        db.exec("insert into books (id, title) values (now(), 'foo')",
+          Cassandra::DBApi::Consistency::ConsistencySerial)
+      end
+      db.exec("insert into books (id, title) values (now(), 'foo')",
+        Cassandra::DBApi::Consistency::ConsistencyAny)
+    end
+
+    it "sets statement serial consistency" do
+      cql = "insert into books (id, title) values (now(), 'foo') if not exists"
+      expect_raises(Cassandra::DBApi::StatementError) do
+        db.exec(cql, Cassandra::DBApi::SerialConsistency::ConsistencyOne)
+      end
+      db.exec(cql, Cassandra::DBApi::SerialConsistency::ConsistencySerial)
+    end
+
+    it "sets request timeout" do
+      db.exec("insert into books (id, title) values (now(), 'foo')",
+        Cassandra::DBApi::RequestTimeout.new(100))
+    end
+
+    it "sets idempotency" do
+      db.exec("insert into books (id, title) values (now(), 'foo')",
+        Cassandra::DBApi::Idempotent.new(false))
+    end
+  end
+
   context("prepared statements") do
     let(db) { DBHelper.connect("prepared_statements=true") }
+
+    before_each { db.exec("truncate table books") }
+
+    after_each { db.close }
 
     it "throws errors on invalid prepared statements" do
       # Expect a valid statement to succeed.
       db.exec("insert into books (id, title) values (now(), ?)", "A title")
       # Expect an invalid statement to fail.
       expect_raises(Cassandra::DBApi::PreparedStatement::StatementPrepareError,
-                    /ErrorServerSyntaxError/) do
+        /ErrorServerSyntaxError/) do
         db.exec("do not insert into books (id, title) values (now(), ?)")
       end
     end
@@ -66,12 +103,16 @@ Spectator.describe "Querying" do
   context("unprepared statements") do
     let(db) { DBHelper.connect("prepared_statements=false") }
 
+    before_each { db.exec("truncate table books") }
+
+    after_each { db.close }
+
     it "throws errors on invalid unprepared statements" do
       # Expect a valid statement to succeed.
       db.exec("insert into books (id, title) values (now(), ?)", "A title")
       # Expect an invalid statement to fail.
       expect_raises(Cassandra::DBApi::StatementError,
-                    /ErrorServerSyntaxError/) do
+        /ErrorServerSyntaxError/) do
         db.exec("do not insert into books (id, title) values (now(), ?)")
       end
     end
