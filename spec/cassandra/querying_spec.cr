@@ -11,14 +11,10 @@ Spectator.describe "Querying" do
     end
   end
 
-  after_each { db.close }
-
-  before_each do
-    db.exec "truncate table books"
-  end
-
   context("pagination") do
     let(db) { DBHelper.connect("paging_size=1") }
+    before_each { db.exec "truncate table books" }
+    after_each { db.close }
 
     it "performs result page handling automatically" do
       titles = Array.new(5) { |i| i.to_s }.to_set
@@ -51,6 +47,8 @@ Spectator.describe "Querying" do
 
   context("prepared statements") do
     let(db) { DBHelper.connect("prepared_statements=true") }
+    before_each { db.exec "truncate table books" }
+    after_each { db.close }
 
     it "throws errors on invalid prepared statements" do
       # Expect a valid statement to succeed.
@@ -65,6 +63,8 @@ Spectator.describe "Querying" do
 
   context("unprepared statements") do
     let(db) { DBHelper.connect("prepared_statements=false") }
+    before_each { db.exec "truncate table books" }
+    after_each { db.close }
 
     it "throws errors on invalid unprepared statements" do
       # Expect a valid statement to succeed.

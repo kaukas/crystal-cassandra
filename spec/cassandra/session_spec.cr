@@ -26,7 +26,7 @@ Spectator.describe Cassandra::DBApi do
 
   it "supports URL encoded hosts" do
     # Expect the last address to succeed.
-    hosts = URI.encode("127.0.0.3,127.0.0.2,127.0.0.1")
+    hosts = URI.encode_path("127.0.0.3,127.0.0.2,127.0.0.1")
     DB.open("cassandra://cassandra:cassandra@#{hosts}:9042")
   end
 
@@ -41,11 +41,11 @@ Spectator.describe Cassandra::DBApi do
   end
 
   it "supports quoted keyspace name" do
-    keyspace = URI.encode(%("crystal_cassandra_dbapi_test"))
+    keyspace = URI.encode_path(%("crystal_cassandra_dbapi_test"))
     # Expect correct keyspace to succeed.
     DB.open("#{DB_URI}/#{keyspace}")
 
-    keyspace = URI.encode(%("onaoweingaowifaowinow"))
+    keyspace = URI.encode_path(%("onaoweingaowifaowinow"))
     # Expect incorrect keyspace to fail.
     expect_raises(Cassandra::DBApi::Session::ConnectError,
                   /ErrorLibUnableToSetKeyspace/) do

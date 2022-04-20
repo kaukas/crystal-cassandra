@@ -219,8 +219,8 @@ CassandraSpecs.run do
         end
 
         compound_columns = (
-          Array.
-            product(["list", "set"], PRIMITIVE_TYPES).
+          Indexable.
+            cartesian_product([["list", "set"], PRIMITIVE_TYPES]).
             reject do |(coll_type, prim_type)|
               # Skip unsupported combinations.
               coll_type == "set" &&
@@ -232,8 +232,8 @@ CassandraSpecs.run do
               "#{coll}_#{prim} #{coll}<#{prim}>"
             end
         ) + (
-          Array.
-            product(PRIMITIVE_TYPES, PRIMITIVE_TYPES).
+          Indexable.
+            cartesian_product([PRIMITIVE_TYPES, PRIMITIVE_TYPES]).
             reject do |(key_def, _)|
               # Skip unsupported combinations.
               key_def[:name] == "duration"
