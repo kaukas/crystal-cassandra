@@ -116,8 +116,8 @@ module Cassandra
         has_next
       end
 
-      def column_name(i : Int32) : String
-        @column_names[i]
+      def column_name(index : Int32) : String
+        @column_names[index]
       end
 
       def next_column_index : Int32

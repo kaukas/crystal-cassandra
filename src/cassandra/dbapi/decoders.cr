@@ -228,10 +228,10 @@ module Cassandra
           [LibCass::CassValueType::ValueTypeList]
         end
 
-        def decode_with_type(cass_list)
-          subtype = LibCass.value_primary_sub_type(cass_list)
+        def decode_with_type(cass_value)
+          subtype = LibCass.value_primary_sub_type(cass_value)
           decoder = BaseDecoder.get_decoder(subtype)
-          decoder.decode_iterator(CassCollectionIterator.new(cass_list)).to_a
+          decoder.decode_iterator(CassCollectionIterator.new(cass_value)).to_a
         end
       end
 
@@ -240,10 +240,10 @@ module Cassandra
           [LibCass::CassValueType::ValueTypeSet]
         end
 
-        def decode_with_type(cass_set)
-          subtype = LibCass.value_primary_sub_type(cass_set)
+        def decode_with_type(cass_value)
+          subtype = LibCass.value_primary_sub_type(cass_value)
           decoder = BaseDecoder.get_decoder(subtype)
-          decoder.decode_iterator(CassCollectionIterator.new(cass_set)).to_set
+          decoder.decode_iterator(CassCollectionIterator.new(cass_value)).to_set
         end
       end
 
@@ -251,8 +251,8 @@ module Cassandra
         private module CassMapIterator
           include Iterator(LibCass::CassValue)
 
-          def initialize(cass_map : LibCass::CassValue)
-            @cass_iterator = LibCass.iterator_from_map(cass_map)
+          def initialize(cass_value : LibCass::CassValue)
+            @cass_iterator = LibCass.iterator_from_map(cass_value)
           end
 
           def finalize
@@ -288,16 +288,16 @@ module Cassandra
           [LibCass::CassValueType::ValueTypeMap]
         end
 
-        def decode_with_type(cass_map)
-          key_type = LibCass.value_primary_sub_type(cass_map)
+        def decode_with_type(cass_value)
+          key_type = LibCass.value_primary_sub_type(cass_value)
           key_decoder = BaseDecoder.get_decoder(key_type)
-          keys = key_decoder.decode_iterator(CassMapKeyIterator.new(cass_map))
+          keys = key_decoder.decode_iterator(CassMapKeyIterator.new(cass_value))
 
-          val_type = LibCass.value_secondary_sub_type(cass_map)
+          val_type = LibCass.value_secondary_sub_type(cass_value)
           val_decoder = BaseDecoder.get_decoder(val_type)
-          vals = val_decoder.decode_iterator(CassMapValueIterator.new(cass_map))
+          vals = val_decoder.decode_iterator(CassMapValueIterator.new(cass_value))
 
-          count_of_items = LibCass.value_item_count(cass_map)
+          count_of_items = LibCass.value_item_count(cass_value)
           hsh = Hash(Any, Any).new(block: nil, initial_capacity: count_of_items)
           keys.zip(vals).each do |(key, val)|
             hsh[key] = val

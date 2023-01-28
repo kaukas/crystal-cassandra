@@ -1,5 +1,6 @@
 require "db"
 require "db/spec"
+require "../../src/cassandra/dbapi"
 
 private def assert_single_read(rs, value_type, value)
   rs.move_next.should be_true
