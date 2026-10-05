@@ -9,10 +9,10 @@ module Cassandra
     class Cluster
       @@clusters = {} of String => Cluster
 
-      def self.acquire(context : DB::ConnectionContext)
-        uri_s = context.uri.to_s
+      def self.acquire(uri : URI)
+        uri_s = uri.to_s
         cluster = @@clusters.fetch(uri_s) do
-          @@clusters[uri_s] = Cluster.new(context)
+          @@clusters[uri_s] = Cluster.new(uri)
         end
         cluster.add_reference
       end
@@ -25,24 +25,24 @@ module Cassandra
       @cass_cluster : LibCass::CassCluster
 
       # Initialises a cluster object with the supplied host and port from the
-      # *context*.
-      def initialize(context : DB::ConnectionContext)
-        @uri_s = context.uri.to_s
+      # *uri*.
+      def initialize(uri : URI)
+        @uri_s = uri.to_s
         @cass_cluster = LibCass.cluster_new
 
-        host = context.uri.host || "127.0.0.1"
+        host = uri.host || "127.0.0.1"
         LibCass.cluster_set_contact_points(@cass_cluster, host)
 
-        port = context.uri.port
+        port = uri.port
         LibCass.cluster_set_port(@cass_cluster, port) if port
 
-        user = context.uri.user
-        password = context.uri.password
+        user = uri.user
+        password = uri.password
         if user && password
           LibCass.cluster_set_credentials(@cass_cluster, user, password)
         end
 
-        params = HTTP::Params.parse(context.uri.query || "")
+        params = HTTP::Params.parse(uri.query || "")
         @paging_size = params["paging_size"]?.try(&.to_u64?)
       end
 

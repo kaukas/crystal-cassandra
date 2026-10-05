@@ -15,11 +15,11 @@ module Cassandra
       @cluster : Cluster
 
       # Creates a `Session` object and initiates a Cassandra cluster.
-      def initialize(context : DB::ConnectionContext)
-        super(context)
-        @cluster = Cluster.acquire(context)
+      def initialize(options : DB::Connection::Options, uri : URI)
+        super(options)
+        @cluster = Cluster.acquire(uri)
         @cass_session = LibCass.session_new
-        connect(context.uri.path)
+        connect(uri.path)
       end
 
       # :nodoc:
@@ -57,6 +57,11 @@ module Cassandra
       def do_close
         LibCass.session_free(@cass_session)
         @cluster.do_close
+      end
+
+      # :inherit:
+      def driver_name : String
+        "cassandra"
       end
 
       # Creates a prepared statement from a *query*.
