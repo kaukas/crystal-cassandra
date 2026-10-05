@@ -62,4 +62,10 @@ Spectator.describe Cassandra::DBApi do
       DB.open("cassandra://incorrect:incorrect@127.0.0.1:9042")
     end
   end
+
+  it "reports the driver name" do
+    DB.connect(DB_URI) do |cnn|
+      expect(cnn.driver_name).to eq("cassandra")
+    end
+  end
 end

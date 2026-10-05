@@ -9,9 +9,19 @@ require "./dbapi/statement"
 module Cassandra
   module DBApi
     class Driver < DB::Driver
-      # Builds a Cassandra connection for the given `DB::ConnectionContext`.
-      def build_connection(context : DB::ConnectionContext) : DB::Connection
-        DBApi::Session.new(context)
+      class ConnectionBuilder < ::DB::ConnectionBuilder
+        def initialize(@options : ::DB::Connection::Options, @uri : URI)
+        end
+
+        # Builds a Cassandra connection for the given URI.
+        def build : ::DB::Connection
+          DBApi::Session.new(@options, @uri)
+        end
+      end
+
+      def connection_builder(uri : URI) : ::DB::ConnectionBuilder
+        params = HTTP::Params.parse(uri.query || "")
+        ConnectionBuilder.new(connection_options(params), uri)
       end
     end
 
